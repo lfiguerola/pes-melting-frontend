@@ -6,15 +6,21 @@ namespace MeltingApp.Models
 {
     public class User : EntityBase
     {
+        private string _username;
+        private string _email;
+        private string _password;
+        private bool _activated;
+        private string _code;
+
         /// <summary>
         /// the user name
         /// </summary>
         public string username
         {
-            get { return username; }
+            get { return _username; }
             set
             {
-                username = value;
+                _username = value;
                 OnPropertyChanged(nameof(username));
             }
         }
@@ -24,10 +30,10 @@ namespace MeltingApp.Models
         /// </summary>
         public string email
         {
-            get { return email; }
+            get { return _email; }
             set
             {
-                email = value;
+                _email = value;
                 OnPropertyChanged(nameof(email));
             }
         }
@@ -37,10 +43,10 @@ namespace MeltingApp.Models
         /// </summary>
         public string password
         {
-            get { return password; }
+            get { return _password; }
             set
             {
-                password = value;
+                _password = value;
                 OnPropertyChanged(nameof(password));
             }
         }
@@ -50,10 +56,10 @@ namespace MeltingApp.Models
         /// </summary>
         public bool activated
         {
-            get { return activated; }
+            get { return _activated; }
             set
             {
-                activated = value;
+                _activated = value;
                 OnPropertyChanged(nameof(activated));
             }
         }
@@ -63,10 +69,10 @@ namespace MeltingApp.Models
         /// </summary>
         public string code
         {
-            get { return code; }
+            get { return _code; }
             set
             {
-                code = value;
+                _code = value;
                 OnPropertyChanged(nameof(code));
             }
         }

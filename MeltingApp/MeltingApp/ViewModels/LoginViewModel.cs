@@ -1,5 +1,6 @@
 ﻿using MeltingApp.Interfaces;
 using MeltingApp.Models;
+using MeltingApp.Resources;
 using MeltingApp.Services;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
@@ -36,7 +37,7 @@ namespace MeltingApp.ViewModels
             {
                 email = "alex.cmillan@outlook.com", code = "1151a821"
             };
-            await _apiClientService.PostAsync<User>(User, "Activate");
+            await _apiClientService.PostAsync<User>(User, ApiRoutes.ActivateUserMethodName);
             //navigationService.SetRootPage<MainPage>();
         }
     }

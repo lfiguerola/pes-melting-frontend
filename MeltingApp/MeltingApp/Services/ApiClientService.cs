@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MeltingApp.Exceptions;
 using MeltingApp.Models;
+using MeltingApp.Resources;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
@@ -21,8 +22,8 @@ namespace MeltingApp.Services
 
         public Dictionary<Tuple<Type, string>, string> UrlPostDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>
         {
-            {new Tuple<Type, string>(typeof(User), "Activate"), "/activate" },
-            {new Tuple<Type, string>(typeof(User), "Register"), "/register" },
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.ActivateUserMethodName), ApiRoutes.ActivateUserEndpoint },
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.RegisterUserMethodName), ApiRoutes.RegisterUserEndpoint },
         };
 
         public Dictionary<Type, string> UrlPutDictionary { get; set; } = new Dictionary<Type, string>()

@@ -53,24 +53,17 @@ namespace MeltingApp.Services
                 //if para contemplar errores,
                 if (result.IsSuccessStatusCode) //si codis 20X ---- OK
                 {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(postResult);
                     return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync()); //deserializamos nuestro postResult a <T> con JSONConvert y retornamos el resultado
-
                 }
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast(postResult);//Show Toast del postResult en caso de fallo
+                //DependencyService.Get<IOperatingSystemMethods>().ShowToast(postResult);//Show Toast del postResult en caso de fallo
                 throw new ApiClientException(postResult);//throw excepcion de la excepcion q toque con el mensaje q trae el resultado
             }
-            catch (Exception)
+            catch (ApiClientException) //pillem l'excepcio si els codis no son OK
             {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast($"An error has ocurred creating {typeof(T)}. Check internet connection.");
             }
 
-            if (result == null) return null;
-
-            if (result.IsSuccessStatusCode)
-            {
-                return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
-            }
-            //TODO: null or throw custom exception like PostException
+         //TODO: null or throw custom exception like PostException
             return null;
 
         }

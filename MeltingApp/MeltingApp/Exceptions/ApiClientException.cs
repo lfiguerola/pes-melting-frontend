@@ -1,4 +1,6 @@
 ﻿using System;
+using MeltingApp.Interfaces;
+using Xamarin.Forms;
 
 namespace MeltingApp.Exceptions
 {
@@ -6,6 +8,7 @@ namespace MeltingApp.Exceptions
     {
         public ApiClientException(string message) : base(message)
         {
+            DependencyService.Get<IOperatingSystemMethods>().ShowToast(message);
         }
 
         

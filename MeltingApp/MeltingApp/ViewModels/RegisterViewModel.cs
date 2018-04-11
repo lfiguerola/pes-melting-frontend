@@ -24,7 +24,8 @@ namespace MeltingApp.ViewModels
 
 	    void HandleRegisterCommand()
 	    {
-	        navigationService.SetRootPage<MainPage>();
-	    }
+	        navigationService.RegisterPage<CodeConfirmation>();
+	        navigationService.SetRootPage<CodeConfirmation>();
+        }
     }
 }

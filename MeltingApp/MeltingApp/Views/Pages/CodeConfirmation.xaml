@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.CodeConfirmation">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="CodeConfirmationLabel" Text="Introduce the code sent to your email"></Label>
+            <Entry x:Name="CodeConfirmationEntry"></Entry>
+
+            <Button Text="Enter" Command="{Binding CodeConfirmationCommand}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace MeltingApp.Interfaces
 {
-    public interface INavigationService
+    interface INavigationService
     {
         Page CurrentPage { get; }
         NavigationPage NavigationPage { get; set; }

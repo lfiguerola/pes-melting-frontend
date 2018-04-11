@@ -4,18 +4,17 @@
              x:Class="MeltingApp.Views.Pages.RegisterPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
+            <Label Text="Register"
                 HorizontalOptions="CenterAndExpand" />
 
             <Label x:Name="EmailLabel" Text="Email:"></Label>
-            <Entry x:Name="EmailEntry"></Entry>
+            <Entry x:Name="EmailEntry" Text="{Binding Email}"></Entry>
             <Label x:Name="PasswordLabel" Text="Password:"></Label>
-            <Entry x:Name="PasswordEntry"></Entry>
+            <Entry x:Name="PasswordEntry" Text="{Binding Password}"></Entry>
             <Label x:Name="UsernameLabel" Text="Username:"></Label>
-            <Entry x:Name="UsernameEntry"></Entry>
+            <Entry x:Name="UsernameEntry" Text="{Binding Username}"></Entry>
 
-            <Button Text="Register" Command="{Binding RegisterCommand}"></Button>
+            <Button Text="Register" Command="{Binding RegisterUserCommand}"></Button>
 
         </StackLayout>
     </ContentPage.Content>

@@ -23,8 +23,8 @@ namespace MeltingApp.ViewModels
         }
         void HandleRegisterPageCommand()
         {
-            navigationService.RegisterPage<RegisterPage>();
-            navigationService.SetRootPage<RegisterPage>();
+            _navigationService.RegisterPage<RegisterPage>();
+            _navigationService.SetRootPage<RegisterPage>();
         }
     }
 }

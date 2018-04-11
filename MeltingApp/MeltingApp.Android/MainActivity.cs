@@ -1,11 +1,8 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
+using MeltingApp.Interfaces;
+using Xamarin.Forms;
 
 namespace MeltingApp.Droid
 {
@@ -21,6 +18,9 @@ namespace MeltingApp.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+
+            //registrem les funcionalitats del sistema operatiu
+            DependencyService.Register<IOperatingSystemMethods, OperatingSystemMethods>();
         }
     }
 }

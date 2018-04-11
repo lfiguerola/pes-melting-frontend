@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.RegisterPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+
+            <Label x:Name="EmailLabel" Text="Email:"></Label>
+            <Entry x:Name="EmailEntry"></Entry>
+            <Label x:Name="PasswordLabel" Text="Password:"></Label>
+            <Entry x:Name="PasswordEntry"></Entry>
+            <Label x:Name="UsernameLabel" Text="Username:"></Label>
+            <Entry x:Name="UsernameEntry"></Entry>
+
+            <Button Text="Register" Command="{Binding RegisterCommand}"></Button>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

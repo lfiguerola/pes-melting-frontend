@@ -12,12 +12,19 @@ namespace MeltingApp.ViewModels
         {
             navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             LoginCommand = new Command(HandleLoginCommand);
+            RegisterPageCommand = new Command(HandleRegisterPageCommand);
         }
         public Command LoginCommand { get; set; }
+        public Command RegisterPageCommand { get; set; }
 
         void HandleLoginCommand()
         {
             navigationService.SetRootPage<MainPage>();
+        }
+        void HandleRegisterPageCommand()
+        {
+            navigationService.RegisterPage<RegisterPage>();
+            navigationService.SetRootPage<RegisterPage>();
         }
     }
 }

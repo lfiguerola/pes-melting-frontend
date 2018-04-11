@@ -23,7 +23,7 @@ namespace MeltingApp.Views.Pages
             //if not
             //not allow gesture -> disable menu bar
             IsGestureEnabled = false;
-            navigationPage = new NavigationPage(new LoginPage());
+            navigationPage = new NavigationPage(new RegisterPage());
 
             Detail = navigationPage;
             navigationService.NavigationPage = navigationPage;

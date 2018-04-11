@@ -37,6 +37,7 @@ namespace MeltingApp
         private void RegisterServices()
         {
             DependencyService.Register<INavigationService, NavigationService>();
+            DependencyService.Register<IApiClientService, ApiClientService>();
         }
 
         private void AddStaticResources()

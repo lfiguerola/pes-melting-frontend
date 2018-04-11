@@ -42,11 +42,6 @@ namespace MeltingApp.ViewModels
 
 	    async void HandleRegisterUserCommand()
 	    {
-<<<<<<< HEAD
-	        navigationService.RegisterPage<CodeConfirmation>();
-	        navigationService.SetRootPage<CodeConfirmation>();
-        }
-=======
 	        User = new User()
 	        {
 	            username = Username,
@@ -70,6 +65,5 @@ namespace MeltingApp.ViewModels
 	        });
             
 	    }
->>>>>>> 93b7df7... bussines logic for register added
     }
 }

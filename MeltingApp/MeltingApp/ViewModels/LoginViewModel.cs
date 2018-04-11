@@ -35,7 +35,7 @@ namespace MeltingApp.ViewModels
         {
             User = new User()
             {
-                username = "laura14", email = "testtest3@gmail.com", password = "123456asd" 
+                username = "freyja93", email = "laufipe@gmail.com", password = "123456qaws" 
             };
             await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName);
             //navigationService.SetRootPage<MainPage>();

@@ -1,6 +1,7 @@
 ﻿using MeltingApp.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,20 +26,20 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(User), ApiRoutes.RegisterUserMethodName), ApiRoutes.RegisterUserEndpoint },
         };
 
-        //public Dictionary<Type, string> UrlPutDictionary { get; set; } = new Dictionary<Type, string>()
-        //{
+        public Dictionary<Type, string> UrlPutDictionary { get; set; } = new Dictionary<Type, string>()
+        {
            
-        //};
+        };
 
-        //public Dictionary<Type, string> UrlGetDictionary { get; set; } = new Dictionary<Type, string>()
-        //{
+        public Dictionary<Type, string> UrlGetDictionary { get; set; } = new Dictionary<Type, string>()
+        {
             
-        //};
+        };
 
-        //public Dictionary<Type, string> UrlDeleteDictionary { get; set; } = new Dictionary<Type, string>()
-        //{
+        public Dictionary<Type, string> UrlDeleteDictionary { get; set; } = new Dictionary<Type, string>()
+        {
             
-        //};
+        };
 
         public async Task<T> PostAsync<T>(T entity, string methodName) where T : EntityBase
         {
@@ -57,7 +58,6 @@ namespace MeltingApp.Services
                 }
                 //DependencyService.Get<IOperatingSystemMethods>().ShowToast(postResult);//Show Toast del postResult en caso de fallo
                 throw new ApiClientException(postResult);//throw excepcion de la excepcion q toque con el mensaje q trae el resultado
-                
             }
             catch (ApiClientException) //pillem l'excepcio si els codis no son OK
             {
@@ -101,28 +101,28 @@ namespace MeltingApp.Services
         //    return result?.IsSuccessStatusCode;
         //}
 
-        //public async Task<List<T>> GetAsync<T>() where T : EntityBase
-        //{
-        //    HttpResponseMessage result = null;
-        //    try
-        //    {
-        //        result = await HttpClient.GetAsync(new Uri(GetGetUri<T>()));
-        //    }
-        //    catch (Exception)
-        //    {
-        //        DependencyService.Get<IOperatingSystemMethods>().ShowToast($"An error has ocurred getting {typeof(T)} from server. Check internet connection.");
-        //    }
-        //    return result?.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<T>>(await result.Content.ReadAsStringAsync()) : null;
-        //}
+        public async Task<List<T>> GetAsync<T>() where T : EntityBase
+        {
+            HttpResponseMessage result = null;
+            try
+            {
+                result = await HttpClient.GetAsync(new Uri(GetGetUri<T>()));
+            }
+            catch (Exception)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast($"An error has ocurred getting {typeof(T)} from server. Check internet connection.");
+            }
+            return result?.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<T>>(await result.Content.ReadAsStringAsync()) : null;
+        }
 
-        //private string GetDeleteUri<T>()
-        //{
-        //    return UrlDeleteDictionary[typeof(T)];
-        //}
-        //private string GetPutUri<T>()
-        //{
-        //    return UrlPutDictionary[typeof(T)];
-        //}
+        private string GetDeleteUri<T>()
+        {
+            return UrlDeleteDictionary[typeof(T)];
+        }
+        private string GetPutUri<T>()
+        {
+            return UrlPutDictionary[typeof(T)];
+        }
 
         private string GetPostUri<T>(string methodName)
         {
@@ -136,10 +136,10 @@ namespace MeltingApp.Services
             return null;
         }
 
-        //private string GetGetUri<T>()
-        //{
-        //    return UrlGetDictionary[typeof(T)];
-        //}
+        private string GetGetUri<T>()
+        {
+            return UrlGetDictionary[typeof(T)];
+        }
 
     }
 }

@@ -18,6 +18,7 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
 
         private User _user;
+        private string _responseMessage;
 
         public User User
         {
@@ -31,6 +32,16 @@ namespace MeltingApp.ViewModels
 
         public string Code { get; set; }
         public string Email { get; set; }
+
+        public string ResponseMessage
+        {
+            get { return _responseMessage; }
+            set
+            {
+                _responseMessage = value;
+                OnPropertyChanged(nameof(ResponseMessage));
+            }
+        }
 
         public CodeConfirmationViewModel()
         {
@@ -48,25 +59,16 @@ namespace MeltingApp.ViewModels
                 email = Email,
                 code = Code
             };
-            await _apiClientService.PostAsync<User>(User, ApiRoutes.ActivateUserMethodName, isSuccess => {
+            await _apiClientService.PostAsync<User>(User, ApiRoutes.ActivateUserMethodName, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
-                    var Message = "user registered";
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("User registered successfully");
                     _navigationService.SetRootPage<MainPage>();
                 }
-                else
-                {
-                    {
-                        var Message = "something failed";
-                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Mail and/or code is not correct");
-
-                    }
-                }
             });
-            //Code for the api call
 
-            
+
         }
     }
 }

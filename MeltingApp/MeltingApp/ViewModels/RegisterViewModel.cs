@@ -18,6 +18,7 @@ namespace MeltingApp.ViewModels
 	    private INavigationService _navigationService;
 	    private IApiClientService _apiClientService;
 	    private User _user;
+	    private string _responseMessage;
 
 	    public User User
 	    {
@@ -31,7 +32,18 @@ namespace MeltingApp.ViewModels
         public string Email { get; set; }
 	    public string Password { get; set; }
 	    public string Username { get; set; }
-        public RegisterViewModel ()
+
+	    public string ResponseMessage
+	    {
+	        get { return _responseMessage; }
+	        set
+	        {
+	            _responseMessage = value;
+                OnPropertyChanged(nameof(ResponseMessage));
+	        }
+	    }
+
+	    public RegisterViewModel ()
 		{
 		    _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
 		    _apiClientService = DependencyService.Get<IApiClientService>();
@@ -48,21 +60,14 @@ namespace MeltingApp.ViewModels
 	            email = Email,
 	            password = Password
 	        };
-	        await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName, isSuccess => {
-	            if(isSuccess)
+	        await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName, (isSuccess, responseMessage) => {
+	            ResponseMessage = responseMessage;
+	            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            if (isSuccess)
 	            {
-	                var Message = "user registered";
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("User has been created correctly: please confirm your email");
 	                _navigationService.SetRootPage<CodeConfirmation>();
-                }
-	            else {
-	            {
-	                var Message = "something failed";
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("User mail and/or username already exists");
-
-                    }
-                }
-	        });
+	            }
+            });
             
 	    }
     }

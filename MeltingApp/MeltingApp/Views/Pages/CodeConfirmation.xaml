@@ -13,6 +13,7 @@
 
 
             <Button Text="Enter" Command="{Binding CodeConfirmationCommand}"></Button>
+            <Label Text="{Binding ResponseMessage}"></Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

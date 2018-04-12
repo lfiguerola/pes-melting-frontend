@@ -15,7 +15,7 @@ namespace MeltingApp.Views.Pages
     {
         public CodeConfirmation()
         {
-            InitializeComponent();
+            InitializeComponent ();
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new CodeConfirmationViewModel();
         }

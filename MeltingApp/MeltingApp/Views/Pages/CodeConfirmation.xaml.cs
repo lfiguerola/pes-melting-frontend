@@ -10,14 +10,14 @@ using Xamarin.Forms.Xaml;
 
 namespace MeltingApp.Views.Pages
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class CodeConfirmation : ContentPage
-	{
-		public CodeConfirmation ()
-		{
-			InitializeComponent ();
-		    NavigationPage.SetHasNavigationBar(this, false);
-		    BindingContext = new CodeConfirmationViewModel();
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class CodeConfirmation : ContentPage
+    {
+        public CodeConfirmation()
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+            BindingContext = new CodeConfirmationViewModel();
         }
-	}
+    }
 }

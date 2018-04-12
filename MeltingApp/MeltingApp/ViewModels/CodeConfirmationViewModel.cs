@@ -10,13 +10,13 @@ using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
 {
-	public class CodeConfirmationViewModel : BindableObject
+    public class CodeConfirmationViewModel : BindableObject
     {
         INavigationService navigationService;
-        public CodeConfirmationViewModel ()
-		{
-		    navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
-		    CodeConfirmationCommand = new Command(HandleCodeConfirmationCommand);
+        public CodeConfirmationViewModel()
+        {
+            navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
+            CodeConfirmationCommand = new Command(HandleCodeConfirmationCommand);
         }
 
         public Command CodeConfirmationCommand { get; set; }

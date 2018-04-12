@@ -50,6 +50,7 @@ namespace MeltingApp
             var navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             navigationService.RegisterPage<RootPage>();
             navigationService.RegisterPage<MainPage>();
+            navigationService.RegisterPage<CodeConfirmation>();
         }
     }
 }

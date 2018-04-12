@@ -52,8 +52,8 @@ namespace MeltingApp.ViewModels
 	            if(isSuccess)
 	            {
 	                var Message = "user registered";
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("User registered successfully");
-	                _navigationService.SetRootPage<MainPage>();
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("User has been created correctly: please confirm your email");
+	                _navigationService.SetRootPage<CodeConfirmation>();
                 }
 	            else {
 	            {

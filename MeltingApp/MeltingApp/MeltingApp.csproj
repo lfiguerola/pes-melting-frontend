@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Pages\CodeConfirmation.xaml.cs">
+      <DependentUpon>CodeConfirmation.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Pages\RootPage.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>RootPage.xaml</DependentUpon>

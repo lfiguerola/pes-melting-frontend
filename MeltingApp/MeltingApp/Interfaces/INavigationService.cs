@@ -17,6 +17,6 @@ namespace MeltingApp.Interfaces
         Task PushModalAsync<TPage>(bool animated = true);
         Task PopModalAsync(bool animated = true);
         Task PopToRootAsync(bool animated = true);
-        void RegisterPage<TPage>();
+        void RegisterPage<TPage>() where TPage : Page;
     }
 }

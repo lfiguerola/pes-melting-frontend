@@ -62,7 +62,7 @@ namespace MeltingApp.Services
                     }
                     successResultCallback?.Invoke(true, responseMessage);
                 }
-                else successResultCallback?.Invoke(false, postResult);
+                else successResultCallback?.Invoke(false, postResult.Equals(string.Empty) ? result.ReasonPhrase : postResult);
                 return deserializedObject;
             }
             catch (Exception)

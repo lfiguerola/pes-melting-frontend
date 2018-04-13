@@ -58,7 +58,7 @@ namespace MeltingApp.Services
             return (Page)Activator.CreateInstance(pageType);
         }
 
-        public void RegisterPage<TPage>()
+        public void RegisterPage<TPage>() where TPage : Page
         {
             if (pagesDictionary.ContainsKey(typeof(TPage).Name))
             {

@@ -7,9 +7,9 @@
             <Label Text="Account confirm!"
                 HorizontalOptions="CenterAndExpand" />
             <Label x:Name="EmailLabel" Text="Email"></Label>
-            <Entry x:Name="EmailEntry" Text="{Binding Email}"></Entry>
+            <Entry x:Name="EmailEntry" Text="{Binding User.email}"></Entry>
             <Label x:Name="CodeLabel" Text="Introduce the code sent to your email"></Label>
-            <Entry x:Name="CodeEntry" Text="{Binding Code}"></Entry>
+            <Entry x:Name="CodeEntry" Text="{Binding User.code}"></Entry>
 
 
             <Button Text="Enter" Command="{Binding CodeConfirmationCommand}"></Button>

@@ -30,9 +30,6 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public string Code { get; set; }
-        public string Email { get; set; }
-
         public string ResponseMessage
         {
             get { return _responseMessage; }
@@ -48,18 +45,14 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             CodeConfirmationCommand = new Command(HandleCodeConfirmationCommand);
+            User = new User();
         }
 
         public Command CodeConfirmationCommand { get; set; }
 
         async void HandleCodeConfirmationCommand()
         {
-            User = new User()
-            {
-                email = Email,
-                code = Code
-            };
-            await _apiClientService.PostAsync<User>(User, ApiRoutes.ActivateUserMethodName, (isSuccess, responseMessage) => {
+           await _apiClientService.PostAsync<User>(User, ApiRoutes.ActivateUserMethodName, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)

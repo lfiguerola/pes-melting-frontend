@@ -7,10 +7,14 @@
             <Label Text="Welcome to login!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-           
 
-            <Button Text="Login" Command="{Binding LoginCommand}"></Button>
-            <Button Text="Register" Command="{Binding RegisterPageCommand}"></Button>
+            <Label x:Name="EmailLabel" Text="Email"></Label>
+            <Entry x:Name="EmailEntry" Text="{Binding User.email}"></Entry>
+            <Label x:Name="PasswordLabel" Text="Password"></Label>
+            <Entry x:Name="PasswordEntry" Text="{Binding User.password}"></Entry>
+
+            <Button Text="Login" Command="{Binding LoginUserCommand}"></Button>
+            <Button Text="Register" Command="{Binding RegisterButtonCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

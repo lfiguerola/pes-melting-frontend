@@ -11,13 +11,17 @@ namespace MeltingApp.Resources
 
         public const string RegisterUserMethodName = "Register";
 
+        public const string LoginUserMethodName = "Login";
 
         /// <summary>
         /// Endpoints
         /// </summary>
         public const string ActivateUserEndpoint = "/auth/activate";
 
-        public const string RegisterUserEndpoint = "/auth/register"; 
+        public const string RegisterUserEndpoint = "/auth/register";
+
+        public const string LoginUserEndpoint = "/auth/login";
+
 
     }
 }

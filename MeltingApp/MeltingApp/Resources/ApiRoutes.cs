@@ -15,9 +15,9 @@ namespace MeltingApp.Resources
         /// <summary>
         /// Endpoints
         /// </summary>
-        public const string ActivateUserEndpoint = "/activate";
+        public const string ActivateUserEndpoint = "/auth/activate";
 
-        public const string RegisterUserEndpoint = "/register"; 
+        public const string RegisterUserEndpoint = "/auth/register"; 
 
     }
 }

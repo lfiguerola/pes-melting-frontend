@@ -13,7 +13,7 @@ using Xamarin.Forms;
 namespace MeltingApp.ViewModels
 {
     
-    public class RegisterViewModel : BindableObject
+    public class AuthViewModel : BindableObject
 	{
 	    private INavigationService _navigationService;
 	    private IApiClientService _apiClientService;
@@ -29,9 +29,6 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(User));
 	        }
 	    }
-        public string Email { get; set; }
-	    public string Password { get; set; }
-	    public string Username { get; set; }
 
 	    public string ResponseMessage
 	    {
@@ -43,23 +40,23 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
-	    public RegisterViewModel ()
+	    public AuthViewModel ()
 		{
 		    _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
 		    _apiClientService = DependencyService.Get<IApiClientService>();
             RegisterUserCommand = new Command(HandleRegisterUserCommand);
+            LoginUserCommand = new Command(HandleLoginUserCommand);
+		    RegisterButtonCommand = new Command(HandleRegisterButton);
+            User = new User();
         }
-
+        
 	    public Command RegisterUserCommand { get; set; }
+	    public Command LoginUserCommand { get; set; }
+
+        public Command RegisterButtonCommand { get; set; }
 
 	    async void HandleRegisterUserCommand()
 	    {
-	        User = new User()
-	        {
-	            username = Username,
-	            email = Email,
-	            password = Password
-	        };
 	        await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName, (isSuccess, responseMessage) => {
 	            ResponseMessage = responseMessage;
 	            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
@@ -68,7 +65,25 @@ namespace MeltingApp.ViewModels
 	                _navigationService.SetRootPage<CodeConfirmation>();
 	            }
             });
-            
 	    }
+
+	    async void HandleLoginUserCommand()
+	    {
+	        await _apiClientService.PostAsync<User>(User, ApiRoutes.LoginUserMethodName, (isSuccess, responseMessage) => {
+	            ResponseMessage = responseMessage;
+	            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            if (isSuccess)
+	            {
+	                _navigationService.SetRootPage<MainPage>();
+	            }
+	        });
+
+	    }
+
+	    private void HandleRegisterButton()
+	    {
+	        _navigationService.SetRootPage<RegisterPage>();
+	    }
+
     }
 }

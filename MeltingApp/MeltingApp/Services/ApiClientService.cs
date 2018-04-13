@@ -24,6 +24,7 @@ namespace MeltingApp.Services
         {
             {new Tuple<Type, string>(typeof(User), ApiRoutes.ActivateUserMethodName), ApiRoutes.ActivateUserEndpoint },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.RegisterUserMethodName), ApiRoutes.RegisterUserEndpoint },
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.LoginUserMethodName), ApiRoutes.LoginUserEndpoint }
         };
 
         public Dictionary<Type, string> UrlPutDictionary { get; set; } = new Dictionary<Type, string>()

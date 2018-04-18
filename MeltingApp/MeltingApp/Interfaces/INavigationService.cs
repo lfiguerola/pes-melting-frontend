@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using MeltingApp.ViewModels;
 using Xamarin.Forms;
 
 namespace MeltingApp.Interfaces
@@ -11,10 +12,10 @@ namespace MeltingApp.Interfaces
         Page CurrentPage { get; }
         NavigationPage NavigationPage { get; set; }
         MasterDetailPage MasterDetailPage { get; set; }
-        void SetRootPage<TPage>(bool isGestureEnabled = true);
-        Task PushAsync<TPage>(bool animated = true);
+        void SetRootPage<TPage>(ViewModelBase viewModel = null, bool isGestureEnabled = true) where TPage : Page;
+        Task PushAsync<TPage>(ViewModelBase viewModel = null, bool animated = true) where TPage : Page;
         Task PopAsync(bool animated = true);
-        Task PushModalAsync<TPage>(bool animated = true);
+        Task PushModalAsync<TPage>(ViewModelBase viewModel = null, bool animated = true) where TPage : Page;
         Task PopModalAsync(bool animated = true);
         Task PopToRootAsync(bool animated = true);
         void RegisterPage<TPage>() where TPage : Page;

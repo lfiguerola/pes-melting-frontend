@@ -5,9 +5,9 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Account confirm!"
-                HorizontalOptions="CenterAndExpand" />
+                   HorizontalOptions="CenterAndExpand" />
             <Label x:Name="EmailLabel" Text="Email"></Label>
-            <Entry x:Name="EmailEntry" Text="{Binding User.email}"></Entry>
+            <Label x:Name="Email" Text="{Binding User.email}" TextColor="Gray"></Label>
             <Label x:Name="CodeLabel" Text="Introduce the code sent to your email"></Label>
             <Entry x:Name="CodeEntry" Text="{Binding User.code}"></Entry>
 

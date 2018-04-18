@@ -7,21 +7,22 @@ namespace MeltingApp.Resources
         /// <summary>
         /// Methods names for the endpoints
         /// </summary>
-        public const string ActivateUserMethodName = "Activate";
-
-        public const string RegisterUserMethodName = "Register";
-
-        public const string LoginUserMethodName = "Login";
+        public struct Methods
+        {
+            public const string ActivateUser = "Activate";
+            public const string RegisterUser = "Register";
+            public const string LoginUser = "Login";
+        }
 
         /// <summary>
         /// Endpoints
         /// </summary>
-        public const string ActivateUserEndpoint = "/auth/activate";
-
-        public const string RegisterUserEndpoint = "/auth/register";
-
-        public const string LoginUserEndpoint = "/auth/login";
-
+        public struct Endpoints
+        {
+            public const string ActivateUser = "/auth/activate";
+            public const string RegisterUser = "/auth/register";
+            public const string LoginUser = "/auth/login";
+        }
 
     }
 }

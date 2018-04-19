@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 namespace MeltingApp.Services
 {
-    public class ApiClientService : IApiClientService 
+    public class ApiClientService : IApiClientService
     {
         public HttpClient HttpClient { get; set; } = new HttpClient()
         {
@@ -22,47 +22,56 @@ namespace MeltingApp.Services
 
         public Dictionary<Tuple<Type, string>, string> UrlPostDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>
         {
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.ActivateUserMethodName), ApiRoutes.ActivateUserEndpoint },
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.RegisterUserMethodName), ApiRoutes.RegisterUserEndpoint },
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.LoginUserMethodName), ApiRoutes.LoginUserEndpoint }
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ActivateUser), ApiRoutes.Endpoints.ActivateUser },
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.RegisterUser), ApiRoutes.Endpoints.RegisterUser },
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.LoginUser), ApiRoutes.Endpoints.LoginUser }
         };
 
         public Dictionary<Type, string> UrlPutDictionary { get; set; } = new Dictionary<Type, string>()
         {
-           
+
         };
 
         public Dictionary<Type, string> UrlGetDictionary { get; set; } = new Dictionary<Type, string>()
         {
-            
+
         };
 
         public Dictionary<Type, string> UrlDeleteDictionary { get; set; } = new Dictionary<Type, string>()
         {
-            
+
         };
 
         public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
         {
             var json = JsonConvert.SerializeObject(entity);
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage result = null;
-            string postResult = null; 
+            ApiResponseMessage responseMessage = null;
+            string postResult = null;
             try
             {
-                result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
+                var result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
                 postResult = await result.Content.ReadAsStringAsync();
-                var deserializedObject = JsonConvert.DeserializeObject<T>(postResult);
+                T deserializedObject = null;
+                try
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<T>(postResult, jsonSerializerSettings);
+                }
+                catch (JsonSerializationException)
+                {
+                    responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(postResult);
+                }
+
                 if (result.IsSuccessStatusCode)
                 {
-                    string responseMessage = null;
-                    if (deserializedObject == null)
-                    {
-                        responseMessage = postResult;
-                    }
-                    successResultCallback?.Invoke(true, responseMessage);
+                    successResultCallback?.Invoke(true, responseMessage?.message);
                 }
-                else successResultCallback?.Invoke(false, postResult.Equals(string.Empty) ? result.ReasonPhrase : postResult);
+                else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
+
                 return deserializedObject;
             }
             catch (Exception)

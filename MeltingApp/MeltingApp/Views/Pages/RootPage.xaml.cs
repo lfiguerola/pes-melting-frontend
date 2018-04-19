@@ -5,13 +5,13 @@ using Xamarin.Forms.Xaml;
 
 namespace MeltingApp.Views.Pages
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class RootPage : MasterDetailPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class RootPage : MasterDetailPage
+    {
         INavigationService navigationService;
-        public RootPage ()
-		{
-			InitializeComponent ();
+        public RootPage()
+        {
+            InitializeComponent();
             //TODO: Move logic to ViewModel
             navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
 

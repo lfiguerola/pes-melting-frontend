@@ -5,8 +5,8 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to login!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" />
 
             <Label x:Name="EmailLabel" Text="Email"></Label>
             <Entry x:Name="EmailEntry" Text="{Binding User.email}"></Entry>
@@ -14,7 +14,7 @@
             <Entry x:Name="PasswordEntry" Text="{Binding User.password}"></Entry>
 
             <Button Text="Login" Command="{Binding LoginUserCommand}"></Button>
-            <Button Text="Register" Command="{Binding RegisterButtonCommand}"></Button>
+            <Button Text="Register" Command="{Binding NavigateToRegisterPageCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

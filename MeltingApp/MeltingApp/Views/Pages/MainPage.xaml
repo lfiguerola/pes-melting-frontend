@@ -7,6 +7,7 @@
             <Label Text="Welcome to Main Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

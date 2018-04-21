@@ -4,9 +4,11 @@
              x:Class="MeltingApp.Views.Pages.ProfilePage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label x:Name="UsernameLabel" Text="Username"></Label> <!--Text="{Binding User.username}"-->
+            <Label x:Name="UniversityLabel" Text="University"></Label> <!--Text="{Binding User.university}"-->
+            <Label x:Name="FacultyLabel" Text="Faculty"></Label> <!--Text="{Binding User.faculty}"-->
+            <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}"></Button>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

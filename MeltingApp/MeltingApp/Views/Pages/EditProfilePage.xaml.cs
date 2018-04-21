@@ -5,13 +5,13 @@ using Xamarin.Forms.Xaml;
 namespace MeltingApp.Views.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ProfilePage : ContentPage
+	public partial class EditProfilePage : ContentPage
 	{
-		public ProfilePage ()
+		public EditProfilePage ()
 		{
 			InitializeComponent ();
 		    NavigationPage.SetHasNavigationBar(this, false);
 		    BindingContext = new ProfileViewModel();
-		}
+        }
 	}
 }

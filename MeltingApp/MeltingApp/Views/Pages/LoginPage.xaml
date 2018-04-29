@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
              x:Class="MeltingApp.Views.Pages.LoginPage">
     <ContentPage.Content>
         <StackLayout>
@@ -9,9 +10,19 @@
                    HorizontalOptions="CenterAndExpand" />
 
             <Label x:Name="EmailLabel" Text="Email"></Label>
-            <Entry x:Name="EmailEntry" Text="{Binding User.email}"></Entry>
+            
+            <Entry x:Name="EmailEntry" Text="{Binding User.email}">
+                <Entry.Behaviors>
+                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                </Entry.Behaviors>
+            </Entry>
+           
             <Label x:Name="PasswordLabel" Text="Password"></Label>
-            <Entry x:Name="PasswordEntry" Text="{Binding User.password}" IsPassword="True"></Entry>
+            <Entry x:Name="PasswordEntry" Text="{Binding User.password}" IsPassword="True">
+                <Entry.Behaviors>
+                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                </Entry.Behaviors>
+            </Entry>
 
             <Button Text="Login" Command="{Binding LoginUserCommand}"></Button>
             <Button Text="Register" Command="{Binding NavigateToRegisterPageCommand}"></Button>

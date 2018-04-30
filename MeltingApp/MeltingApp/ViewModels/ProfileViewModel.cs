@@ -17,6 +17,7 @@ namespace MeltingApp.ViewModels
 
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
+        public Command ViewProfileCommand { get; set; }
 
         public ProfileViewModel()
         {
@@ -24,9 +25,18 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+            ViewProfileCommand = new Command(HandleViewProfileCommand);
         }
 
-        private void HandleSaveEditProfileCommand()
+        async void HandleViewProfileCommand()
+        {
+            _navigationService.SetRootPage<EditProfilePage>(this);
+            DependencyService.Get<IOperatingSystemMethods>().ShowToast("HAS ENTRAT");
+            User = new User();
+            await _apiClientService.GetAsync(User, "CreateProfile");
+        }
+
+        void HandleSaveEditProfileCommand()
         {
             //falten coses aqui
         }
@@ -45,6 +55,7 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(User));
             }
         }
+
         public string ResponseMessage
         {
             get { return _responseMessage; }

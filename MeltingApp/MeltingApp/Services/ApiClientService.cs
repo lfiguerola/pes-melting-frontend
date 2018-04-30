@@ -81,6 +81,44 @@ namespace MeltingApp.Services
             }
         }
 
+        public async Task<T> GetAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        {
+            ApiResponseMessage responseMessage = null;
+            string getResult = null;
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+
+            try
+            {
+                var result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
+                getResult = await result.Content.ReadAsStringAsync();
+                T deserializedObject = null;
+
+                try
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<T>(getResult, jsonSerializerSettings);
+                }
+                catch (JsonSerializationException)
+                {
+                    responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(getResult);
+                }
+
+                if (result.IsSuccessStatusCode)
+                {
+                    successResultCallback?.Invoke(true, responseMessage?.message);
+                }
+                else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
+
+                return deserializedObject;
+            }
+            catch (Exception)
+            {
+                throw new ApiClientException(getResult);
+            }
+        }
+
         //public async Task<bool?> DeleteAsync<T>(T entity) where T : EntityBase
         //{
         //    HttpResponseMessage result = null;
@@ -114,19 +152,6 @@ namespace MeltingApp.Services
         //    return result?.IsSuccessStatusCode;
         //}
 
-        public async Task<List<T>> GetAsync<T>(string methodName) where T : EntityBase
-        {
-            HttpResponseMessage result = null;
-            try
-            {
-                result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
-            }
-            catch (Exception)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast($"An error has ocurred getting {typeof(T)} from server. Check internet connection.");
-            }
-            return result?.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<T>>(await result.Content.ReadAsStringAsync()) : null;
-        }
 
         private string GetDeleteUri<T>()
         {

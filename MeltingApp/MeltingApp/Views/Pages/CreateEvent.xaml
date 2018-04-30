@@ -10,7 +10,7 @@
             <Label x:Name="DescriptionLabel" Text="Add a description to the event"></Label>
             <Editor x:Name="DescriptionEntry" Text="Binding with Description"></Editor> <!-- have to create the binding -->
             <Label x:Name="PhotoLabel" Text="Add a photo for the event"></Label>
-            <Entry x:Name="PhotoEntry" Text="Binding with EventPhoto"></Entry> <!-- have to create the binding and find how to upload a photo -->
+            <Button x:Name="PhotoEntry" Text="Binding with EventPhoto" Command="{Binding PhotoPicker}"></Button> <!-- have to create the binding and find how to upload a photo -->
             <Label x:Name="DateLabel" Text="Which day will the event be?"></Label>
             <DatePicker x:Name="EventDatePicker"></DatePicker> <!-- have to create the binding  -->
             <Label x:Name="TimeLabel" Text="When will the event be?"></Label>

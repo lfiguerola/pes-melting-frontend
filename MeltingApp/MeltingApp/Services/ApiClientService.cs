@@ -81,7 +81,7 @@ namespace MeltingApp.Services
             }
         }
 
-        public async Task<T> GetAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
         {
             ApiResponseMessage responseMessage = null;
             string getResult = null;

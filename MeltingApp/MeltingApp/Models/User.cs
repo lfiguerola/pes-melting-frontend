@@ -18,7 +18,7 @@ namespace MeltingApp.Models
         /// </summary>
         public string username
         {
-            get { return _username; }
+            get => _username;
             set
             {
                 _username = value;
@@ -31,7 +31,7 @@ namespace MeltingApp.Models
         /// </summary>
         public string email
         {
-            get { return _email; }
+            get => _email;
             set
             {
                 _email = value;
@@ -44,7 +44,7 @@ namespace MeltingApp.Models
         /// </summary>
         public string password
         {
-            get { return _password; }
+            get => _password;
             set
             {
                 _password = value;
@@ -57,7 +57,7 @@ namespace MeltingApp.Models
         /// </summary>
         public bool activated
         {
-            get { return _activated; }
+            get => _activated;
             set
             {
                 _activated = value;
@@ -70,7 +70,7 @@ namespace MeltingApp.Models
         /// </summary>
         public string code
         {
-            get { return _code; }
+            get => _code;
             set
             {
                 _code = value;
@@ -81,10 +81,7 @@ namespace MeltingApp.Models
         public static string id
         {
             get => _id;
-            set
-            {
-
-            }
+            set => _id = value;
         }
 
     }

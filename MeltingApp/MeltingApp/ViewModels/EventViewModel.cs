@@ -15,10 +15,21 @@ namespace MeltingApp.ViewModels
 	{
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+	    private Event _event;
         private string _responseMessage;
 
         public Command CreateEventCommand { get; set; }
         public Command PhotoPickerCommand { get; set; }
+
+	    public Event Event
+	    {
+	        get { return _event; }
+	        set
+	        {
+	            _event = value;
+	            OnPropertyChanged(nameof(User));
+	        }
+	    }
 
         public EventViewModel()
         {

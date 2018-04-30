@@ -30,10 +30,17 @@ namespace MeltingApp.ViewModels
 
         async void HandleViewProfileCommand()
         {
-            _navigationService.SetRootPage<EditProfilePage>(this);
-            DependencyService.Get<IOperatingSystemMethods>().ShowToast("HAS ENTRAT");
-            User = new User();
-            await _apiClientService.GetAsync(User, "CreateProfile");
+            await _apiClientService.GetAsync<User>(ApiRoutes.Methods.CreateProfileUser, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    _navigationService.PushAsync<EditProfilePage>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
         }
 
         void HandleSaveEditProfileCommand()

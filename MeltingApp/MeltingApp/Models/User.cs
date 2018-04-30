@@ -11,8 +11,7 @@ namespace MeltingApp.Models
         private string _password;
         private bool _activated;
         private string _code;
-        private static string _id = "1";
-
+ 
         /// <summary>
         /// the user name
         /// </summary>
@@ -76,12 +75,6 @@ namespace MeltingApp.Models
                 _code = value;
                 OnPropertyChanged(nameof(code));
             }
-        }
-
-        public static string id
-        {
-            get => _id;
-            set => _id = value;
         }
 
     }

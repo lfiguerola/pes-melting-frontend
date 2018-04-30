@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MeltingApp.Exceptions;
 using MeltingApp.Models;
 using MeltingApp.Resources;
+using MeltingApp.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
@@ -32,9 +33,9 @@ namespace MeltingApp.Services
 
         };
 
-        public Dictionary<Type, string> UrlGetDictionary { get; set; } = new Dictionary<Type, string>()
+        public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
         {
-
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.CreateProfileUser), "/" + User.id + ApiRoutes.Endpoints.CreateProfileUser }
         };
 
         public Dictionary<Type, string> UrlDeleteDictionary { get; set; } = new Dictionary<Type, string>()
@@ -113,12 +114,12 @@ namespace MeltingApp.Services
         //    return result?.IsSuccessStatusCode;
         //}
 
-        public async Task<List<T>> GetAsync<T>() where T : EntityBase
+        public async Task<List<T>> GetAsync<T>(string methodName) where T : EntityBase
         {
             HttpResponseMessage result = null;
             try
             {
-                result = await HttpClient.GetAsync(new Uri(GetGetUri<T>()));
+                result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
             }
             catch (Exception)
             {
@@ -148,9 +149,16 @@ namespace MeltingApp.Services
             return null;
         }
 
-        private string GetGetUri<T>()
+        private string GetGetUri<T>(string methodName)
         {
-            return UrlGetDictionary[typeof(T)];
+            foreach (var key in UrlGetDictionary.Keys)
+            {
+                if (key.Item1 == typeof(T) && key.Item2.Equals(methodName))
+                {
+                    return UrlGetDictionary[key];
+                }
+            }
+            return null;
         }
 
     }

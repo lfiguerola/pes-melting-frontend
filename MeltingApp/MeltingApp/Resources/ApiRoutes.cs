@@ -1,9 +1,12 @@
 ﻿using System;
+using MeltingApp.Models;
 
 namespace MeltingApp.Resources
 {
     public static class ApiRoutes
     {
+
+        
         /// <summary>
         /// Methods names for the endpoints
         /// </summary>
@@ -12,6 +15,7 @@ namespace MeltingApp.Resources
             public const string ActivateUser = "Activate";
             public const string RegisterUser = "Register";
             public const string LoginUser = "Login";
+            public const string CreateProfileUser = "CreateProfile";
         }
 
         /// <summary>
@@ -22,6 +26,7 @@ namespace MeltingApp.Resources
             public const string ActivateUser = "/auth/activate";
             public const string RegisterUser = "/auth/register";
             public const string LoginUser = "/auth/login";
+            public const string CreateProfileUser = "/profile";
         }
 
     }

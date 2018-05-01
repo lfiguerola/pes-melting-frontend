@@ -31,6 +31,16 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public string ResponseMessage
+	    {
+	        get { return _responseMessage; }
+	        set
+	        {
+	            _responseMessage = value;
+	            OnPropertyChanged(nameof(ResponseMessage));
+	        }
+	    }
+
         public EventViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);

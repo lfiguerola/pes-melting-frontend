@@ -1,7 +1,11 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Linq;
+using System.Runtime.Serialization;
+using System.Windows.Input;
+using FluentValidation;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
+using MeltingApp.Validators;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
 
@@ -14,6 +18,8 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private User _user;
         private string _responseMessage;
+
+        readonly IValidator _validator;
 
         public Command NavigateToRegisterPageCommand { get; set; }
         public Command NavigateToLoginPageCommand { get; set; }
@@ -45,6 +51,9 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+
+            _validator = new UserValidation();
+
             CodeConfirmationCommand = new Command(HandleCodeConfirmationCommand);
             RegisterUserCommand = new Command(HandleRegisterUserCommand);
             LoginUserCommand = new Command(HandleLoginUserCommand);
@@ -55,14 +64,26 @@ namespace MeltingApp.ViewModels
 
         async void HandleRegisterUserCommand()
         {
-            await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.RegisterUser, (isSuccess, responseMessage) => {
-                ResponseMessage = responseMessage;
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                if (isSuccess)
-                {
-                    _navigationService.SetRootPage<CodeConfirmation>(this);
-                }
-            });
+            //validem camps
+            var validationResults = _validator.Validate(User);
+            if (validationResults.IsValid)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Validation success");
+                //un cop validats els camps
+                await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.RegisterUser, (isSuccess, responseMessage) => {
+                    ResponseMessage = responseMessage;
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    if (isSuccess)
+                    {
+                        _navigationService.SetRootPage<CodeConfirmation>(this);
+                    }
+                });
+            }
+            else
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast(validationResults.Errors.FirstOrDefault()?.ErrorMessage);
+            }
+            
         }
 
         async void HandleLoginUserCommand()

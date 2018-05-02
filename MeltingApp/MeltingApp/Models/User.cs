@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MeltingApp.Models
@@ -12,8 +13,17 @@ namespace MeltingApp.Models
         private bool _activated;
         private string _code;
         private string _full_name;
+        private string _biography;
+        private int karma;
         private string _country_code;
+        private string _university;
         private string _faculty;
+        private string _avatarURL;
+        private string _name;
+        private string _address;
+        //TODO:long? double?
+        private int _latitude;
+        private int _longitude;
  
         /// <summary>
         /// the user name

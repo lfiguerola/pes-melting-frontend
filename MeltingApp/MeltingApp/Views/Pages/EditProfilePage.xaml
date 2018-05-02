@@ -10,6 +10,7 @@
             <!-- <Entry x:Name="UniversityEntry" Text="{Binding User.university}"></Entry> -->
             <Label x:Name="FacultyLabel" Text="Faculty"></Label>
             <!-- <Entry x:Name="FacultyEntry" Text="{Binding User.faculty}"></Entry> -->
+            <Button x:Name="AvatarButton" Command="{Binding SetAvatarProfileCommand}"></Button>
             <Button x:Name="SaveButton" Command="{Binding SaveEditProfileCommand}"></Button>
             <Label Text="{Binding ResponseMessage}"></Label>
         </StackLayout>

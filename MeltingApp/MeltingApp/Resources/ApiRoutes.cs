@@ -15,7 +15,10 @@ namespace MeltingApp.Resources
             public const string ActivateUser = "Activate";
             public const string RegisterUser = "Register";
             public const string LoginUser = "Login";
+            public const string GetProfileUser = "GetProfile";
             public const string CreateProfileUser = "CreateProfile";
+            public const string EditProfileUser = "EditProfile";
+            public const string AvatarProfileUser = "AvatarProfile";
         }
 
         /// <summary>
@@ -26,7 +29,10 @@ namespace MeltingApp.Resources
             public const string ActivateUser = "/auth/activate";
             public const string RegisterUser = "/auth/register";
             public const string LoginUser = "/auth/login";
+            public const string GetProfileUser = "/profile";
             public const string CreateProfileUser = "/profile";
+            public const string EditProfileUser = "/profile";
+            public const string AvatarProfileUser = "/profile/avatar";
         }
 
     }

@@ -11,6 +11,9 @@ namespace MeltingApp.Models
         private string _password;
         private bool _activated;
         private string _code;
+        private string _full_name;
+        private string _country_code;
+        private string _faculty;
  
         /// <summary>
         /// the user name
@@ -74,6 +77,35 @@ namespace MeltingApp.Models
             {
                 _code = value;
                 OnPropertyChanged(nameof(code));
+            }
+        }
+
+        public string fullname
+        {
+            get => _full_name;
+            set
+            {
+                _full_name = value;
+                OnPropertyChanged(nameof(fullname));
+            }
+        }
+        public string countrycode
+        {
+            get => _country_code;
+            set
+            {
+                _country_code = value;
+                OnPropertyChanged(nameof(countrycode));
+            }
+        }
+
+        public string faculty
+        {
+            get => _faculty;
+            set
+            {
+                _faculty = value;
+                OnPropertyChanged(nameof(faculty));
             }
         }
 

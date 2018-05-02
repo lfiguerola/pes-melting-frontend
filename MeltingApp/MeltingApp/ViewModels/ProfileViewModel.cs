@@ -18,6 +18,8 @@ namespace MeltingApp.ViewModels
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
+        public Command CreateProfileCommand { get; set; }
+        public Command SetAvatarProfileCommand { get; set; }
 
         public ProfileViewModel()
         {
@@ -26,15 +28,43 @@ namespace MeltingApp.ViewModels
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
+            CreateProfileCommand = new Command(HandleCreateProfileCommand);
+            SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
+        }
+
+        async void HandleCreateProfileCommand()
+        {
+           
+            //PETA MOLT FORT, S'HA DE MIRAR BÉ
+            /* User = new User()
+            {
+                fullname = "Carla Varea Parra", countrycode = "ES", faculty = "Facultat d'Informàtica de Barcelona"
+            };
+            await _apiClientService.PostAsync<User>(User, "CreateProfile");*/
+        }
+
+        async void HandleSetAvatarProfileCommand()
+        {
+           /* await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.AvatarProfileUser, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    _navigationService.PushAsync<ProfilePage>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });*/
         }
 
         async void HandleViewProfileCommand()
         {
-            await _apiClientService.GetAsync<User>(ApiRoutes.Methods.CreateProfileUser, (success, responseMessage) =>
+            await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
                 if (success)
                 {
-                    _navigationService.PushAsync<EditProfilePage>(this);
+                    _navigationService.PushAsync<ProfilePage>(this);
                 }
                 else
                 {
@@ -43,9 +73,19 @@ namespace MeltingApp.ViewModels
             });
         }
 
-        void HandleSaveEditProfileCommand()
+        async void HandleSaveEditProfileCommand()
         {
-            //falten coses aqui
+            await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    _navigationService.PushAsync<ProfilePage>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
         }
 
         void HandleNavigateToEditProfilePageCommand()

@@ -2,10 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using MeltingApp.Interfaces;
-using Plugin.CurrentActivity;
 using Xamarin.Forms;
-using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 
 namespace MeltingApp.Droid
 {
@@ -24,13 +21,6 @@ namespace MeltingApp.Droid
 
             //registrem les funcionalitats del sistema operatiu
             DependencyService.Register<IOperatingSystemMethods, OperatingSystemMethods>();
-
-            CrossCurrentActivity.Current.Activity = this;
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
-        {
-            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

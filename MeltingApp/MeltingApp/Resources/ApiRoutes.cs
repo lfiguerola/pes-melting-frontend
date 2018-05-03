@@ -18,8 +18,6 @@ namespace MeltingApp.Resources
             public const string GetProfileUser = "GetProfile";
             public const string EditProfileUser = "EditProfile";
             public const string AvatarProfileUser = "AvatarProfile";
-            public const string GetUniversities = "GetUniversities";
-            public const string GetFaculties = "GetFaculties";
         }
 
         /// <summary>
@@ -33,8 +31,6 @@ namespace MeltingApp.Resources
             public const string GetProfileUser = "/profile";
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
-            public const string GetUniversities = "/locations/universities";
-            public const string GetFaculties = "locations/universities";
         }
 
     }

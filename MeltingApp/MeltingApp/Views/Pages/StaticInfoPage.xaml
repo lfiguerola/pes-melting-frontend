@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
+             x:Class="MeltingApp.Views.Pages.LoginPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="University information"
+                   HorizontalOptions="CenterAndExpand" />
+
+            <Label x:Name="UniNameLabel" Text="Name: {Binding Name}"></Label>
+
+            <Label x:Name="UniLatitudeLabel" Text="Latitude: {Binding Latitude}"></Label>
+
+            <Label x:Name="UniLongitudeLabel" Text="Longitude: {Binding Longitude}"></Label>
+
+            <Label x:Name="UniAdressLabel" Text="Adress: {Binding Adress}"></Label>
+
+            <Label x:Name="UniPhoneLabel" Text="Phone: {Binding Phone}"></Label>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

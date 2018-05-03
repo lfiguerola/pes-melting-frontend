@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Android.Locations;
 
 namespace MeltingApp.Models
 {

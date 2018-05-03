@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -17,7 +18,7 @@ namespace MeltingApp.ViewModels
 
         public Command CreateEventCommand { get; set; }
 
-	    public Event Event
+        public Event Event
 	    {
 	        get { return _event; }
 	        set
@@ -46,7 +47,14 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateEventCommand()
         {
-            //Falta poder fer la crida a la api quan estigui fet el endpoint
+            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                if (isSuccess)
+                {
+                    _navigationService.SetRootPage<MainPage>();
+                }
+            });
         }
     }
 }

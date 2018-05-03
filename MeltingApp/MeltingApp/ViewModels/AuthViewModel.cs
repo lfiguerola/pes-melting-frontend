@@ -106,6 +106,7 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
+                    _apiClientService.PostAsync(User, ApiRoutes.Methods.LoginUser);
                     _navigationService.SetRootPage<MainPage>();
                 }
             });

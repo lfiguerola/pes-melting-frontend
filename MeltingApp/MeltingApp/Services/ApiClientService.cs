@@ -15,6 +15,7 @@ namespace MeltingApp.Services
 {
     public class ApiClientService : IApiClientService
     {
+
         public HttpClient HttpClient { get; set; } = new HttpClient()
         {
             BaseAddress = new Uri("https://melting-app.herokuapp.com")
@@ -68,6 +69,14 @@ namespace MeltingApp.Services
 
                 if (result.IsSuccessStatusCode)
                 {
+                    //si es el login i success, guardem token
+                    if (methodName == ApiRoutes.Methods.LoginUser)
+                    {
+                        //token de l'estil a: {"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI"}
+                        var token = postResult.Substring(8, postResult.Length - 8 - 2);
+                        entity.token = token;
+
+                    }
                     successResultCallback?.Invoke(true, responseMessage?.message);
                 }
                 else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);

@@ -7,6 +7,7 @@ namespace MeltingApp.Models
     public class EntityBase : INotifyPropertyChanged
     {
         private int _id;
+        private string _token;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int id
@@ -16,6 +17,17 @@ namespace MeltingApp.Models
             {
                 _id = value;
                 OnPropertyChanged(nameof(id));
+            }
+        }
+
+        //aixo ho he de fer millor
+        public string token
+        {
+            get { return _token; }
+            set
+            {
+                _token = value;
+                OnPropertyChanged(nameof(token));
             }
         }
 

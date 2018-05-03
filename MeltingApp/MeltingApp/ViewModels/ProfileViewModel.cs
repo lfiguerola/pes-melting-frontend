@@ -18,8 +18,7 @@ namespace MeltingApp.ViewModels
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
-        public Command CreateProfileCommand { get; set; }
-        public Command SetAvatarProfileCommand { get; set; }
+        //public Command SetAvatarProfileCommand { get; set; }
 
         public ProfileViewModel()
         {
@@ -28,23 +27,12 @@ namespace MeltingApp.ViewModels
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
-            CreateProfileCommand = new Command(HandleCreateProfileCommand);
-            SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
+            //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
         }
 
-        async void HandleCreateProfileCommand()
-        {
-           
-            //PETA MOLT FORT, S'HA DE MIRAR BÉ
-            /* User = new User()
-            {
-                fullname = "Carla Varea Parra", countrycode = "ES", faculty = "Facultat d'Informàtica de Barcelona"
-            };
-            await _apiClientService.PostAsync<User>(User, "CreateProfile");*/
-        }
 
-        async void HandleSetAvatarProfileCommand()
-        {
+        //async void HandleSetAvatarProfileCommand()
+        //{
            /* await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.AvatarProfileUser, (success, responseMessage) =>
             {
                 if (success)
@@ -56,7 +44,7 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });*/
-        }
+        //}
 
         async void HandleViewProfileCommand()
         {

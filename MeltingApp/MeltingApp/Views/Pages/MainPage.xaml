@@ -8,7 +8,6 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
             <Button x:Name="ViewButton" Text="ViewProfile" Command="{Binding ViewProfileCommand}"></Button>
-            <Button x:Name="CreateButton" Text="CreateProfile" Command="{Binding CreateProfileCommand}"></Button>
             <Button x:Name="EditButton" Text="EditProfile" Command="{Binding SaveEditProfileCommand}"></Button>
             <Button x:Name="AvatarButton" Text="AvatarProfile" Command="{Binding SetAvatarProfileCommand}"></Button>
         </StackLayout>

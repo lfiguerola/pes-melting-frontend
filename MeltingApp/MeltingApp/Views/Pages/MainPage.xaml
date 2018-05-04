@@ -7,6 +7,9 @@
             <Label Text="Welcome to Main Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <Button x:Name="ViewButton" Text="ViewProfile" Command="{Binding ViewProfileCommand}"></Button>
+            <Button x:Name="EditButton" Text="EditProfile" Command="{Binding SaveEditProfileCommand}"></Button>
+            <Button x:Name="AvatarButton" Text="AvatarProfile" Command="{Binding SetAvatarProfileCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

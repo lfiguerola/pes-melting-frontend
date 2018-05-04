@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.ProfilePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="UsernameLabel" Text="Username"></Label> <!--Text="{Binding User.username}"-->
+            <Label x:Name="UniversityLabel" Text="University"></Label> <!--Text="{Binding User.university}"-->
+            <Label x:Name="FacultyLabel" Text="Faculty"></Label> <!--Text="{Binding User.faculty}"-->
+            <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}"></Button>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -65,7 +65,7 @@ namespace MeltingApp.Models
         }
 
         /// <summary>
-        /// 
+        /// user activation code
         /// </summary>
         public string code
         {

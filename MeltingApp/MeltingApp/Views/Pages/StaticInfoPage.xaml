@@ -8,15 +8,15 @@
             <Label Text="University information"
                    HorizontalOptions="CenterAndExpand" />
 
-            <Label x:Name="UniNameLabel" Text="Name: {Binding Name}"></Label>
+            <Label x:Name="UniNameLabel" Text="Name: {Binding Path = UniversityName}"></Label>
 
-            <Label x:Name="UniLatitudeLabel" Text="Latitude: {Binding Latitude}"></Label>
+            <Label x:Name="UniLatitudeLabel" Text="Latitude: {Binding Path = Latitude}"></Label>
 
-            <Label x:Name="UniLongitudeLabel" Text="Longitude: {Binding Longitude}"></Label>
+            <Label x:Name="UniLongitudeLabel" Text="Longitude: {Binding Path = Longitude}"></Label>
 
-            <Label x:Name="UniAdressLabel" Text="Adress: {Binding Adress}"></Label>
+            <Label x:Name="UniAdressLabel" Text="Adress: {Binding Path = Adress}"></Label>
 
-            <Label x:Name="UniPhoneLabel" Text="Phone: {Binding Phone}"></Label>
+            <Label x:Name="UniPhoneLabel" Text="Phone: {Binding Path = Phone}"></Label>
 
         </StackLayout>
     </ContentPage.Content>

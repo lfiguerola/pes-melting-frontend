@@ -15,13 +15,13 @@ namespace MeltingApp.Models
         /// <summary>
         /// the name of the university
         /// </summary>
-        public string name
+        public string UniversityName
         {
             get { return _name; }
             set
             {
                 _name = value;
-                OnPropertyChanged(nameof(name));
+                OnPropertyChanged(nameof(UniversityName));
             }
         }
 

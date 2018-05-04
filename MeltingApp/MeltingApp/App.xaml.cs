@@ -53,6 +53,7 @@ namespace MeltingApp
             navigationService.RegisterPage<CodeConfirmation>();
             navigationService.RegisterPage<RegisterPage>();
             navigationService.RegisterPage<LoginPage>();
+            navigationService.RegisterPage<StaticInfoPage>();
         }
     }
 }

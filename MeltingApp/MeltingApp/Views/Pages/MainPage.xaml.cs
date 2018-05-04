@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using MeltingApp.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MeltingApp.Views.Pages
@@ -9,6 +10,7 @@ namespace MeltingApp.Views.Pages
 		public MainPage ()
 		{
 			InitializeComponent ();
-		}
+            BindingContext = new StaticInfoViewModel();
+        }
 	}
 }

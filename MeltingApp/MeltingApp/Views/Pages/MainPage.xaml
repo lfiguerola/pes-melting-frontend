@@ -7,7 +7,7 @@
             <Label Text="Welcome to Main Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Button Text="StaticInfo" Command="{Binding StaticInfoCommand}"></Button>
+            <Button Text="StaticInfo" Command="{Binding NavigateToStaticInfoPage}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

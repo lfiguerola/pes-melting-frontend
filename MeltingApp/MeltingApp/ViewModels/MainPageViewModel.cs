@@ -23,7 +23,7 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToCreateEventPageCommand()
         {
-            _navigationService.SetRootPage<CreateEvent>(this);
+            _navigationService.PushAsync<CreateEvent>();
         }
     }
 }

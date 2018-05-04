@@ -24,7 +24,7 @@ namespace MeltingApp.ViewModels
 	        set
 	        {
 	            _event = value;
-	            OnPropertyChanged(nameof(User));
+	            OnPropertyChanged(nameof(Event));
 	        }
 	    }
 

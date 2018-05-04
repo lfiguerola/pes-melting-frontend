@@ -93,15 +93,20 @@ namespace MeltingApp.ViewModels
                 if (isSuccess)
                 {
                     //decodifiquem el token i posem el id al user
-                    var jwtEncodedString = User.token;
-                    var tokenDecoded = new JwtSecurityToken(jwtEncodedString: jwtEncodedString);
-                    User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
-                    //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
+                    EncodeTokenAndSaveUserId();
                     _navigationService.SetRootPage<MainPage>();
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             });
             
+        }
+
+        public void EncodeTokenAndSaveUserId()
+        {
+            var jwtEncodedString = User.token;
+            var tokenDecoded = new JwtSecurityToken(jwtEncodedString: jwtEncodedString);
+            User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
+            //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
         }
 
         async void HandleCodeConfirmationCommand()

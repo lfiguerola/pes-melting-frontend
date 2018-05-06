@@ -142,9 +142,7 @@ namespace MeltingApp.ViewModels
             var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
             
         }
-
         
-
         async void HandleCodeConfirmationCommand()
         {
             await _apiClientService.PostAsync<User, User>(User, ApiRoutes.Methods.ActivateUser, async (isSucessActivation, responseMessage) => {

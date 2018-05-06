@@ -140,7 +140,24 @@ namespace MeltingApp.ViewModels
             var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
             
         }
-            
+
+        public void DecodeTokenAndSaveUserId(Token token)
+        {
+            var tokenDecoded = new JwtSecurityToken(token.jwt);
+            User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
+            User.Token = token;
+            try
+            {
+                _dataBaseService.Insert(User);
+                _authService.UpdateCurrentToken(token);
+                //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         async void HandleCodeConfirmationCommand()
         {
             await _apiClientService.PostAsync<User, User>(User, ApiRoutes.Methods.ActivateUser, async (isSucessActivation, responseMessage) => {

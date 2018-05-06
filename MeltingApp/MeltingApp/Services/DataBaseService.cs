@@ -20,8 +20,6 @@ namespace MeltingApp.Services
         public DataBaseService()
         {
             var fileLocatorService = DependencyService.Get<IFileLocatorService>();
-            //var connectionString = new SQLiteConnectionString(fileLocatorService.GetDataBasePath(), true);
-            //SQLiteConnection = new SQLiteConnectionWithLock(connectionString,SQLiteOpenFlags.Create);
             SQLiteConnection = new SQLiteConnection(fileLocatorService.GetDataBasePath());
         }
 

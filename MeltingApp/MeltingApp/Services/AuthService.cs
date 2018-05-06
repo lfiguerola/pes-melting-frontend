@@ -56,13 +56,18 @@ namespace MeltingApp.Services
         }
         public Token GetCurrentToken()
         {
-            return _dataBaseService.Get<Token>(t => true);
-        }
+            App.LoginRequest.IsLogged = user.Token != null;
+            var dbUser = _dataBaseService.Get<User>(u => u.email == user.email);
+            if (dbUser != null)
+            {
+                dbUser.Token = user.Token;
+            }
+            else
+            {
+                dbUser = user;
+            }
 
-        public void UpdateCurrentToken(Token token)
-        {
-            _dataBaseService.Clear<Token>();
-            _dataBaseService.Insert(token);
+            App.LoginRequest.LoggedUserId = _dataBaseService.Update(dbUser);
         }
     
 }

@@ -132,6 +132,8 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
                     }
             });
+            User.Token = token;
+            _authService.SetCurrentLoggedUser(User);
             if (token != null)
             {
                 UserRegisterInApp(token);
@@ -141,22 +143,7 @@ namespace MeltingApp.ViewModels
             
         }
 
-        public void DecodeTokenAndSaveUserId(Token token)
-        {
-            var tokenDecoded = new JwtSecurityToken(token.jwt);
-            User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
-            User.Token = token;
-            try
-            {
-                _dataBaseService.Insert(User);
-                _authService.UpdateCurrentToken(token);
-                //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
+        
 
         async void HandleCodeConfirmationCommand()
         {

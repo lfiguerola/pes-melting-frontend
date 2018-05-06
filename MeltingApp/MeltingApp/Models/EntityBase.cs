@@ -8,7 +8,7 @@ namespace MeltingApp.Models
 {
     public class EntityBase : INotifyPropertyChanged
     {
-        private int _id;
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -16,17 +16,6 @@ namespace MeltingApp.Models
         /// </summary>
         [PrimaryKey, AutoIncrement]
         public int dbId { get; set; }
-
-        //aixo ho he de fer millor
-        public string token
-        {
-            get { return _token; }
-            set
-            {
-                _token = value;
-                OnPropertyChanged(nameof(token));
-            }
-        }
 
         /// <summary>
         /// id from backend

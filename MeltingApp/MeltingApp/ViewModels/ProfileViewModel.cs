@@ -14,6 +14,7 @@ namespace MeltingApp.ViewModels
     {
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private IDataBaseService _dataBaseService;
         private User _user;
         private University _university;
         private ObservableCollection<University> _universities;
@@ -418,6 +419,8 @@ namespace MeltingApp.ViewModels
             User = new User();
             //Omplim desplegable de universities
             HandleViewUniversitiesCommand();
+
+             var savedUser = _dataBaseService.Get<User>(u => true);            
         }
         
         async void HandleViewProfileCommand()

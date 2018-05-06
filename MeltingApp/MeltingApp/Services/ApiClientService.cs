@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using MeltingApp.Exceptions;
 using MeltingApp.Models;
 using MeltingApp.Resources;
-using MeltingApp.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Exception = System.Exception;
@@ -99,7 +98,7 @@ namespace MeltingApp.Services
                 TResult deserializedObject = default(TResult);
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(postResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(postResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {
@@ -108,14 +107,6 @@ namespace MeltingApp.Services
 
                 if (result.IsSuccessStatusCode)
                 {
-                    //si es el login i success, guardem token
-                    if (methodName == ApiRoutes.Methods.LoginUser)
-                    {
-                        //token de l'estil a: {"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI"}
-                        var token = postResult.Substring(8, postResult.Length - 8 - 2);
-                        entity.token = token;
-
-                    }
                     successResultCallback?.Invoke(true, responseMessage?.message);
                 }
                 else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
@@ -154,7 +145,7 @@ namespace MeltingApp.Services
 
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(getResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(getResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {
@@ -250,7 +241,7 @@ namespace MeltingApp.Services
                 TResult deserializedObject = default(TResult);
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(putResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(putResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {

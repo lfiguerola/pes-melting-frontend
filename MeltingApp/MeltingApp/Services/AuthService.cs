@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using MeltingApp.Interfaces;
@@ -54,5 +54,15 @@ namespace MeltingApp.Services
 
             var allusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
         }
-    }
+        public Token GetCurrentToken()
+        {
+            return _dataBaseService.Get<Token>(t => true);
+        }
+
+        public void UpdateCurrentToken(Token token)
+        {
+            _dataBaseService.Clear<Token>();
+            _dataBaseService.Insert(token);
+        }
+    
 }

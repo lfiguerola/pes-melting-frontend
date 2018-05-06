@@ -43,6 +43,12 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             CreateEventCommand = new Command(HandleCreateEventCommand);
+            Event = new Event();
+            Event.latitude = "0";
+            Event.longitude = "0";
+            Event.address = "C/ Jordi Girona, 1";
+            Event.name = "Infern";
+            Event.date = "La fi del mon";
         }
 
         async void HandleCreateEventCommand()

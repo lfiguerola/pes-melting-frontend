@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MeltingApp.Exceptions;
@@ -56,6 +57,7 @@ namespace MeltingApp.Services
             string postResult = null;
             try
             {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOm51bGx9.eX4UcvZYnM-i6QLOBrAi1Qge5DykE5ofDNxxNOGNcEg" );
                 var result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
                 postResult = await result.Content.ReadAsStringAsync();
                 T deserializedObject = null;

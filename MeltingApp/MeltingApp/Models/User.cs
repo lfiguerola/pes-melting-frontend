@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLiteNetExtensions.Attributes;
 
 namespace MeltingApp.Models
 {
@@ -77,7 +78,11 @@ namespace MeltingApp.Models
             }
         }
 
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
         public Token Token { get; set; }
+
+        [ForeignKey(typeof(Token))]
+        public int TokenId { get; set; }
 
     }
 }

@@ -32,6 +32,9 @@ namespace MeltingApp.ViewModels
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
 
             var savedUser = _dataBaseService.Get<User>(u => true);
+            var allUsers = _dataBaseService.GetCollection<User>(user => true);
+            var savedToken = _dataBaseService.Get<Token>(u => true);
+            var allTokens = _dataBaseService.GetCollection<Token>(token => true);
         }
 
 

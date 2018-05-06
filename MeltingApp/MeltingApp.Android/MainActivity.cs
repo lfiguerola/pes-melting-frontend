@@ -25,7 +25,7 @@ namespace MeltingApp.Droid
         {
             //registrem les funcionalitats del sistema operatiu
             DependencyService.Register<IOperatingSystemMethods, OperatingSystemMethods>();
-            DependencyService.Register<ISqliteConnection, DroidSqliteConnection>();
+            DependencyService.Register<IFileLocatorService, AndroidFileLocatorService>();
         }
     }
 }

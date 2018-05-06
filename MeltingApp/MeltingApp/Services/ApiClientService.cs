@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MeltingApp.Exceptions;
@@ -27,6 +28,7 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ActivateUser), ApiRoutes.Endpoints.ActivateUser },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.RegisterUser), ApiRoutes.Endpoints.RegisterUser },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.LoginUser), ApiRoutes.Endpoints.LoginUser },
+            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.CreateEvent), ApiRoutes.Endpoints.CreateEvent },
             //TODO: Remove this fake url
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.AvatarProfileUser), "users/1" + ApiRoutes.Endpoints.AvatarProfileUser }
         };
@@ -60,6 +62,7 @@ namespace MeltingApp.Services
             string postResult = null;
             try
             {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOm51bGx9.eX4UcvZYnM-i6QLOBrAi1Qge5DykE5ofDNxxNOGNcEg" );
                 var result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
                 postResult = await result.Content.ReadAsStringAsync();
                 T deserializedObject = null;

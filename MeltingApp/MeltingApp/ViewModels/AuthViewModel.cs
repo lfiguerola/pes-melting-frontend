@@ -121,9 +121,7 @@ namespace MeltingApp.ViewModels
             }
             
         }
-
         
-
         async void HandleCodeConfirmationCommand()
         {
             await _apiClientService.PostAsync<User, User>(User, ApiRoutes.Methods.ActivateUser, async (isSucessActivation, responseMessage) => {

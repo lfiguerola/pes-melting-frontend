@@ -77,5 +77,7 @@ namespace MeltingApp.Models
             }
         }
 
+        public Token Token { get; set; }
+
     }
 }

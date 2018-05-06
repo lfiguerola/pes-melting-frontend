@@ -16,10 +16,17 @@ namespace MeltingApp
             AddStaticResources();
             RegisterServices();
             RegisterPages();
+		    InitializeDB();
             MainPage = new RootPage();
-        }        
+        }
 
-        protected override void OnStart ()
+	    private void InitializeDB()
+	    {
+	        var dataBaseService = DependencyService.Get<IDataBaseService>();
+            dataBaseService.InitializeTables();
+	    }
+
+	    protected override void OnStart ()
 		{
 			// Handle when your app starts
 		}
@@ -38,6 +45,7 @@ namespace MeltingApp
         {
             DependencyService.Register<INavigationService, NavigationService>();
             DependencyService.Register<IApiClientService, ApiClientService>();
+            DependencyService.Register<IDataBaseService, DataBaseService>();
         }
 
         private void AddStaticResources()

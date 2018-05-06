@@ -12,6 +12,7 @@ namespace MeltingApp.ViewModels
     {
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private IDataBaseService _dataBaseService;
         private User _user;
         private string _responseMessage;
 
@@ -24,10 +25,13 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+            _dataBaseService = DependencyService.Get<IDataBaseService>();
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
+
+            var savedUser = _dataBaseService.Get<User>(u => true);
         }
 
 
@@ -48,7 +52,7 @@ namespace MeltingApp.ViewModels
 
         async void HandleViewProfileCommand()
         {
-            await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
+            await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -63,7 +67,7 @@ namespace MeltingApp.ViewModels
 
         async void HandleSaveEditProfileCommand()
         {
-            await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
+            await _apiClientService.PutAsync<User, User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
             {
                 if (success)
                 {

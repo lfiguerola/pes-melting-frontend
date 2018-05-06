@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using MeltingApp.Annotations;
+using SQLite.Net.Attributes;
 
 namespace MeltingApp.Models
 {
     public class EntityBase : INotifyPropertyChanged
     {
         private int _id;
-        private string _token;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [PrimaryKey]
         public int id
         {
             get { return _id; }
@@ -17,17 +18,6 @@ namespace MeltingApp.Models
             {
                 _id = value;
                 OnPropertyChanged(nameof(id));
-            }
-        }
-
-        //aixo ho he de fer millor
-        public string token
-        {
-            get { return _token; }
-            set
-            {
-                _token = value;
-                OnPropertyChanged(nameof(token));
             }
         }
 

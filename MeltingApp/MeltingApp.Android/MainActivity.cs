@@ -15,12 +15,17 @@ namespace MeltingApp.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+            RegisterDependencies();
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+        }
 
+        private static void RegisterDependencies()
+        {
             //registrem les funcionalitats del sistema operatiu
             DependencyService.Register<IOperatingSystemMethods, OperatingSystemMethods>();
+            DependencyService.Register<ISqliteConnection, DroidSqliteConnection>();
         }
     }
 }

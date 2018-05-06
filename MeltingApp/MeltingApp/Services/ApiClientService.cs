@@ -1,16 +1,13 @@
 ﻿using MeltingApp.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using MeltingApp.Exceptions;
 using MeltingApp.Models;
 using MeltingApp.Resources;
-using MeltingApp.ViewModels;
 using Newtonsoft.Json;
-using Xamarin.Forms;
 
 namespace MeltingApp.Services
 {
@@ -48,7 +45,7 @@ namespace MeltingApp.Services
 
         };
 
-        public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<TResult> PostAsync<TRequest, TResult>(TRequest entity, string methodName, Action<bool, string> successResultCallback = null) where TResult : EntityBase where TRequest : EntityBase
         {
             var json = JsonConvert.SerializeObject(entity);
             var jsonSerializerSettings = new JsonSerializerSettings()
@@ -60,12 +57,12 @@ namespace MeltingApp.Services
             string postResult = null;
             try
             {
-                var result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
+                var result = await HttpClient.PostAsync(new Uri(GetPostUri<TRequest>(methodName)), content);
                 postResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                TResult deserializedObject = null;
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(postResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(postResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {
@@ -74,14 +71,6 @@ namespace MeltingApp.Services
 
                 if (result.IsSuccessStatusCode)
                 {
-                    //si es el login i success, guardem token
-                    if (methodName == ApiRoutes.Methods.LoginUser)
-                    {
-                        //token de l'estil a: {"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI"}
-                        var token = postResult.Substring(8, postResult.Length - 8 - 2);
-                        entity.token = token;
-
-                    }
                     successResultCallback?.Invoke(true, responseMessage?.message);
                 }
                 else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
@@ -94,7 +83,7 @@ namespace MeltingApp.Services
             }
         }
 
-        public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<TResult> GetAsync<TRequest,TResult>(string methodName, Action<bool, string> successResultCallback = null) where TResult : EntityBase where TRequest : EntityBase
         {
             ApiResponseMessage responseMessage = null;
             string getResult = null;
@@ -105,13 +94,13 @@ namespace MeltingApp.Services
 
             try
             {
-                var result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
+                var result = await HttpClient.GetAsync(new Uri(GetGetUri<TRequest>(methodName)));
                 getResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                TResult deserializedObject = null;
 
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(getResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(getResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {
@@ -148,7 +137,7 @@ namespace MeltingApp.Services
 
 
 
-        public async Task<T> PutAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<TResult> PutAsync<TRequest, TResult>(TRequest entity, string methodName, Action<bool, string> successResultCallback = null) where TResult : EntityBase where TRequest : EntityBase
         {
             var json = JsonConvert.SerializeObject(entity);
             var jsonSerializerSettings = new JsonSerializerSettings()
@@ -160,12 +149,12 @@ namespace MeltingApp.Services
             string putResult = null;
             try
             {
-                var result = await HttpClient.PutAsync(new Uri(GetPutUri<T>(methodName)), content);
+                var result = await HttpClient.PutAsync(new Uri(GetPutUri<TRequest>(methodName)), content);
                 putResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                TResult deserializedObject = null;
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(putResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(putResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {

@@ -78,7 +78,7 @@ namespace MeltingApp.Models
             }
         }
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        [ManyToOne(CascadeOperations = CascadeOperation.All)]
         public Token Token { get; set; }
 
         [ForeignKey(typeof(Token))]

@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using SQLite;
+using SQLiteNetExtensions.Extensions;
 using Xamarin.Forms;
 
 namespace MeltingApp.Services
@@ -45,7 +46,12 @@ namespace MeltingApp.Services
 
         public T GetWithChildren<T>(Expression<Func<T, bool>> predicate) where T : EntityBase, new()
         {
-            throw new NotImplementedException();
+            lock (_lockObject)
+            {
+                if (predicate == null) return null;
+                var entity = Get(predicate);
+                return SQLiteConnection.GetWithChildren<T>(entity.dbId, true);
+            }
         }
 
         public List<T> GetCollection<T>(Expression<Func<T, bool>> predicate = null) where T : EntityBase, new()
@@ -57,9 +63,14 @@ namespace MeltingApp.Services
             }
         }
 
-        public List<T> GetCollectionWithChildren<T>(Expression<Func<T, bool>> predicate = null) where T : EntityBase, new()
+        public List<T> GetCollectionWithChildren<T>(Expression<Func<T, bool>> predicate = null)
+            where T : EntityBase, new()
         {
-            throw new NotImplementedException();
+            lock (_lockObject)
+            {
+                if (predicate == null) return SQLiteConnection.GetAllWithChildren<T>(p => true);
+                return SQLiteConnection.GetAllWithChildren(predicate);
+            }
         }
 
         public T Get<T>(Expression<Func<T, bool>> predicate) where T : EntityBase, new()
@@ -69,9 +80,16 @@ namespace MeltingApp.Services
                 if (predicate == null) return null;
                 return SQLiteConnection.Table<T>().FirstOrDefault(predicate);
             }
-
         }
 
+        public List<T> FindWithChildrenWithPagination<T>(int skip, int take, Expression<Func<T, bool>> predicate = null)
+            where T : EntityBase, new()
+        {
+            lock (_lockObject)
+            {
+                return GetCollectionWithChildren(predicate).Skip(skip).Take(take).ToList();
+            }
+        }
 
         public int Insert<T>(T entity) where T : EntityBase, new()
         {
@@ -90,12 +108,31 @@ namespace MeltingApp.Services
 
         public int InsertWithChildren<T>(T entity) where T : EntityBase, new()
         {
-            throw new NotImplementedException();
+            lock (_lockObject)
+            {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+
+                SQLiteConnection.InsertWithChildren(entity);
+                SQLiteConnection.Commit();
+                return entity.dbId;
+            }
         }
 
         public void UpdateCollectionWithChildren<T>(T entities) where T : IEnumerable
         {
-            throw new NotImplementedException();
+            lock (_lockObject)
+            {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+
+                SQLiteConnection.UpdateWithChildren(entities);
+                SQLiteConnection.Commit();
+            }
         }
 
         public void Clear<T>() where T : EntityBase, new()
@@ -127,7 +164,16 @@ namespace MeltingApp.Services
 
         public void InsertCollectionWithChildren<T>(T entities) where T : IEnumerable
         {
-            throw new NotImplementedException();
+            lock (_lockObject)
+            {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+
+                SQLiteConnection.InsertAllWithChildren(entities, true);
+                SQLiteConnection.Commit();
+            }
         }
 
         public int Update<T>(T entity) where T : EntityBase, new()
@@ -139,7 +185,14 @@ namespace MeltingApp.Services
                     SQLiteConnection.BeginTransaction();
                 }
                 int id;
-                id = Get<T>(t => t.dbId == entity.dbId) == null ? Insert(entity) : SQLiteConnection.Update(entity);
+                if (Get<T>(t => t.dbId == entity.dbId) == null)
+                {
+                    id = SQLiteConnection.Insert(entity);
+                }
+                else
+                {
+                    id = SQLiteConnection.Update(entity);
+                }
                 SQLiteConnection.Commit();
                 return id;
             }
@@ -147,7 +200,25 @@ namespace MeltingApp.Services
 
         public int UpdateWithChildren<T>(T entity) where T : EntityBase, new()
         {
-            throw new NotImplementedException();
+            lock (_lockObject)
+            {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+
+                if (Get<T>(t => t.dbId == entity.dbId) == null)
+                {
+                    SQLiteConnection.InsertWithChildren(entity);
+                }
+                else
+                {
+                    SQLiteConnection.UpdateWithChildren(entity);
+                }
+
+                SQLiteConnection.Commit();
+                return entity.dbId;
+            }
         }
 
         public void UpdateCollection<T>(T entities) where T : IEnumerable

@@ -31,10 +31,6 @@ namespace MeltingApp.ViewModels
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
 
-            var savedUser = _dataBaseService.Get<User>(u => true);
-            var allUsers = _dataBaseService.GetCollection<User>(user => true);
-            var savedToken = _dataBaseService.Get<Token>(u => true);
-            var allTokens = _dataBaseService.GetCollection<Token>(token => true);
         }
 
 
@@ -55,6 +51,21 @@ namespace MeltingApp.ViewModels
 
         async void HandleViewProfileCommand()
         {
+            //TODO: Remove this
+            try
+            {
+                var savedUser = _dataBaseService.GetWithChildren<User>(u => true);
+                var allUsers = _dataBaseService.GetCollectionWithChildren<User>(user => true);
+                var savedToken = _dataBaseService.GetWithChildren<Token>(u => true);
+                var allTokens = _dataBaseService.GetCollectionWithChildren<Token>(token => true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            ////
+
             await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
                 if (success)

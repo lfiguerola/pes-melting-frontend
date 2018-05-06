@@ -16,6 +16,7 @@ namespace MeltingApp.Interfaces
         List<T> GetCollection<T>(Expression<Func<T, bool>> predicate = null) where T : EntityBase, new();
         List<T> GetCollectionWithChildren<T>(Expression<Func<T, bool>> predicate = null) where T : EntityBase, new();
         List<T> FindWithPagination<T>(int skip, int take, Expression<Func<T, bool>> predicate = null) where T : EntityBase, new();
+        List<T> FindWithChildrenWithPagination<T>(int skip, int take, Expression<Func<T, bool>> predicate = null) where T : EntityBase, new();
         int Insert<T>(T entity) where T : EntityBase, new();
         int InsertWithChildren<T>(T entity) where T : EntityBase, new();
         void InsertCollection<T>(T entities) where T : IEnumerable;

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -27,7 +28,7 @@ namespace MeltingApp.ViewModels
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
-
+            User = new User();
         }
 
         void HandleNavigateToCreateEventPageCommand()
@@ -37,18 +38,24 @@ namespace MeltingApp.ViewModels
 
 	    async void HandleViewProfileCommand()
 	    {
-	        await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
+	        bool b = false;
+	        User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
 	        {
 	            if (success)
 	            {
-	                _navigationService.PushAsync<ProfilePage>(this);
+	                b = true;
 	            }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 	            }
 	        });
-	    }
+
+	        if (b)
+	        {
+	            await _navigationService.PushAsync<ProfilePage>(this);
+            }
+        }
 
 	    async void HandleSaveEditProfileCommand()
 	    {

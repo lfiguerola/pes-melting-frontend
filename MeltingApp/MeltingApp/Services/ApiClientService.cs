@@ -1,6 +1,7 @@
 ﻿using MeltingApp.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -108,6 +109,7 @@ namespace MeltingApp.Services
 
             try
             {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOm51bGx9.eX4UcvZYnM-i6QLOBrAi1Qge5DykE5ofDNxxNOGNcEg");
                 var result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
                 getResult = await result.Content.ReadAsStringAsync();
                 T deserializedObject = null;

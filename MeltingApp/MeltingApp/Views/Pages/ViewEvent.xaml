@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.ViewEvent">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding Event.title}"></Label>
+            <Label Text="{Binding Event.description}"></Label>
+            <Label Text="{Binding Event.latitude}"></Label>
+            <Label Text="{Binding Event.longitude}"></Label>
+            <Label Text="{Binding Event.address}"></Label>
+            <Label Text="{Binding Event.name}"></Label>
+            <Label Text="{Binding Event.date}"></Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

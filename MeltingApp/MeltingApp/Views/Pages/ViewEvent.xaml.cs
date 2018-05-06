@@ -10,13 +10,13 @@ using Xamarin.Forms.Xaml;
 namespace MeltingApp.Views.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ShowEvent : ContentPage
+	public partial class ViewEvent : ContentPage
 	{
-		public ShowEvent ()
+		public ViewEvent ()
 		{
 			InitializeComponent ();
 		    NavigationPage.SetHasNavigationBar(this, false);
-		    BindingContext = new EventViewModel();
+		    BindingContext = new MainPageViewModel();
         }
 	}
 }

@@ -13,11 +13,14 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private string _responseMessage;
 	    private User _user;
+	    private Event _event;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
-	    public Command NavigateToEditProfilePageCommand { get; set; }
+        public Command NavigateToViewEventPageCommand { get; set; }
+        public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+        public Command ShowEventCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -27,15 +30,29 @@ namespace MeltingApp.ViewModels
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
-
+            NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
         }
 
         void HandleNavigateToCreateEventPageCommand()
         {
             _navigationService.PushAsync<CreateEvent>();
         }
+	    async void HandleNavigateToViewEventPageCommand()
+	    {
+	        Event = await _apiClientService.GetAsync<Event>(ApiRoutes.Methods.ShowEvent, (success, responseMessage) =>
+	        {
+	            if (success)
+	            {
+	                _navigationService.PushAsync<ViewEvent>(this);
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        });
+	    }
 
-	    async void HandleViewProfileCommand()
+        async void HandleViewProfileCommand()
 	    {
 	        await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
 	        {
@@ -74,8 +91,16 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(User));
 	        }
 	    }
-
-	    public string ResponseMessage
+	    public Event Event
+	    {
+	        get { return _event; }
+	        set
+	        {
+	            _event = value;
+	            OnPropertyChanged(nameof(Event));
+	        }
+	    }
+        public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
 	        set

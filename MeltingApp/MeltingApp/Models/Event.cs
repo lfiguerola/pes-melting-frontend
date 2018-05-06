@@ -6,14 +6,6 @@ namespace MeltingApp.Models
 {
     public class Event : EntityBase
     {
-<<<<<<< HEAD
-        private string _name;
-        private int _karma;
-        private string _description;
-        //private ?photo _photo;
-        private DateTime _dateTime;
-        //private ?Location _location;
-=======
         private string _title;
         //private int _karma;
         private string _description;
@@ -24,7 +16,6 @@ namespace MeltingApp.Models
         private string _address;
         private string _name;
         private string _date;
->>>>>>> 6c4ae03ba408e0a84184ded7cf995eba8ca70aad
         //private ?attendee[]  _attendees;
         //private ?comment[] _comments;
 
@@ -32,23 +23,6 @@ namespace MeltingApp.Models
         /// <summary>
         /// the event name
         /// </summary>
-<<<<<<< HEAD
-        public string name
-        {
-            get { return _name; }
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(name));
-            }
-        }
-
-
-        /// <summary>
-        /// the event karma
-        /// </summary>
-        public int karma
-=======
         public string title
         {
             get { return _title; }
@@ -58,29 +32,9 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(title));
             }
         }
-        
-        
-        /// <summary>
-        /// the event karma
-        /// </summary>
-        /*public int karma
->>>>>>> 6c4ae03ba408e0a84184ded7cf995eba8ca70aad
-        {
-            get { return _karma; }
-            set
-            {
-                _karma = value;
-                OnPropertyChanged(nameof(karma));
-            }
-<<<<<<< HEAD
-        }
 
 
-=======
-        }*/
-        
-        
->>>>>>> 6c4ae03ba408e0a84184ded7cf995eba8ca70aad
+
         /// <summary>
         /// the event description
         /// </summary>
@@ -92,17 +46,8 @@ namespace MeltingApp.Models
                 _description = value;
                 OnPropertyChanged(nameof(description));
             }
-<<<<<<< HEAD
-        }/// <summary>
-        /// the user name
-        /// </summary>
-        public DateTime dateTime
-=======
         }
 
-        /// <summary>
-        /// the event location
-        /// </summary>
         public string latitude
         {
             get { return _latitude; }
@@ -152,29 +97,5 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(date));
             }
         }
-
-        /// <summary>
-        /// the user name
-        /// </summary>
-        /*public DateTime dateTime
->>>>>>> 6c4ae03ba408e0a84184ded7cf995eba8ca70aad
-        {
-            get { return _dateTime; }
-            set
-            {
-                _dateTime = value;
-                OnPropertyChanged(nameof(dateTime));
-            }
-<<<<<<< HEAD
-        }
-
-
     }
 }
-=======
-        }*/
-
-
-    }
-}
->>>>>>> 6c4ae03ba408e0a84184ded7cf995eba8ca70aad

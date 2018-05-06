@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using System.Runtime.Serialization;
-using System.Windows.Input;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using FluentValidation;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
@@ -90,13 +90,23 @@ namespace MeltingApp.ViewModels
         {
             await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.LoginUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
+                    //decodifiquem el token i posem el id al user
+                    EncodeTokenAndSaveUserId();
                     _navigationService.SetRootPage<MainPage>();
                 }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             });
+            
+        }
 
+        public void EncodeTokenAndSaveUserId()
+        {
+            var jwtEncodedString = User.token;
+            var tokenDecoded = new JwtSecurityToken(jwtEncodedString: jwtEncodedString);
+            User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
+            //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
         }
 
         async void HandleCodeConfirmationCommand()
@@ -106,6 +116,7 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
+                    _apiClientService.PostAsync(User, ApiRoutes.Methods.LoginUser);
                     _navigationService.SetRootPage<MainPage>();
                 }
             });

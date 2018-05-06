@@ -7,7 +7,13 @@
             <Label Text="Welcome to Main Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+<<<<<<< HEAD
             <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
+=======
+            <Button x:Name="ViewButton" Text="ViewProfile" Command="{Binding ViewProfileCommand}"></Button>
+            <Button x:Name="EditButton" Text="EditProfile" Command="{Binding SaveEditProfileCommand}"></Button>
+            <Button x:Name="AvatarButton" Text="AvatarProfile" Command="{Binding SetAvatarProfileCommand}"></Button>
+>>>>>>> 6fffdbec1343be472abcfec7c058d0bacebab950
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

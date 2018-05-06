@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.EditProfilePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="UsernameLabel" Text="Username"></Label>
+            <!-- <Entry x:Name="UsernameEntry" Text="{Binding User.username}"></Entry> -->
+            <Label x:Name="UniversityLabel" Text="Univeristy"></Label>
+            <!-- <Entry x:Name="UniversityEntry" Text="{Binding User.university}"></Entry> -->
+            <Label x:Name="FacultyLabel" Text="Faculty"></Label>
+            <!-- <Entry x:Name="FacultyEntry" Text="{Binding User.faculty}"></Entry> -->
+            <Button x:Name="AvatarButton" Command="{Binding SetAvatarProfileCommand}"></Button>
+            <Button x:Name="SaveButton" Command="{Binding SaveEditProfileCommand}"></Button>
+            <Label Text="{Binding ResponseMessage}"></Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -63,7 +63,7 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
-	                _navigationService.PushAsync<ProfilePage>(this);
+                    HandleViewProfileCommand();
 	            }
 	            else
 	            {
@@ -94,7 +94,7 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToEditProfilePageCommand()
 	    {
-	        _navigationService.SetRootPage<EditProfilePage>(this);
+	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
     }
 }

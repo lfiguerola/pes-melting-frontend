@@ -104,7 +104,7 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToEditProfilePageCommand()
         {
-            _navigationService.SetRootPage<EditProfilePage>(this);
+            _navigationService.PushAsync<EditProfilePage>(this);
         }
     }
 }

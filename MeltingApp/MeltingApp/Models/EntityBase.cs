@@ -11,16 +11,11 @@ namespace MeltingApp.Models
         private string _token;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// local database id
+        /// </summary>
         [PrimaryKey, AutoIncrement]
-        public int id
-        {
-            get { return _id; }
-            set
-            {
-                _id = value;
-                OnPropertyChanged(nameof(id));
-            }
-        }
+        public int dbId { get; set; }
 
         //aixo ho he de fer millor
         public string token
@@ -33,6 +28,11 @@ namespace MeltingApp.Models
             }
         }
 
+        /// <summary>
+        /// id from backend
+        /// </summary>
+        public int id { get; set; }
+        
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

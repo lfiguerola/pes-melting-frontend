@@ -128,8 +128,15 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
-                    _apiClientService.PostAsync(User, ApiRoutes.Methods.LoginUser);
-                    _navigationService.SetRootPage<MainPage>();
+                    var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser);
+                    _authService.SetCurrentLoggedUser(User);
+
+                    if (token != null)
+                    {
+                        _authService.RefreshToken(token);
+                        _navigationService.SetRootPage<MainPage>();
+                    }
+
                 }
             });
         }

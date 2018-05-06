@@ -7,7 +7,9 @@ namespace MeltingApp.Interfaces
 {
     public interface IAuthService
     {
-        Token GetCurrentToken();
-        void UpdateCurrentToken(Token token);
+        User GetCurrentLoggedUser();
+        void SetCurrentLoggedUser(User user);
+        void RefreshToken(Token token);
+
     }
 }

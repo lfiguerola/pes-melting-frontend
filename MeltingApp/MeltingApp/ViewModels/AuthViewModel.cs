@@ -107,35 +107,19 @@ namespace MeltingApp.ViewModels
         {
             var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                if (isSuccess)
-                {
-                    _navigationService.SetRootPage<MainPage>();
-                }
-                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                if(!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             });
+            User.Token = token;
+            _authService.SetCurrentLoggedUser(User);
             if (token != null)
             {
-                DecodeTokenAndSaveUserId(token);
+                _authService.RefreshToken(token);
+                _navigationService.SetRootPage<MainPage>();
             }
             
         }
 
-        public void DecodeTokenAndSaveUserId(Token token)
-        {
-            var tokenDecoded = new JwtSecurityToken(token.jwt);
-            User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
-            User.Token = token;
-            try
-            {
-                _dataBaseService.Insert(User);
-                _authService.UpdateCurrentToken(token);
-                //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
+        
 
         async void HandleCodeConfirmationCommand()
         {
@@ -144,15 +128,15 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSucessActivation)
                 {
-                    var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser,
-                        (isSuccessLogin, loginMessage) =>
-                        {
-                            if (isSuccessLogin)
-                            {
-                               _navigationService.SetRootPage<MainPage>();
-                            }
-                        });
-                    DecodeTokenAndSaveUserId(token);
+                    var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser);
+                    _authService.SetCurrentLoggedUser(User);
+
+                    if (token != null)
+                    {
+                        _authService.RefreshToken(token);
+                        _navigationService.SetRootPage<MainPage>();
+                    }
+
                 }
             });
         }

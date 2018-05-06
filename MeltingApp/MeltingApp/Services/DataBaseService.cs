@@ -18,23 +18,37 @@ namespace MeltingApp.Services
         public DataBaseService()
         {
             var fileLocatorService = DependencyService.Get<IFileLocatorService>();
-            //var connectionString = new SQLiteConnectionString(fileLocatorService.GetDataBasePath(), true);
-            //SQLiteConnection = new SQLiteConnectionWithLock(connectionString,SQLiteOpenFlags.Create);
             SQLiteConnection = new SQLiteConnection(fileLocatorService.GetDataBasePath());
         }
 
         public void DropTables()
         {
+            if (!SQLiteConnection.IsInTransaction)
+            {
+                SQLiteConnection.BeginTransaction();
+            }
+            SQLiteConnection.DropTable<Token>();
             SQLiteConnection.DropTable<User>();
+            SQLiteConnection.Commit();
         }
 
         public void InitializeTables()
         {
+            if(!SQLiteConnection.IsInTransaction)
+            {
+                SQLiteConnection.BeginTransaction();
+            }
             SQLiteConnection.CreateTable<User>();
             SQLiteConnection.CreateTable<Token>();
+            SQLiteConnection.Commit();
         }
 
-        public List<T> GetCollection<T>(Expression<Func<T, bool>> predicate = null) where T : class, new()
+        public T GetWithChildren<T>(Expression<Func<T, bool>> predicate) where T : EntityBase, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<T> GetCollection<T>(Expression<Func<T, bool>> predicate = null) where T : EntityBase, new()
         {
             lock (_lockObject)
             {
@@ -43,31 +57,56 @@ namespace MeltingApp.Services
             }
         }
 
-        public T Get<T>(Expression<Func<T, bool>> predicate) where T : class, new()
+        public List<T> GetCollectionWithChildren<T>(Expression<Func<T, bool>> predicate = null) where T : EntityBase, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T Get<T>(Expression<Func<T, bool>> predicate) where T : EntityBase, new()
         {
             lock (_lockObject)
             {
                 if (predicate == null) return null;
-                return SQLiteConnection.Table<T>().Where(predicate).FirstOrDefault();
+                return SQLiteConnection.Table<T>().FirstOrDefault(predicate);
             }
 
         }
 
 
-        public void Insert<T>(T entity) where T : class, new()
+        public int Insert<T>(T entity) where T : EntityBase, new()
         {
             lock (_lockObject)
             {
-                    SQLiteConnection.Insert(entity);
-                    SQLiteConnection.Commit();
-                
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+
+                var id = SQLiteConnection.Insert(entity);
+                SQLiteConnection.Commit();
+                return id;
             }
         }
 
-        public void Clear<T>() where T : class, new()
+        public int InsertWithChildren<T>(T entity) where T : EntityBase, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCollectionWithChildren<T>(T entities) where T : IEnumerable
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear<T>() where T : EntityBase, new()
         {
             lock (_lockObject)
             {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+
                 SQLiteConnection.DeleteAll<T>();
                 SQLiteConnection.Commit();
             }
@@ -77,30 +116,54 @@ namespace MeltingApp.Services
         {
             lock (_lockObject)
             {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
                 SQLiteConnection.InsertAll(entities);
                 SQLiteConnection.Commit();
             }
         }
 
-        public void Update<T>(T entity) where T : class, new()
+        public void InsertCollectionWithChildren<T>(T entities) where T : IEnumerable
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update<T>(T entity) where T : EntityBase, new()
         {
             lock (_lockObject)
             {
-                SQLiteConnection.Update(entity);
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+                int id;
+                id = Get<T>(t => t.dbId == entity.dbId) == null ? Insert(entity) : SQLiteConnection.Update(entity);
                 SQLiteConnection.Commit();
+                return id;
             }
+        }
+
+        public int UpdateWithChildren<T>(T entity) where T : EntityBase, new()
+        {
+            throw new NotImplementedException();
         }
 
         public void UpdateCollection<T>(T entities) where T : IEnumerable
         {
             lock (_lockObject)
             {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
                 SQLiteConnection.UpdateAll(entities);
                 SQLiteConnection.Commit();
             }
         }
 
-        public List<T> FindWithPagination<T>(int skip, int take, Expression<Func<T, bool>> predicate = null) where T : class, new()
+        public List<T> FindWithPagination<T>(int skip, int take, Expression<Func<T, bool>> predicate = null) where T : EntityBase, new()
         {
             lock (_lockObject)
             {

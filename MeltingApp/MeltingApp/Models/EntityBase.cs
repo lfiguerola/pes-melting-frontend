@@ -7,20 +7,20 @@ namespace MeltingApp.Models
 {
     public class EntityBase : INotifyPropertyChanged
     {
-        private int _id;
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// local database id
+        /// </summary>
         [PrimaryKey, AutoIncrement]
-        public int id
-        {
-            get { return _id; }
-            set
-            {
-                _id = value;
-                OnPropertyChanged(nameof(id));
-            }
-        }
+        public int dbId { get; set; }
 
+        /// <summary>
+        /// id from backend
+        /// </summary>
+        public int id { get; set; }
+        
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

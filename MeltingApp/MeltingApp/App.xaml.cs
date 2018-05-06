@@ -9,7 +9,7 @@ namespace MeltingApp
 {
 	public partial class App : Application
 	{
-
+        public static readonly LoginRequest LoginRequest = new LoginRequest();
 		public App ()
 		{
 			InitializeComponent();
@@ -65,5 +65,7 @@ namespace MeltingApp
             navigationService.RegisterPage<ProfilePage>();
             navigationService.RegisterPage<EditProfilePage>();
         }
+
+        
     }
 }

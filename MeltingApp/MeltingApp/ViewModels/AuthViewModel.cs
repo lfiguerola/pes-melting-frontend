@@ -125,12 +125,19 @@ namespace MeltingApp.ViewModels
 
         public void DecodeTokenAndSaveUserId(Token token)
         {
-            var tokenDecoded = new JwtSecurityToken(token.token);
+            var tokenDecoded = new JwtSecurityToken(token.jwt);
             User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
             User.Token = token;
-            _dataBaseService.Insert(User);
-            _authService.UpdateCurrentToken(token);
-            //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
+            try
+            {
+                _dataBaseService.Insert(User);
+                _authService.UpdateCurrentToken(token);
+                //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         async void HandleCodeConfirmationCommand()

@@ -27,11 +27,13 @@ namespace MeltingApp.Droid
         {
             //registrem les funcionalitats del sistema operatiu
             DependencyService.Register<IOperatingSystemMethods, OperatingSystemMethods>();
+            DependencyService.Register<IFileLocatorService, AndroidFileLocatorService>();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            
         }
     }
 }

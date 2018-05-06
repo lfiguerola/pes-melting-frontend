@@ -1,7 +1,8 @@
-﻿namespace MeltingApp.Models
+﻿
+namespace MeltingApp.Models
 {
     public class Token : EntityBase
     {
-        public string token { get; set; }
+        public string jwt { get; set; }
     }
 }

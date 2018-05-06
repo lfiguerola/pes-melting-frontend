@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
-using SQLite.Net;
+using SQLite;
 using Xamarin.Forms;
 
 namespace MeltingApp.Services
@@ -13,58 +13,63 @@ namespace MeltingApp.Services
     public class DataBaseService : IDataBaseService
     {
         private readonly object _lockObject = new object();
-        private SQLiteConnection connection => SqLiteConnection.SqLiteConnection;
-        public static ISqliteConnection SqLiteConnection { get; set; }
+        public SQLiteConnection SQLiteConnection { get; set; }
 
         public DataBaseService()
         {
-            SqLiteConnection = DependencyService.Get<ISqliteConnection>();
+            var fileLocatorService = DependencyService.Get<IFileLocatorService>();
+            //var connectionString = new SQLiteConnectionString(fileLocatorService.GetDataBasePath(), true);
+            //SQLiteConnection = new SQLiteConnectionWithLock(connectionString,SQLiteOpenFlags.Create);
+            SQLiteConnection = new SQLiteConnection(fileLocatorService.GetDataBasePath());
         }
 
         public void DropTables()
         {
-            connection.DropTable<User>();
+            SQLiteConnection.DropTable<User>();
         }
 
         public void InitializeTables()
         {
-            connection.CreateTable<User>();
+            SQLiteConnection.CreateTable<User>();
+            SQLiteConnection.CreateTable<Token>();
         }
 
-        public List<T> GetCollection<T>(Expression<Func<T, bool>> predicate = null) where T : class
+        public List<T> GetCollection<T>(Expression<Func<T, bool>> predicate = null) where T : class, new()
         {
             lock (_lockObject)
             {
-                if (predicate == null) return connection.Table<T>().Where(arg => true).ToList();
-                return connection.Table<T>().Where(predicate).ToList();
+                if (predicate == null) return SQLiteConnection.Table<T>().Where(arg => true).ToList();
+                return SQLiteConnection.Table<T>().Where(predicate).ToList();
             }
         }
 
-        public T Get<T>(Expression<Func<T, bool>> predicate) where T : class
+        public T Get<T>(Expression<Func<T, bool>> predicate) where T : class, new()
         {
             lock (_lockObject)
             {
                 if (predicate == null) return null;
-                return connection.Table<T>().Where(predicate).FirstOrDefault();
+                return SQLiteConnection.Table<T>().Where(predicate).FirstOrDefault();
             }
 
         }
 
-        public void Insert<T>(T entity) where T : class
+
+        public void Insert<T>(T entity) where T : class, new()
         {
             lock (_lockObject)
             {
-                connection.Insert(entity);
-                connection.Commit();
+                    SQLiteConnection.Insert(entity);
+                    SQLiteConnection.Commit();
+                
             }
         }
 
-        public void Clear<T>()
+        public void Clear<T>() where T : class, new()
         {
             lock (_lockObject)
             {
-                connection.DeleteAll<T>();
-                connection.Commit();
+                SQLiteConnection.DeleteAll<T>();
+                SQLiteConnection.Commit();
             }
         }
 
@@ -72,17 +77,17 @@ namespace MeltingApp.Services
         {
             lock (_lockObject)
             {
-                connection.InsertAll(entities);
-                connection.Commit();
+                SQLiteConnection.InsertAll(entities);
+                SQLiteConnection.Commit();
             }
         }
 
-        public void Update<T>(T entity) where T : class
+        public void Update<T>(T entity) where T : class, new()
         {
             lock (_lockObject)
             {
-                connection.Update(entity);
-                connection.Commit();
+                SQLiteConnection.Update(entity);
+                SQLiteConnection.Commit();
             }
         }
 
@@ -90,18 +95,18 @@ namespace MeltingApp.Services
         {
             lock (_lockObject)
             {
-                connection.UpdateAll(entities);
-                connection.Commit();
+                SQLiteConnection.UpdateAll(entities);
+                SQLiteConnection.Commit();
             }
         }
 
-        public List<T> FindWithPagination<T>(int skip, int take, Expression<Func<T, bool>> predicate = null) where T : class
+        public List<T> FindWithPagination<T>(int skip, int take, Expression<Func<T, bool>> predicate = null) where T : class, new()
         {
             lock (_lockObject)
             {
                 if (predicate == null)
-                    return connection.Table<T>().Where(t => true).Skip(skip).Take(take).ToList();
-                return connection.Table<T>().Where(predicate).Skip(skip).Take(take).ToList();
+                    return SQLiteConnection.Table<T>().Where(t => true).Skip(skip).Take(take).ToList();
+                return SQLiteConnection.Table<T>().Where(predicate).Skip(skip).Take(take).ToList();
             }
         }
     }

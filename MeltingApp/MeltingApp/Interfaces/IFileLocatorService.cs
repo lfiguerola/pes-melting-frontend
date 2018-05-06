@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SQLite.Net;
 
 namespace MeltingApp.Interfaces
 {
-    public interface ISqliteConnection
+    public interface IFileLocatorService
     {
-        SQLiteConnection SqLiteConnection { get; set; }
+        string GetDataBasePath();
     }
 }

@@ -12,12 +12,9 @@ namespace MeltingApp.Views.Pages
 		public MainPage ()
 		{
 			InitializeComponent ();
-<<<<<<< HEAD
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new MainPageViewModel();
-=======
 		    BindingContext = new ProfileViewModel();
->>>>>>> 6fffdbec1343be472abcfec7c058d0bacebab950
         }
 	}
 }

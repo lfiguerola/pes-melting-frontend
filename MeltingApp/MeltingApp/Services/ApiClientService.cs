@@ -28,13 +28,9 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ActivateUser), ApiRoutes.Endpoints.ActivateUser },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.RegisterUser), ApiRoutes.Endpoints.RegisterUser },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.LoginUser), ApiRoutes.Endpoints.LoginUser },
-<<<<<<< HEAD
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.CreateEvent), ApiRoutes.Endpoints.CreateEvent }
-
-=======
             //TODO: Remove this fake url
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.AvatarProfileUser), "users/1" + ApiRoutes.Endpoints.AvatarProfileUser }
->>>>>>> 6fffdbec1343be472abcfec7c058d0bacebab950
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()

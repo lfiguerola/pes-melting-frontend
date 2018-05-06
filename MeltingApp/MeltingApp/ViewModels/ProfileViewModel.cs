@@ -416,7 +416,6 @@ namespace MeltingApp.ViewModels
             User = new User();
             //Omplim desplegable de universities
             HandleViewUniversitiesCommand();
-            
         }
         
         async void HandleViewProfileCommand()

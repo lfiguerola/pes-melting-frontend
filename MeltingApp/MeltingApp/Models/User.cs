@@ -187,7 +187,8 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(avatarURL));
             }
         }
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        
+        [ManyToOne(CascadeOperations = CascadeOperation.All)]
         public Token Token { get; set; }
 
         [ForeignKey(typeof(Token))]

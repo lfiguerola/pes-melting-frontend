@@ -120,7 +120,7 @@ namespace MeltingApp.ViewModels
                 throw e;
             }
         }
-
+        
         async void HandleCodeConfirmationCommand()
         {
             await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.ActivateUser, (isSuccess, responseMessage) => {

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using MeltingApp.Annotations;
+using SQLite;
 
 namespace MeltingApp.Models
 {
@@ -10,6 +11,7 @@ namespace MeltingApp.Models
         private string _token;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [PrimaryKey, AutoIncrement]
         public int id
         {
             get { return _id; }

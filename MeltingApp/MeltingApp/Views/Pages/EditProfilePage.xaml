@@ -8,7 +8,7 @@
             <Label x:Name="NameLabelTitle" Text="Name" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Entry x:Name="NameEntry" Text="{Binding User.full_name}"></Entry>
             <Label x:Name="CountryLabelTitle" Text="Country:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
-            <Label x:Name="CountryLabel" Text="{Binding User.country_code}"></Label>
+            <Picker x:Name="CountryPicker" Title="{Binding User.country_code}" SelectedIndex="{Binding CountriesSelectedIndex }" ItemsSource="{Binding Countries}"></Picker>
             <Label x:Name="KarmaLabelTitle" Text="Karma:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Label x:Name="KarmaLabel" Text="{Binding User.karma}"></Label>
             <Label x:Name="UniversityLabelTitle" Text="University:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>

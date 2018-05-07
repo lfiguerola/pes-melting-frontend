@@ -63,8 +63,9 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
-                    HandleViewProfileCommand();
-	            }
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
+                    _navigationService.PopAsync(); 
+                }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);

@@ -63,8 +63,9 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
-	                _navigationService.PushAsync<ProfilePage>(this);
-	            }
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
+                    _navigationService.PopAsync(); 
+                }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
@@ -94,7 +95,7 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToEditProfilePageCommand()
 	    {
-	        _navigationService.SetRootPage<EditProfilePage>(this);
+	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
     }
 }

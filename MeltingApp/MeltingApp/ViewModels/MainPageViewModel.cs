@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -23,16 +24,17 @@ namespace MeltingApp.ViewModels
         public Command ShowEventCommand { get; set; }
 
         public MainPageViewModel ()
-		{
+		    {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
-		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
-		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
-		    ViewProfileCommand = new Command(HandleViewProfileCommand);
-            NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
-		    Event = new Event();
-		}
+          NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
+          SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+          ViewProfileCommand = new Command(HandleViewProfileCommand);
+          NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
+          Event = new Event();
+          User = new User();
+        }
 
         void HandleNavigateToCreateEventPageCommand()
         {
@@ -55,18 +57,24 @@ namespace MeltingApp.ViewModels
 
         async void HandleViewProfileCommand()
 	    {
-	        await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
+	        bool b = false;
+	        User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
 	        {
 	            if (success)
 	            {
-	                _navigationService.PushAsync<ProfilePage>(this);
+	                b = true;
 	            }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 	            }
 	        });
-	    }
+
+	        if (b)
+	        {
+	            await _navigationService.PushAsync<ProfilePage>(this);
+            }
+        }
 
 	    async void HandleSaveEditProfileCommand()
 	    {
@@ -74,8 +82,9 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
-	                _navigationService.PushAsync<ProfilePage>(this);
-	            }
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
+                    _navigationService.PopAsync(); 
+                }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
@@ -113,7 +122,7 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToEditProfilePageCommand()
 	    {
-	        _navigationService.SetRootPage<EditProfilePage>(this);
+	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
     }
 }

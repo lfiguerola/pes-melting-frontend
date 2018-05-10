@@ -9,9 +9,7 @@
                 HorizontalOptions="CenterAndExpand" />
             <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
             <Button Text="View Event" Command="{Binding NavigateToViewEventPageCommand}"></Button>
-            <Button x:Name="ViewButton" Text="ViewProfile" Command="{Binding ViewProfileCommand}"></Button>
-            <Button x:Name="EditButton" Text="EditProfile" Command="{Binding SaveEditProfileCommand}"></Button>
-            <Button x:Name="AvatarButton" Text="AvatarProfile" Command="{Binding SetAvatarProfileCommand}"></Button>
+            <Button x:Name="ViewButton" Text="View Profile" Command="{Binding ViewProfileCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

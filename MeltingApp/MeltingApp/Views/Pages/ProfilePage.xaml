@@ -4,11 +4,23 @@
              x:Class="MeltingApp.Views.Pages.ProfilePage">
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="UsernameLabel" Text="Username"></Label> <!--Text="{Binding User.username}"-->
-            <Label x:Name="UniversityLabel" Text="University"></Label> <!--Text="{Binding User.university}"-->
-            <Label x:Name="FacultyLabel" Text="Faculty"></Label> <!--Text="{Binding User.faculty}"-->
+            <Label Text="User Profile" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize ="Large" FontAttributes="Bold"/>
+            <Label x:Name="NameTitleLabel" Text="Name:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="NameLabel" Text="{Binding User.full_name}"></Label>
+            <Label x:Name="CountryLabelTitle" Text="Country:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="CountryLabel" Text="{Binding User.country_code}"></Label>
+            <Label x:Name="KarmaLabelTitle" Text="Karma:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="KarmaLabel" Text="{Binding User.karma}"></Label>
+            <Label x:Name="FacultyLabelTitle" Text="Faculty:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="FacultyLabel" Text="{Binding User.faculty}"></Label>
+            <Label x:Name="UniversityLabelTitle" Text="University:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="UniversityLabel" Text="{Binding User.university}"></Label>
+            <Label x:Name="BiographyTitleLabel" Text="BIOGRAPHY" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="BiographyLabel" Text="{Binding User.biography}"></Label>
+            <!--<Label x:Name="AvatarLabelTitle" Text="Avatar"></Label>
+            <Label x:Name="AvatarLabel" Text="{Binding User.avatarURL}"></Label>-->
             <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}"></Button>
-
+            <Label Text="{Binding ResponseMessage}"></Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

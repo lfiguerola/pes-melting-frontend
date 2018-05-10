@@ -31,7 +31,8 @@ namespace MeltingApp.ViewModels
 		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
             NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
-        }
+		    Event = new Event();
+		}
 
         void HandleNavigateToCreateEventPageCommand()
         {

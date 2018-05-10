@@ -35,7 +35,7 @@ namespace MeltingApp.Resources
             public const string GetProfileUser = "/profile";
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
-            public const string ShowEvent = "/users/1/events/1/event";
+            public const string ShowEvent = "/events/2/event";
 
         }
 

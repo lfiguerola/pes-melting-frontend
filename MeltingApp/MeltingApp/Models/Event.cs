@@ -6,6 +6,7 @@ namespace MeltingApp.Models
 {
     public class Event : EntityBase
     {
+        private int _id;
         private string _title;
         //private int _karma;
         private string _description;
@@ -19,6 +20,16 @@ namespace MeltingApp.Models
         //private ?attendee[]  _attendees;
         //private ?comment[] _comments;
 
+
+        public int id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(id));
+            }
+        }
 
         /// <summary>
         /// the event name
@@ -47,6 +58,7 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(description));
             }
         }
+
 
         public string latitude
         {

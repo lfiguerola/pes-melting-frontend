@@ -4,6 +4,7 @@
              x:Class="MeltingApp.Views.Pages.ViewEvent">
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="View Event"></Label>
             <Label Text="{Binding Event.title}"></Label>
             <Label Text="{Binding Event.description}"></Label>
             <Label Text="{Binding Event.latitude}"></Label>

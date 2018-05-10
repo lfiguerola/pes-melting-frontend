@@ -19,14 +19,7 @@ namespace MeltingApp.ViewModels
         private StaticInfo _staticInfo;
         private string _responseMessage;
 
-        /*public Command NavigateToStaticInfoPage
-        {
-            get
-            {
-                _returnStaticInfoCommand = new Command(HandleStaticInfoCommand);
-                return _returnStaticInfoCommand;
-            }
-        }*/
+        
         public Command NavigateToStaticInfoPage { get; set; }
 
         public StaticInfo StaticInfo

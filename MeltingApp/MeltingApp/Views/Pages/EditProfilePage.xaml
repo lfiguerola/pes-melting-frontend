@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.EditProfilePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Edit User Profile" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize ="Large" FontAttributes="Bold"/>
+            <Label x:Name="NameLabelTitle" Text="Name" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Entry x:Name="NameEntry" Text="{Binding User.full_name}"></Entry>
+            <Label x:Name="CountryLabelTitle" Text="Country:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="CountryLabel" Text="{Binding User.country_code}"></Label>
+            <Label x:Name="KarmaLabelTitle" Text="Karma:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="KarmaLabel" Text="{Binding User.karma}"></Label>
+            <Label x:Name="UniversityLabelTitle" Text="University:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Label x:Name="UniversityLabel" Text="{Binding User.university}"></Label>
+            <!-- afegir aqui el deplegable de la facultat -->
+            <Label x:Name="BiograohyLabelTitle" Text="Biography" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Editor x:Name="BiographyEditor" Text="{Binding User.biography}"></Editor>
+            <!--<Button x:Name="AvatarButton" Command="{Binding SetAvatarProfileCommand}"></Button>-->
+            <Button x:Name="SaveButton" Text="Save" Command="{Binding SaveEditProfileCommand}"></Button>
+            <Label Text="{Binding ResponseMessage}"></Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

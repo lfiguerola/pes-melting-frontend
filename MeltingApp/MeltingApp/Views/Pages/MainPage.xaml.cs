@@ -1,6 +1,8 @@
 ﻿using MeltingApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using MeltingApp.ViewModels;
+
 
 namespace MeltingApp.Views.Pages
 {
@@ -10,7 +12,13 @@ namespace MeltingApp.Views.Pages
 		public MainPage ()
 		{
 			InitializeComponent ();
+<<<<<<< HEAD
             BindingContext = new StaticInfoViewModel();
         }
+=======
+            NavigationPage.SetHasNavigationBar(this, false);
+            BindingContext = new MainPageViewModel();
+		}
+>>>>>>> develop
 	}
 }

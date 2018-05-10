@@ -7,7 +7,10 @@
             <Label Text="Welcome to Main Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            
             <Button Text="StaticInfo" Command="{Binding NavigateToStaticInfoPage}"></Button>
+            <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
+            <Button x:Name="ViewButton" Text="View Profile" Command="{Binding ViewProfileCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

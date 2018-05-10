@@ -12,6 +12,7 @@ namespace MeltingApp.ViewModels
 	{
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private StaticInfo _staticInfo;
         private string _responseMessage;
 	    private User _user;
 
@@ -19,6 +20,7 @@ namespace MeltingApp.ViewModels
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+        public Command NavigateToStaticInfoPage { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -26,9 +28,11 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
-		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
+            SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
             User = new User();
+            StaticInfo = new StaticInfo();
         }
 
         void HandleNavigateToCreateEventPageCommand()
@@ -83,7 +87,17 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
-	    public string ResponseMessage
+        public StaticInfo StaticInfo
+        {
+            get { return _staticInfo; }
+            set
+            {
+                _staticInfo = value;
+                OnPropertyChanged(nameof(StaticInfo));
+            }
+        }
+
+        public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
 	        set
@@ -97,5 +111,19 @@ namespace MeltingApp.ViewModels
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
+
+        void HandleStaticInfoCommand()
+        {
+            _staticInfo = new StaticInfo()
+            {
+                adress = "Carrer Sparragus",
+                universityName = "UPC",
+                latitude = "359825.6",
+                longitude = "7872.5",
+                phone = "123456789"
+            };
+            //await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName);
+            _navigationService.SetRootPage<StaticInfoPage>(this);
+        }
     }
 }

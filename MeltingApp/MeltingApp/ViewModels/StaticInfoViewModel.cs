@@ -15,7 +15,6 @@ namespace MeltingApp.ViewModels
 
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
-        private Command _returnStaticInfoCommand;
         private StaticInfo _staticInfo;
         private string _responseMessage;
 
@@ -45,8 +44,15 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>();
             _apiClientService = DependencyService.Get<IApiClientService>();
-            _staticInfo = new StaticInfo();
-            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
+            _staticInfo = new StaticInfo()
+            {
+                adress = "Carrer Sparragus",
+                universityName = "UPC",
+                latitude = "359825.6",
+                longitude = "7872.5",
+                phone = "123456789"
+            };
+            //NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
         }
 
         /*async*/

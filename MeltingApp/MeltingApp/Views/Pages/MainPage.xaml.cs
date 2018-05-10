@@ -12,13 +12,9 @@ namespace MeltingApp.Views.Pages
 		public MainPage ()
 		{
 			InitializeComponent ();
-<<<<<<< HEAD
-            BindingContext = new StaticInfoViewModel();
-        }
-=======
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new MainPageViewModel();
 		}
->>>>>>> develop
+
 	}
 }

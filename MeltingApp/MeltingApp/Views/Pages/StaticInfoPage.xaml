@@ -7,7 +7,7 @@
         <StackLayout>
             <Label Text="University information"
                    HorizontalOptions="CenterAndExpand" />
-
+            <Label Text="University Name:"></Label>
             <Label x:Name="UniNameLabel" Text="{Binding StaticInfo.universityName}" FontSize="Large"></Label>
 
             <Label x:Name="UniLatitudeLabel" Text="{Binding StaticInfo.latitude}"></Label>

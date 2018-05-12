@@ -9,6 +9,7 @@
                 HorizontalOptions="CenterAndExpand" />
             <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
             <Button x:Name="ViewButton" Text="View Profile" Command="{Binding ViewProfileCommand}"></Button>
+            <Button Text="Create Profile" Command="{Binding NavigateToCreateProfilePageCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

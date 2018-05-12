@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
-using MeltingApp.Interfaces;
+﻿using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
@@ -12,13 +10,14 @@ namespace MeltingApp.ViewModels
 	{
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
-        private string _responseMessage;
+	    private string _responseMessage;
 	    private User _user;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+        public Command NavigateToCreateProfilePageCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -28,10 +27,17 @@ namespace MeltingApp.ViewModels
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
+            //TODO: eliminar aquest boto
+		    NavigateToCreateProfilePageCommand = new Command(HandleNavigateToCreateProfilePageCommand);
             User = new User();
         }
 
-        void HandleNavigateToCreateEventPageCommand()
+	    private void HandleNavigateToCreateProfilePageCommand()
+	    {
+	        _navigationService.PushAsync<CreateProfilePage>();
+	    }
+
+	    void HandleNavigateToCreateEventPageCommand()
         {
             _navigationService.PushAsync<CreateEvent>();
         }
@@ -57,7 +63,7 @@ namespace MeltingApp.ViewModels
             }
         }
 
-	    async void HandleSaveEditProfileCommand()
+        async void HandleSaveEditProfileCommand()
 	    {
 	        await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
 	        {
@@ -97,5 +103,7 @@ namespace MeltingApp.ViewModels
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
+
+
     }
 }

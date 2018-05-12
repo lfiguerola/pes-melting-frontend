@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MeltingApp</AssemblyName>
+    <RootNamespace>MeltingApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +17,8 @@
     <Compile Update="Views\Pages\CodeConfirmation.xaml.cs">
       <DependentUpon>CodeConfirmation.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Pages\ProfilePage.xaml.cs">
-      <DependentUpon>ProfilePage.xaml</DependentUpon>
+    <Compile Update="Views\Pages\TestProfile.xaml.cs">
+      <DependentUpon>TestProfile.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Pages\RootPage.xaml.cs">
       <SubType>Code</SubType>
@@ -25,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\Pages\CreateProfilePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\EditProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -35,9 +40,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\Menu.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Pages\ProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

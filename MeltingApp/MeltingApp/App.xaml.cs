@@ -1,6 +1,7 @@
 ﻿using System;
 using MeltingApp.Interfaces;
 using MeltingApp.Services;
+using MeltingApp.ViewModels;
 using MeltingApp.Views;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
@@ -60,6 +61,7 @@ namespace MeltingApp
             navigationService.RegisterPage<EditProfilePage>();
             navigationService.RegisterPage<EventList>();
             navigationService.RegisterPage<FinderPage>();
+            navigationService.RegisterPage<CreateProfilePage>();
         }
     }
 }

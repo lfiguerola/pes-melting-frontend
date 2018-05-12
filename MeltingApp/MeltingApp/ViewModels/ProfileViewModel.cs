@@ -20,11 +20,11 @@ namespace MeltingApp.ViewModels
 
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
-
+        public Command CreateProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
         public Command UploadImageCommand { get; set; }
         //public Command SetAvatarProfileCommand { get; set; }
-
+        
         public User User
         {
             get { return _user; }
@@ -64,8 +64,9 @@ namespace MeltingApp.ViewModels
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             UploadImageCommand = new Command(HandleUploadImageCommand);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
+            CreateProfileCommand = new Command(HandleCreateProfileCommand);
+            User = new User();
         }
-
 
         //async void HandleSetAvatarProfileCommand()
         //{
@@ -119,6 +120,19 @@ namespace MeltingApp.ViewModels
                         DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                     }
                 });
+        }
+
+        async void HandleCreateProfileCommand()
+        {
+
+            await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.CreateProfileUser, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+                    HandleViewProfileCommand();
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            });
         }
 
         void HandleNavigateToEditProfilePageCommand()

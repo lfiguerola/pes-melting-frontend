@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using MeltingApp.Interfaces;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -47,6 +48,7 @@ namespace MeltingApp.ViewModels
         public Command OpenMapStaticFacultyCommand { get; set; }
 	    public Command OpenMapStaticUniversityCommand { get; set; }
         public Command OpenMapEventCommand { get; set; }
+        public Command NavigateToCreateProfilePageCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -69,6 +71,8 @@ namespace MeltingApp.ViewModels
 
             Event = new Event();
 		    EventSelected = new Event(); 
+            //TODO: eliminar aquest boto
+		    NavigateToCreateProfilePageCommand = new Command(HandleNavigateToCreateProfilePageCommand);
             User = new User();
             CreateCommentCommand = new Command(HandleCreateCommentCommand);
             GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
@@ -227,6 +231,10 @@ namespace MeltingApp.ViewModels
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 	            }
             });
+
+	    private void HandleNavigateToCreateProfilePageCommand()
+	    {
+	        _navigationService.PushAsync<CreateProfilePage>();
 	    }
 
 	    void HandleNavigateToCreateEventPageCommand()
@@ -255,7 +263,7 @@ namespace MeltingApp.ViewModels
             }
         }
 
-	    async void HandleSaveEditProfileCommand()
+        async void HandleSaveEditProfileCommand()
 	    {
 	        await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
 	        {
@@ -444,4 +452,5 @@ namespace MeltingApp.ViewModels
                 Image1 = ImageSource.FromStream(() => file.GetStream());
 	        }
         }
+	}
 }

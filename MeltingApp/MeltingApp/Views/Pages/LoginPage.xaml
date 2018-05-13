@@ -26,6 +26,7 @@
 
             <Button Text="Login" Command="{Binding LoginUserCommand}"></Button>
             <Button Text="Register" Command="{Binding NavigateToRegisterPageCommand}"></Button>
+            <Button x:Name="ViewUniversitesButton" Text="ViewUniversities" Command="{Binding ViewUniversitiesCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

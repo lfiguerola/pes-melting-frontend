@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using FluentValidation;
@@ -18,6 +19,7 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private User _user;
         private string _responseMessage;
+        private IEnumerable<University> _universities;
 
         readonly IValidator _validator;
 
@@ -26,6 +28,8 @@ namespace MeltingApp.ViewModels
         public Command RegisterUserCommand { get; set; }
         public Command LoginUserCommand { get; set; }
         public Command CodeConfirmationCommand { get; set; }
+        public Command ViewUniversitiesCommand { get; set; }
+        
 
         public User User
         {
@@ -34,6 +38,16 @@ namespace MeltingApp.ViewModels
             {
                 _user = value;
                 OnPropertyChanged(nameof(User));
+            }
+        }
+        
+        public IEnumerable<University> Universities
+        {
+            get { return _universities; }
+            set
+            {
+                _universities = value;
+                OnPropertyChanged(nameof(Universities));
             }
         }
 
@@ -58,6 +72,7 @@ namespace MeltingApp.ViewModels
             LoginUserCommand = new Command(HandleLoginUserCommand);
             NavigateToRegisterPageCommand = new Command(HandleNavigateToRegisterPage);
             NavigateToLoginPageCommand = new Command(HandleNavigateToLoginPage);
+            ViewUniversitiesCommand = new Command(HandleViewUniversitiesCommand);
             User = new User();
         }
 
@@ -99,6 +114,23 @@ namespace MeltingApp.ViewModels
             });
             
         }
+
+
+        async void HandleViewUniversitiesCommand()
+        {
+            Universities = await _apiClientService.GetAsync<IEnumerable<University>>(ApiRoutes.Methods.GetUniversities, (success, responseMessage) =>
+            {
+                if (success)
+                {
+
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+            Universities.ToList();
+        } 
 
         public void EncodeTokenAndSaveUserId()
         {

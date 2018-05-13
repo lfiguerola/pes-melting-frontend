@@ -7,7 +7,7 @@ namespace MeltingApp.Interfaces
     public interface IApiClientService
     {
         Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase;
-        Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) ;
+        Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null);
         Task<T> PutAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase;
         Task<T> DeleteAsync<T>(string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase;
 

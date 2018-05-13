@@ -54,7 +54,8 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowUniversityInfo), ApiRoutes.Endpoints.ShowUniversityInfo},
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/3" + ApiRoutes.Endpoints.GetProfileUser },
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), ApiRoutes.Endpoints.GetAllEvents },
-            {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetAllComments), ApiRoutes.Endpoints.GetAllComments  }
+            {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetAllComments), ApiRoutes.Endpoints.GetAllComments},
+            {new Tuple<Type, string>(typeof(IEnumerable<University>), ApiRoutes.Methods.GetUniversities), ApiRoutes.Endpoints.GetUniversities }
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
@@ -62,14 +63,14 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), ApiRoutes.Endpoints.UnconfirmAssistance },
         };
 
-        public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null)
         {
             var json = JsonConvert.SerializeObject(entity);
             var jsonSerializerSettings = new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Error
             };
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjE4LCJyb2xlIjoic3R1ZGVudCIsImxhc3Rfc3RhdHVzIjoxNTI1NzI3ODQ2fQ.fB9TBQ8xNSGtJc2YPvIIuIJX3nGAKQ0mlSZNKOz3Ezg");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxLCJyb2xlIjoic3R1ZGVudCIsImxhc3Rfc3RhdHVzIjoxNTI2MjI5NTQyfQ._JGlxMqXcX_8RuJgJziKY-HhAHSk8S8BNhRQH7wezYg");
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             ApiResponseMessage responseMessage = null;
             string postResult = null;
@@ -77,7 +78,7 @@ namespace MeltingApp.Services
             {
                 var result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
                 postResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                T deserializedObject = default(T);
                 try
                 {
                     deserializedObject = JsonConvert.DeserializeObject<T>(postResult, jsonSerializerSettings);
@@ -94,7 +95,7 @@ namespace MeltingApp.Services
                     {
                         //token de l'estil a: {"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI"}
                         var token = postResult.Substring(8, postResult.Length - 8 - 2);
-                        entity.token = token;
+                       // entity.token = token;
 
                     }
                     successResultCallback?.Invoke(true, responseMessage?.message);
@@ -106,11 +107,11 @@ namespace MeltingApp.Services
             catch (HttpRequestException ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                return null;
+                return default(T);
             }
         }
 
-        public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) 
+        public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null)
         {
 
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.rLzcTl4Rx0HbthKITbMjgHJr0lB_avE-O1Tj0WxtWKs");
@@ -188,8 +189,7 @@ namespace MeltingApp.Services
         }
 
 
-
-        public async Task<T> PutAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<T> PutAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null)
         {
 
             var json = JsonConvert.SerializeObject(entity);
@@ -205,7 +205,7 @@ namespace MeltingApp.Services
             {
                 var result = await HttpClient.PutAsync(new Uri(GetPutUri<T>(methodName)), content);
                 putResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                T deserializedObject = default(T);
                 try
                 {
                     deserializedObject = JsonConvert.DeserializeObject<T>(putResult, jsonSerializerSettings);

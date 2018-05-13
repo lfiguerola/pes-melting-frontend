@@ -10,14 +10,14 @@
             <Label x:Name="CountryLabelTitle" Text="Country:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <!--Omplir amb lo de la Carla -->
             <Entry Text="{Binding User.country_code}"></Entry>
-            <Label x:Name="FacultyLabelTitle" Text="FacultyId:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
-            <Entry Text="{Binding User.faculty_id}"></Entry>
+            <Label x:Name="UniversityLabelTitle" Text="UniversityId:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Picker ItemsSource="{Binding Universities}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"></Picker>
             <Label x:Name="BiographyTitleLabel" Text="Biography:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Entry Text="{Binding User.biography}"></Entry>
             <!--<Label x:Name="AvatarLabelTitle" Text="Avatar"></Label>
             <Label x:Name="AvatarLabel" Text="{Binding User.avatarURL}"></Label>-->
             <Button x:Name="CreateButton" Text="Create" Command="{Binding CreateProfileCommand}"></Button>
-            
+      
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

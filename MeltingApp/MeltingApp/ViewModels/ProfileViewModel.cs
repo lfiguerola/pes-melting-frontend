@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
@@ -13,14 +14,17 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private User _user;
+        private University _university;
+        private List<University> _universities;
         private string _responseMessage;
 
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
         public Command CreateProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
+        public Command ViewUniversitiesCommand { get; set; }
         //public Command SetAvatarProfileCommand { get; set; }
-        
+
         public User User
         {
             get { return _user; }
@@ -28,6 +32,16 @@ namespace MeltingApp.ViewModels
             {
                 _user = value;
                 OnPropertyChanged(nameof(User));
+            }
+        }
+
+        public University University
+        {
+            get { return _university; }
+            set
+            {
+                _university = value;
+                OnPropertyChanged(nameof(University));
             }
         }
 
@@ -50,6 +64,7 @@ namespace MeltingApp.ViewModels
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
+            ViewUniversitiesCommand = new Command(HandleViewUniversitiesCommand);
             User = new User();
         }
 
@@ -89,6 +104,12 @@ namespace MeltingApp.ViewModels
             }
         }
 
+        async void HandleViewUniversitiesCommand()
+        {
+           
+            
+        }
+
         async void HandleSaveEditProfileCommand()
         {
             await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
@@ -113,8 +134,11 @@ namespace MeltingApp.ViewModels
                 if (isSuccess)
                 {
                     HandleViewProfileCommand();
+                   
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                _navigationService.PopAsync(); //tornem a la main page
+                _navigationService.PushAsync<ProfilePage>();
             });
         }
 

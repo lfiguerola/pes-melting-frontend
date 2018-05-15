@@ -43,7 +43,7 @@ namespace MeltingApp.Services
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
         {
             //TODO: Remove this fake url
-            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent}
+            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent},
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/11" + ApiRoutes.Endpoints.GetProfileUser }
 
         };

@@ -44,31 +44,8 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>();
             _apiClientService = DependencyService.Get<IApiClientService>();
-            _staticInfo = new StaticInfo()
-            {
-                adress = "Carrer Sparragus",
-                universityName = "UPC",
-                latitude = "359825.6",
-                longitude = "7872.5",
-                phone = "123456789"
-            };
+            _staticInfo = new StaticInfo();
             //NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
-        }
-
-        /*async*/
-        void HandleStaticInfoCommand()
-        {
-
-            //await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName);
-            _staticInfo = new StaticInfo()
-            {
-                adress = "Carrer Sparragus",
-                universityName = "UPC",
-                latitude = "359825.6",
-                longitude = "7872.5",
-                phone = "123456789"
-            };
-            _navigationService.SetRootPage<StaticInfoPage>(this);
         }
     }
 }

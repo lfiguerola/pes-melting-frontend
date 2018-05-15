@@ -114,6 +114,7 @@ namespace MeltingApp.ViewModels
 
         void HandleStaticInfoCommand()
         {
+            //await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName
             _staticInfo = new StaticInfo()
             {
                 adress = "Carrer Sparragus",
@@ -122,8 +123,7 @@ namespace MeltingApp.ViewModels
                 longitude = "7872.5",
                 phone = "123456789"
             };
-            //await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName);
-            _navigationService.SetRootPage<StaticInfoPage>(this);
+           _navigationService.PushAsync<StaticInfoPage>(this);
         }
     }
 }

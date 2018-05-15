@@ -43,7 +43,8 @@ namespace MeltingApp.Services
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
         {
             //TODO: Remove this fake url
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/11" + ApiRoutes.Endpoints.GetProfileUser }
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/11" + ApiRoutes.Endpoints.GetProfileUser },
+            {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), ApiRoutes.Endpoints.GetAllEvents }
         };
 
         public Dictionary<Type, string> UrlDeleteDictionary { get; set; } = new Dictionary<Type, string>()
@@ -98,7 +99,7 @@ namespace MeltingApp.Services
             }
         }
 
-        public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) 
         {
             ApiResponseMessage responseMessage = null;
             string getResult = null;
@@ -112,7 +113,7 @@ namespace MeltingApp.Services
                 HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI");
                 var result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
                 getResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                T deserializedObject = default(T);
 
                 try
                 {

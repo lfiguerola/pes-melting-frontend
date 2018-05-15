@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
@@ -14,11 +15,14 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private string _responseMessage;
 	    private User _user;
+	    private Event _event;
+	    private IEnumerable<Event> _allEvents;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+        public Command NavigateToGetAllEventsCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -26,12 +30,28 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
-		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
+            SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
             User = new User();
         }
 
-        void HandleNavigateToCreateEventPageCommand()
+	    async void HandleNavigateToGetAllEventsCommand()
+	    {
+	        AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
+	        {
+	            if (success)
+	            {
+	                _navigationService.PushAsync<EventList>(this);
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+            });
+	    }
+
+	    void HandleNavigateToCreateEventPageCommand()
         {
             _navigationService.PushAsync<CreateEvent>();
         }
@@ -83,7 +103,27 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
-	    public string ResponseMessage
+	    public IEnumerable<Event> AllEvents
+	    {
+	        get { return _allEvents; }
+	        set
+	        {
+	            _allEvents = value;
+	            OnPropertyChanged(nameof(AllEvents));
+	        }
+	    }
+
+	    public Event Event
+	    {
+	        get { return _event; }
+	        set
+	        {
+	            _event = value;
+	            OnPropertyChanged(nameof(Event));
+	        }
+	    }
+
+        public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
 	        set

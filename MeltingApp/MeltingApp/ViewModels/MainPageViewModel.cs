@@ -32,8 +32,7 @@ namespace MeltingApp.ViewModels
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
-
-		    UploadImageCommand = new Command(UploadImageButton_Clicked);
+		    UploadImageCommand = new Command(HandleUploadImageCommand);
             User = new User();
         }
 
@@ -114,7 +113,7 @@ namespace MeltingApp.ViewModels
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
 
-	    private async void UploadImageButton_Clicked()
+	    private async void HandleUploadImageCommand()
 	    {
 	        if (!CrossMedia.Current.IsPickPhotoSupported)
 	        {

@@ -16,7 +16,8 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private User _user;
         private string _responseMessage;
-        
+        private ImageSource _image1;
+
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
 
@@ -44,7 +45,15 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public ImageSource Image1 { get; private set; }
+        public ImageSource Image1
+        {
+            get { return _image1; }
+            set
+            {
+                _image1 = value;
+                OnPropertyChanged(nameof(Image1));
+            }
+        }
 
         public ProfileViewModel()
         {
@@ -53,7 +62,7 @@ namespace MeltingApp.ViewModels
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
-            UploadImageCommand = new Command(UploadImageButton_Clicked);
+            UploadImageCommand = new Command(HandleUploadImageCommand);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
         }
 
@@ -117,7 +126,7 @@ namespace MeltingApp.ViewModels
             _navigationService.PushAsync<EditProfilePage>(this);
         }
 
-        private async void UploadImageButton_Clicked()
+        private async void HandleUploadImageCommand()
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {

@@ -23,6 +23,8 @@ namespace MeltingApp.ViewModels
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
+	    public Command InfoEventCommand { get; set; }
+
 
         public MainPageViewModel ()
 		{
@@ -33,10 +35,18 @@ namespace MeltingApp.ViewModels
 		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
+		    InfoEventCommand = new Command(HandleInfoEventCommand);
+
             User = new User();
         }
 
-	    async void HandleNavigateToGetAllEventsCommand()
+	    void HandleInfoEventCommand()
+	    {
+	        Event = null;
+	        _navigationService.PushAsync<ShowEvent>();
+	    }
+
+        async void HandleNavigateToGetAllEventsCommand()
 	    {
 	        AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
 	        {

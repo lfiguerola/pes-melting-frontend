@@ -6,6 +6,7 @@ namespace MeltingApp.Models
 {
     public class Event : EntityBase
     {
+        private int _id;
         private string _title;
         //private int _karma;
         private string _description;
@@ -20,6 +21,16 @@ namespace MeltingApp.Models
         //private ?comment[] _comments;
 
 
+        public int id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(id));
+            }
+        }
+
         /// <summary>
         /// the event name
         /// </summary>
@@ -32,22 +43,9 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(title));
             }
         }
-        
-        
-        /// <summary>
-        /// the event karma
-        /// </summary>
-        /*public int karma
-        {
-            get { return _karma; }
-            set
-            {
-                _karma = value;
-                OnPropertyChanged(nameof(karma));
-            }
-        }*/
-        
-        
+
+
+
         /// <summary>
         /// the event description
         /// </summary>
@@ -61,9 +59,7 @@ namespace MeltingApp.Models
             }
         }
 
-        /// <summary>
-        /// the event location
-        /// </summary>
+
         public string latitude
         {
             get { return _latitude; }
@@ -113,20 +109,5 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(date));
             }
         }
-
-        /// <summary>
-        /// the user name
-        /// </summary>
-        /*public DateTime dateTime
-        {
-            get { return _dateTime; }
-            set
-            {
-                _dateTime = value;
-                OnPropertyChanged(nameof(dateTime));
-            }
-        }*/
-
-
     }
 }

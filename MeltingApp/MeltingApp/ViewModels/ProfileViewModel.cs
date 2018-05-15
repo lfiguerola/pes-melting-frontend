@@ -5,6 +5,7 @@ using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
+using Plugin.Media;
 using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
@@ -20,6 +21,7 @@ namespace MeltingApp.ViewModels
         public Command SaveEditProfileCommand { get; set; }
 
         public Command ViewProfileCommand { get; set; }
+        public Command UploadImageCommand { get; set; }
         //public Command SetAvatarProfileCommand { get; set; }
 
         public User User
@@ -42,6 +44,8 @@ namespace MeltingApp.ViewModels
             }
         }
 
+        public ImageSource Image1 { get; private set; }
+
         public ProfileViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
@@ -49,6 +53,7 @@ namespace MeltingApp.ViewModels
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
+            UploadImageCommand = new Command(UploadImageButton_Clicked);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
         }
 
@@ -110,6 +115,20 @@ namespace MeltingApp.ViewModels
         void HandleNavigateToEditProfilePageCommand()
         {
             _navigationService.PushAsync<EditProfilePage>(this);
+        }
+
+        private async void UploadImageButton_Clicked()
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
+                return;
+            }
+
+            var file = await CrossMedia.Current.PickPhotoAsync();
+            if (file == null) return;
+
+            Image1 = ImageSource.FromStream(() => file.GetStream());
         }
     }
 }

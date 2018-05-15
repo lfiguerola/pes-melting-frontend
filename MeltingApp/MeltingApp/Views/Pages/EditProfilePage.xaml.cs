@@ -16,7 +16,7 @@ namespace MeltingApp.Views.Pages
 		    BindingContext = new ProfileViewModel();
         }
 
-	    private async void UploadImageButton_Clicked(object sender, EventArgs e)
+	    /*private async void UploadImageButton_Clicked(object sender, EventArgs e)
 	    {
 	        if (!CrossMedia.Current.IsPickPhotoSupported)
 	        {
@@ -28,6 +28,6 @@ namespace MeltingApp.Views.Pages
             if (file == null) return;
 
             Image1.Source = ImageSource.FromStream(() => file.GetStream());
-	    }
+	    }*/
 	}
 }

@@ -5,6 +5,7 @@ using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
+using Plugin.Media;
 using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
@@ -15,11 +16,13 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private string _responseMessage;
 	    private User _user;
-       
+	    private ImageSource _image1;
+
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+	    public Command UploadImageCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -29,6 +32,8 @@ namespace MeltingApp.ViewModels
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
+
+		    UploadImageCommand = new Command(UploadImageButton_Clicked);
             User = new User();
         }
 
@@ -94,9 +99,33 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public ImageSource Image1
+	    {
+	        get { return _image1; }
+	        set
+	        {
+	            _image1 = value;
+                OnPropertyChanged(nameof(Image1));
+	        }
+	    }
+
         void HandleNavigateToEditProfilePageCommand()
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
+	    }
+
+	    private async void UploadImageButton_Clicked()
+	    {
+	        if (!CrossMedia.Current.IsPickPhotoSupported)
+	        {
+	            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
+	            return;
+	        }
+
+	        var file = await CrossMedia.Current.PickPhotoAsync();
+	        if (file == null) return;
+
+	        Image1 = ImageSource.FromStream(() => file.GetStream());
 	    }
     }
 }

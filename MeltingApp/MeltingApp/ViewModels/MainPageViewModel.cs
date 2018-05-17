@@ -141,18 +141,29 @@ namespace MeltingApp.ViewModels
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
 
-        void HandleStaticInfoCommand()
+        async void HandleStaticInfoCommand()
         {
-            //await _apiClientService.PostAsync<User>(User, ApiRoutes.RegisterUserMethodName
-            _staticInfo = new StaticInfo()
+            StaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Static Info requested successfully");
+                    _navigationService.PushAsync<StaticInfoPage>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+            /*= new StaticInfo()
             {
                 adress = "Carrer Sparragus",
                 universityName = "UPC",
                 latitude = "359825.6",
                 longitude = "7872.5",
                 phone = "123456789"
-            };
-           _navigationService.PushAsync<StaticInfoPage>(this);
+            };*/
+            
         }
     }
 }

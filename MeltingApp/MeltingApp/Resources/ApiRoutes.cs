@@ -20,6 +20,7 @@ namespace MeltingApp.Resources
             public const string EditProfileUser = "EditProfile";
             public const string AvatarProfileUser = "AvatarProfile";
             public const string ShowEvent = "ShowEvent";
+            public const string ShowFacultyInfo = "ShowFacultyInfo";
 
         }
 
@@ -36,6 +37,7 @@ namespace MeltingApp.Resources
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
             public const string ShowEvent = "/events/2/event";
+            public const string ShowFacultyInfo = "/location/showFacultyInfo";
 
         }
 

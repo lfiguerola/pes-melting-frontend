@@ -16,6 +16,7 @@ namespace MeltingApp.ViewModels
         private string _responseMessage;
 	    private User _user;
 	    private Event _event;
+	    private Event _eventSelected;
 	    private IEnumerable<Event> _allEvents;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
@@ -42,8 +43,8 @@ namespace MeltingApp.ViewModels
 
 	    void HandleInfoEventCommand()
 	    {
-	        Event = null;
-	        _navigationService.PushAsync<ShowEvent>();
+	        Event = EventSelected;
+	        _navigationService.PushAsync<ViewEvent>();
 	    }
 
         async void HandleNavigateToGetAllEventsCommand()
@@ -130,6 +131,16 @@ namespace MeltingApp.ViewModels
 	        {
 	            _event = value;
 	            OnPropertyChanged(nameof(Event));
+	        }
+	    }
+
+	    public Event EventSelected
+	    {
+	        get { return _eventSelected; }
+	        set
+	        {
+	            _eventSelected = value;
+	            OnPropertyChanged(nameof(EventSelected));
 	        }
 	    }
 

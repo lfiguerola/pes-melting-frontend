@@ -4,22 +4,24 @@
              x:Class="MeltingApp.Views.Pages.EventList">
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{Binding AllEvents}" Header="All Events" Footer="No more events">
+            <ListView ItemsSource="{Binding AllEvents}" Header="All Events" Footer="No more events" 
+                      SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Orientation="Vertical">
                                 <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding title}"/>
+                                    <Label Text="{Binding title}">
+                                    <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
+                                                              CommandParameter="{Binding}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
                                     <Label Text="{Binding description}"/>
                                     <Label Text="{Binding name}"/>
                                     <Label Text="{Binding date}"/>
                                 </StackLayout>
                             </StackLayout>
-                            <ViewCell.ContextActions>
-                                <MenuItem CommandParameter="{Binding InfoEventCommand}"
-                                          Text="More" />
-                            </ViewCell.ContextActions>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

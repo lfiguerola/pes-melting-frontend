@@ -155,15 +155,15 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });
-            /*= new StaticInfo()
-            {
-                adress = "Carrer Sparragus",
-                universityName = "UPC",
-                latitude = "359825.6",
-                longitude = "7872.5",
-                phone = "123456789"
-            };*/
-            
+            /* = new StaticInfo()
+             {
+                 address = "Carrer Sparragus",
+                 name = "UPC",
+                 latitude = 41.4113891882873F,
+                 longitude = 41.4113891882873F,
+                 telephone = "123456789"
+             };
+             _navigationService.PushAsync<StaticInfoPage>(this);*/
         }
     }
 }

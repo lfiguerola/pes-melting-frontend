@@ -8,15 +8,19 @@
             <Label Text="University information"
                    HorizontalOptions="CenterAndExpand" />
 
-            <Label x:Name="UniNameLabel" Text="{Binding StaticInfo.universityName}" FontSize="Large"></Label>
+            <Label x:Name="UniAliasLabel" Text="{Binding StaticInfo.alias}" FontSize="Large"></Label>
+
+            <Label x:Name="UniNameLabel" Text="{Binding StaticInfo.name}"></Label>
+
+            <Label x:Name="UniTelephoneLabel" Text="{Binding StaticInfo.telephone}"></Label>
 
             <Label x:Name="UniLatitudeLabel" Text="{Binding StaticInfo.latitude}"></Label>
 
             <Label x:Name="UniLongitudeLabel" Text="{Binding StaticInfo.longitude}"></Label>
 
-            <Label x:Name="UniAdressLabel" Text="{Binding StaticInfo.adress}"></Label>
+            <Label x:Name="UniAdressLabel" Text="{Binding StaticInfo.address}"></Label>
             
-            <Label x:Name="UniPhoneLabel" Text="{Binding StaticInfo.phone}"></Label>
+            <Label x:Name="UniPhoneLabel" Text="{Binding StaticInfo.id}"></Label>
 
         </StackLayout>
     </ContentPage.Content>

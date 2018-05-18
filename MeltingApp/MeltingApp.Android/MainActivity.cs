@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using MeltingApp.Interfaces;
+using Plugin.Permissions;
 using Xamarin.Forms;
 
 namespace MeltingApp.Droid
@@ -13,6 +14,7 @@ namespace MeltingApp.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = this;
 
             base.OnCreate(bundle);
 
@@ -21,6 +23,12 @@ namespace MeltingApp.Droid
 
             //registrem les funcionalitats del sistema operatiu
             DependencyService.Register<IOperatingSystemMethods, OperatingSystemMethods>();
+            
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

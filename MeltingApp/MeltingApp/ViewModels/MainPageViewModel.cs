@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
+using Plugin.Media;
 using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
@@ -16,20 +18,30 @@ namespace MeltingApp.ViewModels
         private string _responseMessage;
 	    private User _user;
 	    private Event _event;
+	    private Event _eventSelected;
+	    private ImageSource _image1;
+        private IEnumerable<Event> _allEvents;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
-        public Command NavigateToViewEventPageCommand { get; set; }
-        public Command NavigateToEditProfilePageCommand { get; set; }
+	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+<<<<<<< HEAD
         public Command NavigateToStaticInfoPage { get; set; }
         public Command ShowEventCommand { get; set; }
+=======
+	    public Command UploadImageCommand { get; set; }
+        public Command NavigateToGetAllEventsCommand { get; set; }
+	    public Command InfoEventCommand { get; set; }
+
+>>>>>>> develop
 
         public MainPageViewModel ()
-		    {
+		{
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
+<<<<<<< HEAD
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
@@ -38,28 +50,45 @@ namespace MeltingApp.ViewModels
             Event = new Event();
             User = new User();
             StaticInfo = new StaticInfo();
+=======
+		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
+		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
+            SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+		    ViewProfileCommand = new Command(HandleViewProfileCommand);
+		    InfoEventCommand = new Command(HandleInfoEventCommand);
+		    UploadImageCommand = new Command(HandleUploadImageCommand);
+            Event = new Event();
+            User = new User();
+>>>>>>> develop
         }
 
-        void HandleNavigateToCreateEventPageCommand()
-        {
-            _navigationService.PushAsync<CreateEvent>();
-        }
-	    async void HandleNavigateToViewEventPageCommand()
+	    void HandleInfoEventCommand()
 	    {
-	        Event = await _apiClientService.GetAsync<Event>(ApiRoutes.Methods.ShowEvent, (success, responseMessage) =>
+	        Event = EventSelected;
+	        _navigationService.PushAsync<ViewEvent>();
+	    }
+
+        async void HandleNavigateToGetAllEventsCommand()
+	    {
+	        AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
 	        {
 	            if (success)
 	            {
-	                _navigationService.PushAsync<ViewEvent>(this);
+	                _navigationService.PushAsync<EventList>(this);
 	            }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 	            }
-	        });
+            });
 	    }
 
-        async void HandleViewProfileCommand()
+	    void HandleNavigateToCreateEventPageCommand()
+        {
+            _navigationService.PushAsync<CreateEvent>();
+        }
+
+	    async void HandleViewProfileCommand()
 	    {
 	        bool b = false;
 	        User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
@@ -106,6 +135,7 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+<<<<<<< HEAD
         public StaticInfo StaticInfo
         {
             get { return _staticInfo; }
@@ -116,6 +146,17 @@ namespace MeltingApp.ViewModels
             }
         }
 
+=======
+	    public IEnumerable<Event> AllEvents
+	    {
+	        get { return _allEvents; }
+	        set
+	        {
+	            _allEvents = value;
+	            OnPropertyChanged(nameof(AllEvents));
+	        }
+	    }
+>>>>>>> develop
 
 	    public Event Event
 	    {
@@ -126,6 +167,17 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(Event));
 	        }
 	    }
+
+	    public Event EventSelected
+	    {
+	        get { return _eventSelected; }
+	        set
+	        {
+	            _eventSelected = value;
+	            OnPropertyChanged(nameof(EventSelected));
+	        }
+	    }
+
         public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
@@ -136,11 +188,23 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
-        void HandleNavigateToEditProfilePageCommand()
+	    public ImageSource Image1
+	    {
+	        get { return _image1; }
+	        set
+	        {
+	            _image1 = value;
+	            OnPropertyChanged(nameof(Image1));
+	        }
+	    }
+
+
+	    void HandleNavigateToEditProfilePageCommand()
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
 
+<<<<<<< HEAD
         async void HandleStaticInfoCommand()
         {
             StaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
@@ -166,4 +230,18 @@ namespace MeltingApp.ViewModels
              _navigationService.PushAsync<StaticInfoPage>(this);*/
         }
     }
+=======
+	    private async void HandleUploadImageCommand()
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
+                return;
+            }
+            var file = await CrossMedia.Current.PickPhotoAsync();
+            if (file == null) return;
+                Image1 = ImageSource.FromStream(() => file.GetStream());
+	        }
+        }
+>>>>>>> develop
 }

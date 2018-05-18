@@ -26,43 +26,33 @@ namespace MeltingApp.ViewModels
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
-<<<<<<< HEAD
         public Command NavigateToStaticInfoPage { get; set; }
         public Command ShowEventCommand { get; set; }
-=======
 	    public Command UploadImageCommand { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
 
->>>>>>> develop
+
 
         public MainPageViewModel ()
 		{
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
-<<<<<<< HEAD
-            NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
-            SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
-            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
-            ViewProfileCommand = new Command(HandleViewProfileCommand);
-            NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
-            Event = new Event();
-            User = new User();
-            StaticInfo = new StaticInfo();
-=======
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
+            //NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
             Event = new Event();
             User = new User();
->>>>>>> develop
+            //StaticInfo = new StaticInfo();
         }
 
-	    void HandleInfoEventCommand()
+        void HandleInfoEventCommand()
 	    {
 	        Event = EventSelected;
 	        _navigationService.PushAsync<ViewEvent>();
@@ -135,7 +125,7 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
-<<<<<<< HEAD
+
         public StaticInfo StaticInfo
         {
             get { return _staticInfo; }
@@ -146,7 +136,7 @@ namespace MeltingApp.ViewModels
             }
         }
 
-=======
+
 	    public IEnumerable<Event> AllEvents
 	    {
 	        get { return _allEvents; }
@@ -156,7 +146,7 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(AllEvents));
 	        }
 	    }
->>>>>>> develop
+
 
 	    public Event Event
 	    {
@@ -204,7 +194,7 @@ namespace MeltingApp.ViewModels
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
 
-<<<<<<< HEAD
+
         async void HandleStaticInfoCommand()
         {
             StaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
@@ -230,7 +220,7 @@ namespace MeltingApp.ViewModels
              _navigationService.PushAsync<StaticInfoPage>(this);*/
         }
     }
-=======
+
 	    private async void HandleUploadImageCommand()
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
@@ -243,5 +233,4 @@ namespace MeltingApp.ViewModels
                 Image1 = ImageSource.FromStream(() => file.GetStream());
 	        }
         }
->>>>>>> develop
 }

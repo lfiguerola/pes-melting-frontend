@@ -219,7 +219,6 @@ namespace MeltingApp.ViewModels
              };
              _navigationService.PushAsync<StaticInfoPage>(this);*/
         }
-    }
 
 	    private async void HandleUploadImageCommand()
         {

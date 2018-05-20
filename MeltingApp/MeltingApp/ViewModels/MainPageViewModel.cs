@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
@@ -28,6 +29,7 @@ namespace MeltingApp.ViewModels
 	    public Command UploadImageCommand { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
+	    public Command NavigateToViewEventPageCommand { get; set; }
 
 
         public MainPageViewModel ()
@@ -41,17 +43,35 @@ namespace MeltingApp.ViewModels
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
+		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
             Event = new Event();
+		    EventSelected = new Event(); 
             User = new User();
         }
 
 	    void HandleInfoEventCommand()
 	    {
 	        Event = EventSelected;
-	        _navigationService.PushAsync<ViewEvent>();
+	        //Event = AllEvents.ElementAt(id);
+	        _navigationService.PushAsync<ViewEvent>(this);
 	    }
 
-        async void HandleNavigateToGetAllEventsCommand()
+	    async void HandleNavigateToViewEventPageCommand()
+	    {
+	        Event = await _apiClientService.GetAsync<Event>(ApiRoutes.Methods.ShowEvent, (success, responseMessage) =>
+	        {
+	            if (success)
+	            {
+	                _navigationService.PushAsync<ViewEvent>(this);
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        });
+	     }
+
+    async void HandleNavigateToGetAllEventsCommand()
 	    {
 	        AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
 	        {

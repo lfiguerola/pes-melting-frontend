@@ -15,7 +15,6 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
 	    private Event _event;
         private string _responseMessage;
-
         public Command CreateEventCommand { get; set; }
 
         public Event Event
@@ -42,6 +41,7 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+
             CreateEventCommand = new Command(HandleCreateEventCommand);
             Event = new Event();
             Event.latitude = "0";

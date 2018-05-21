@@ -12,6 +12,7 @@
             <Label Text="{Binding Event.address}"></Label>
             <Label Text="{Binding Event.name}"></Label>
             <Label Text="{Binding Event.date}"></Label>
+            <Button Text="I'll asssit" Command="{Binding ConfirmAssistanceCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

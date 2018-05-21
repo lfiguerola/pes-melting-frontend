@@ -1,10 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Java.Lang;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
+using Boolean = System.Boolean;
 
 
 namespace MeltingApp.ViewModels
@@ -14,8 +16,11 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
 	    private Event _event;
+	    private Boolean _userAssists;
+	    private int _userAssistsInt;
         private string _responseMessage;
         public Command CreateEventCommand { get; set; }
+        public Command ConfirmAssistanceCommand { get; set; }
 
         public Event Event
 	    {
@@ -27,7 +32,7 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
-	    public string ResponseMessage
+	  public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
 	        set
@@ -36,6 +41,25 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(ResponseMessage));
 	        }
 	    }
+	    public Boolean UserAssists
+        {
+	        get { return _userAssists; }
+	        set
+	        {
+	            _userAssists = value;
+	            OnPropertyChanged(nameof(UserAssists));
+	        }
+	    }
+	    public int UserAssistsInt
+	    {
+	        get { return _userAssistsInt; }
+	        set
+	        {
+	            _userAssistsInt = value;
+	            OnPropertyChanged(nameof(UserAssistsInt));
+	        }
+	    }
+
 
         public EventViewModel()
         {
@@ -43,6 +67,12 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
 
             CreateEventCommand = new Command(HandleCreateEventCommand);
+            ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
+
+            Init();
+
+            
+
             Event = new Event();
             Event.latitude = "0";
             Event.longitude = "0";
@@ -50,6 +80,38 @@ namespace MeltingApp.ViewModels
             Event.name = "Infern";
             Event.date = "La fi del mon";
         }
+
+	    async private void Init()
+	    {
+	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        {
+	            if (isSuccess)
+	            {
+	                if (UserAssistsInt == 1) UserAssists = true;
+	                else UserAssists = false;
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+            });
+        }
+
+	    async void HandleConfirmAssistanceCommand()
+	    {
+	        if (UserAssists)
+	        {
+	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+	                    
+	                });
+	        }
+	        else
+	        {
+
+	        }
+	    }
 
         async void HandleCreateEventCommand()
         {

@@ -21,6 +21,8 @@ namespace MeltingApp.Resources
             public const string AvatarProfileUser = "AvatarProfile";
             public const string GetAllEvents = "GetAllEvents";
             public const string ShowEvent = "ShowEvent";
+            public const string ConfirmAssistance = "ConfirmAssitance";
+            public const string GetUserAssistance = "GetUserAssistance";
         }
 
         /// <summary>
@@ -37,6 +39,8 @@ namespace MeltingApp.Resources
             public const string AvatarProfileUser = "/profile/avatar";
             public const string GetAllEvents = "/users/1/events";
             public const string ShowEvent = "/events/2/event";
+            public const string ConfirmAssitance = "/users/1/events/2/votes";
+            public const string GetUserAssistance = "/users/1/events/2";
         }
     }
 }

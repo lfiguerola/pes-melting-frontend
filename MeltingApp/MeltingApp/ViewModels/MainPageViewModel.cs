@@ -23,6 +23,7 @@ namespace MeltingApp.ViewModels
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
 	    private Comment _comment;
+	    private IEnumerable<Comment> _allComments;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
@@ -35,6 +36,7 @@ namespace MeltingApp.ViewModels
 	    public Command InfoEventCommand { get; set; }
 	    public Command NavigateToViewEventPageCommand { get; set; }
 	    public Command CreateCommentCommand { get; set; }
+        public Command GetAllCommentsCommand { get; set; }
 
 
 
@@ -53,6 +55,7 @@ namespace MeltingApp.ViewModels
 
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
 		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
+            GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
             Comment = new Comment();
             Event = new Event();
 		    EventSelected = new Event(); 
@@ -60,8 +63,22 @@ namespace MeltingApp.ViewModels
             StaticInfo = new StaticInfo();
         }
 
+        async void HandleGetAllCommentsCommand()
+        {
+            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>>(ApiRoutes.Methods.GetAllComments, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    _navigationService.PushAsync<ViewEvent>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+        }
 
-	    async void HandleCreateCommentCommand()
+        async void HandleCreateCommentCommand()
 	    {
 	        await _apiClientService.PostAsync<Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) => {
 	            ResponseMessage = responseMessage;
@@ -213,6 +230,16 @@ namespace MeltingApp.ViewModels
 	        {
 	            _comment = value;
 	            OnPropertyChanged(nameof(Comment));
+	        }
+	    }
+
+	    public IEnumerable<Comment> AllComments
+	    {
+	        get { return _allComments; }
+	        set
+	        {
+	            _allComments = value;
+	            OnPropertyChanged(nameof(AllComments));
 	        }
 	    }
 

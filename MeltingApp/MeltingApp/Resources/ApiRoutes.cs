@@ -23,6 +23,7 @@ namespace MeltingApp.Resources
             public const string ShowFacultyInfo = "ShowFacultyInfo";
             public const string GetAllEvents = "GetAllEvents";
             public const string CreateComment = "CreateComment";
+            public const string GetAllComments = "GetAllComments";
         }
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace MeltingApp.Resources
             public const string ShowFacultyInfo = "/locations/universities/2/faculties";
             public const string GetAllEvents = "/users/1/events";
             public const string CreateComment = "/users/5/events/2/comments";
+            public const string GetAllComments = "/users/5/events/2/comments";
         }
 
     }

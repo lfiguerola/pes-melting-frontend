@@ -15,7 +15,28 @@
                 <Label Text="{Binding Event.date}"></Label>
                 <Entry Text="{Binding Comment.content}"></Entry>
                 <Button Text="Create comment" Command="{Binding CreateCommentCommand}"></Button>
-                <!--<ListView></ListView>-->
+                <!--<ListView ItemsSource="{Binding AllComments}" Header="Comments" Footer="No more comments" 
+                          Mode=TwoWay}" x:Name="listView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding title}">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
+                                                                      CommandParameter="{Binding id}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <Label Text="{Binding description}"/>
+                                        <Label Text="{Binding name}"/>
+                                        <Label Text="{Binding date}"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>-->
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

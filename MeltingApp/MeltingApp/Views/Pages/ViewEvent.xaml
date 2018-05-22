@@ -3,15 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeltingApp.Views.Pages.ViewEvent">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="View Event"></Label>
-            <Label Text="{Binding Event.title}"></Label>
-            <Label Text="{Binding Event.description}"></Label>
-            <Label Text="{Binding Event.latitude}"></Label>
-            <Label Text="{Binding Event.longitude}"></Label>
-            <Label Text="{Binding Event.address}"></Label>
-            <Label Text="{Binding Event.name}"></Label>
-            <Label Text="{Binding Event.date}"></Label>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="View Event"></Label>
+                <Label Text="{Binding Event.title}"></Label>
+                <Label Text="{Binding Event.description}"></Label>
+                <Label Text="{Binding Event.latitude}"></Label>
+                <Label Text="{Binding Event.longitude}"></Label>
+                <Label Text="{Binding Event.address}"></Label>
+                <Label Text="{Binding Event.name}"></Label>
+                <Label Text="{Binding Event.date}"></Label>
+                <Entry Text="{Binding Comment.content}"></Entry>
+                <Button Text="Create comment" Command="{Binding CreateCommentCommand}"></Button>
+                <!--<ListView></ListView>-->
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

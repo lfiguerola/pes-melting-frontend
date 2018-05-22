@@ -53,9 +53,9 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(int), ApiRoutes.Methods.GetUserAssistance), ApiRoutes.Endpoints.GetUserAssistance},
         };
 
-        public Dictionary<Type, string> UrlDeleteDictionary { get; set; } = new Dictionary<Type, string>()
+        public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
-
+            {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.UnconfirmAssistance), ApiRoutes.Endpoints.UnconfirmAssistance },
         };
 
         public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
@@ -144,19 +144,42 @@ namespace MeltingApp.Services
             }
         }
 
-        //public async Task<bool?> DeleteAsync<T>(T entity) where T : EntityBase
-        //{
-        //    HttpResponseMessage result = null;
-        //    try
-        //    {
-        //        result = await HttpClient.DeleteAsync(new Uri($"{GetDeleteUri<T>()}/{entity.Key}"));
-        //    }
-        //    catch (Exception)
-        //    {
-        //        DependencyService.Get<IOperatingSystemMethods>().ShowToast($"An error has ocurred deleting {typeof(T)}. Check internet connection.");
-        //    }
-        //    return result?.IsSuccessStatusCode;
-        //}
+        public async Task<T> DeleteAsync<T>(string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        {
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOm51bGx9.eX4UcvZYnM-i6QLOBrAi1Qge5DykE5ofDNxxNOGNcEg");
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+            string deleteResult = null;
+            ApiResponseMessage responseMessage = null;
+            try
+            {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.yRbv93a6kK4lsBVTrNH-rogHo6_zUxJsTw3vUBKw1Gs");
+                var result = await HttpClient.DeleteAsync(new Uri(GetPostUri<T>(methodName)));
+                deleteResult = await result.Content.ReadAsStringAsync();
+                T deserializedObject = null;
+                try
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<T>(deleteResult, jsonSerializerSettings);
+                }
+                catch (JsonSerializationException)
+                {
+                    responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(deleteResult);
+                }
+                if (result.IsSuccessStatusCode)
+                {
+                    successResultCallback?.Invoke(true, responseMessage?.message);
+                }
+                else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
+
+                return deserializedObject;
+            }
+            catch (Exception)
+            {
+                throw new ApiClientException(deleteResult);
+            }
+        }
 
 
 
@@ -200,10 +223,10 @@ namespace MeltingApp.Services
         }
 
 
-        private string GetDeleteUri<T>()
+        /*private string GetDeleteUri<T>()
         {
             return UrlDeleteDictionary[typeof(T)];
-        }
+        }*/
         private string GetPutUri<T>(string methodName)
         {
             foreach (var key in UrlPutDictionary.Keys)

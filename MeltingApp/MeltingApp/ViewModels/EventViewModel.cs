@@ -109,8 +109,12 @@ namespace MeltingApp.ViewModels
 	        }
 	        else
 	        {
+	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
 
-	        }
+	                });
+            }
 	    }
 
         async void HandleCreateEventCommand()

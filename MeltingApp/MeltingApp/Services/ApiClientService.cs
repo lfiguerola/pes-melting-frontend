@@ -43,9 +43,11 @@ namespace MeltingApp.Services
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
         {
             //TODO: Remove this fake url
+            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent},
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/11" + ApiRoutes.Endpoints.GetProfileUser },
+            {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowFacultyInfo), ApiRoutes.Endpoints.ShowFacultyInfo},
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/11" + ApiRoutes.Endpoints.GetProfileUser },
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), ApiRoutes.Endpoints.GetAllEvents },
-            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent},
         };
 
         public Dictionary<Type, string> UrlDeleteDictionary { get; set; } = new Dictionary<Type, string>()
@@ -102,7 +104,7 @@ namespace MeltingApp.Services
 
         public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) 
         {
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOm51bGx9.eX4UcvZYnM-i6QLOBrAi1Qge5DykE5ofDNxxNOGNcEg");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.rLzcTl4Rx0HbthKITbMjgHJr0lB_avE-O1Tj0WxtWKs");
             ApiResponseMessage responseMessage = null;
             string getResult = null;
             var jsonSerializerSettings = new JsonSerializerSettings()
@@ -111,7 +113,8 @@ namespace MeltingApp.Services
             };
             try
             {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.yRbv93a6kK4lsBVTrNH-rogHo6_zUxJsTw3vUBKw1Gs");
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.rLzcTl4Rx0HbthKITbMjgHJr0lB_avE-O1Tj0WxtWKs");
+
                 var result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
                 getResult = await result.Content.ReadAsStringAsync();
                 T deserializedObject = default(T);

@@ -15,6 +15,7 @@ namespace MeltingApp.ViewModels
 	{
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private StaticInfo _staticInfo;
         private string _responseMessage;
 	    private User _user;
 	    private Event _event;
@@ -26,10 +27,13 @@ namespace MeltingApp.ViewModels
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+        public Command NavigateToStaticInfoPage { get; set; }
+        public Command ShowEventCommand { get; set; }
 	    public Command UploadImageCommand { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
 	    public Command NavigateToViewEventPageCommand { get; set; }
+
 
 
         public MainPageViewModel ()
@@ -40,16 +44,19 @@ namespace MeltingApp.ViewModels
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
+
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
+            StaticInfo = new StaticInfo();
         }
 
-	    void HandleInfoEventCommand()
+        void HandleInfoEventCommand()
 	    {
 	        Event = EventSelected;
 	        //Event = AllEvents.ElementAt(id);
@@ -138,6 +145,18 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+
+        public StaticInfo StaticInfo
+        {
+            get { return _staticInfo; }
+            set
+            {
+                _staticInfo = value;
+                OnPropertyChanged(nameof(StaticInfo));
+            }
+        }
+
+
 	    public IEnumerable<Event> AllEvents
 	    {
 	        get { return _allEvents; }
@@ -147,6 +166,7 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(AllEvents));
 	        }
 	    }
+
 
 	    public Event Event
 	    {
@@ -193,6 +213,32 @@ namespace MeltingApp.ViewModels
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
+
+
+        async void HandleStaticInfoCommand()
+        {
+            StaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Static Info requested successfully");
+                    _navigationService.PushAsync<StaticInfoPage>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+            /* = new StaticInfo()
+             {
+                 address = "Carrer Sparragus",
+                 name = "UPC",
+                 latitude = 41.4113891882873F,
+                 longitude = 41.4113891882873F,
+                 telephone = "123456789"
+             };
+             _navigationService.PushAsync<StaticInfoPage>(this);*/
+        }
 
 	    private async void HandleUploadImageCommand()
         {

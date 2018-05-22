@@ -7,6 +7,9 @@
             <Label Text="Welcome to Main Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+
+            
+            <Button Text="Static Info" Command="{Binding NavigateToStaticInfoPage}"></Button>
             <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
             <Button Text="Get All Events" Command="{Binding NavigateToGetAllEventsCommand}"></Button>
             <Button Text="View Event" Command="{Binding NavigateToViewEventPageCommand}"></Button>

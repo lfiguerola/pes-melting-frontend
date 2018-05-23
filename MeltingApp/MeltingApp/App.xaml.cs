@@ -59,6 +59,8 @@ namespace MeltingApp
             navigationService.RegisterPage<ProfilePage>();
             navigationService.RegisterPage<EditProfilePage>();
             navigationService.RegisterPage<EventList>();
+            navigationService.RegisterPage<HelpPage>();
+            navigationService.RegisterPage<AboutPage>();
         }
     }
 }

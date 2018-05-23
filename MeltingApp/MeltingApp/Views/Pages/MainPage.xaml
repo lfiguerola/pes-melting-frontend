@@ -8,7 +8,8 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
 
-            
+            <Button Text="About" Command="{Binding NavigateToAboutPageCommand}"></Button>
+            <Button Text="Help" Command="{Binding NavigateToHelpPageCommand}"></Button>
             <Button Text="Static Info" Command="{Binding NavigateToStaticInfoPage}"></Button>
             <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
             <Button Text="Get All Events" Command="{Binding NavigateToGetAllEventsCommand}"></Button>

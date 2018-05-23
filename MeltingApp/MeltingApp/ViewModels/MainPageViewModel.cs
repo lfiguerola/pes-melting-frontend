@@ -69,7 +69,7 @@ namespace MeltingApp.ViewModels
             {
                 if (success)
                 {
-                    _navigationService.PushAsync<ViewEvent>(this);
+                    //_navigationService.PushAsync<ViewEvent>(this);
                 }
                 else
                 {
@@ -86,8 +86,13 @@ namespace MeltingApp.ViewModels
 	            if (isSuccess)
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comment created successfully");
-	                _navigationService.SetRootPage<MainPage>();
+	                _navigationService.PopAsync();
+                    HandleNavigateToViewEventPageCommand();
 	            }
+	            else
+	            {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
 	        });
 	    }
 
@@ -104,6 +109,7 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
+	                HandleGetAllCommentsCommand();
 	                _navigationService.PushAsync<ViewEvent>(this);
 	            }
 	            else

@@ -30,6 +30,8 @@ namespace MeltingApp.ViewModels
         private int _userAssistsInt;
         private Comment _comment;
         private IEnumerable<Comment> _allComments;
+        private Help _help;
+        private About _about;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToEditProfilePageCommand { get; set; }
@@ -49,14 +51,18 @@ namespace MeltingApp.ViewModels
         public Command OpenMapStaticUniversityCommand { get; set; }
         public Command OpenMapEventCommand { get; set; }
         public Command NavigateToCreateProfilePageCommand { get; set; }
+        public Command NavigateToHelpPageCommand { get; set; }
+        public Command NavigateToAboutPageCommand { get; set; }
 
         public MainPageViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
-            NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
-            NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
+		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
+		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
+            NavigateToHelpPageCommand = new Command(HandleNavigateToHelpCommand);
+            NavigateToAboutPageCommand = new Command(HandleNavigateToAboutCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
@@ -413,6 +419,15 @@ namespace MeltingApp.ViewModels
             _navigationService.PushAsync<EditProfilePage>(this);
         }
 
+        void HandleNavigateToHelpCommand()
+        {
+            _navigationService.PushAsync<HelpPage>(this);
+        }
+
+        void HandleNavigateToAboutCommand()
+        {
+            _navigationService.PushAsync<AboutPage>(this);
+        }
 
         async void HandleStaticInfoCommand()
         {

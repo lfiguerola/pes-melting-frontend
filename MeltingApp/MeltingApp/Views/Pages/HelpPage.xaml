@@ -4,9 +4,16 @@
              x:Class="MeltingApp.Views.Pages.HelpPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Ayuda y sugerencias" />
+
+
+            <Label Text=" Preguntanos"/>
+            <Entry Text="Escribe tu pregunta"></Entry>
+
+            <Label Text="Preguntas Frecuentes"/>
+            <Label Text="¿Que es el Karma?"></Label>
+            <Label Text="Cerrar Sesión"></Label>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -246,7 +246,7 @@ namespace MeltingApp.ViewModels
 	    {
             //si el perfil ja s'ha creat
             bool b = false;
-            User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, -1, (success, responseMessage) =>
+            User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
                 if (success)
                 {

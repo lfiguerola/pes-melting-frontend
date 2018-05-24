@@ -40,8 +40,8 @@ namespace MeltingApp.ViewModels
 	    public Command CreateCommentCommand { get; set; }
         public Command GetAllCommentsCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
-        public Command OpenMapCommand { get; set; }
-
+        public Command OpenMapStaticCommand { get; set; }
+        public Command OpenMapEventCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -59,7 +59,8 @@ namespace MeltingApp.ViewModels
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
 		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
             GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
-            OpenMapCommand = new Command(HandleOpenMapCommand);
+            OpenMapStaticCommand = new Command(HandleOpenMapStaticCommand);
+		    OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
             Comment = new Comment();
             Event = new Event();
 		    EventSelected = new Event(); 
@@ -67,10 +68,18 @@ namespace MeltingApp.ViewModels
             StaticInfo = new StaticInfo();
         }
 
-        private async void HandleOpenMapCommand()
+        private async void HandleOpenMapEventCommand()
         {
-            //var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(StaticInfo.latitude.ToString()), Double.Parse(StaticInfo.longitude.ToString()));
-            var success = await CrossExternalMaps.Current.NavigateTo("Location", 41.378949261870424, 2.1794413405262176);
+            var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(Event.latitude), Double.Parse(Event.longitude));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
+        }
+
+        private async void HandleOpenMapStaticCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(StaticInfo.latitude.ToString()), Double.Parse(StaticInfo.longitude.ToString()));
             if (!success)
             {
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");

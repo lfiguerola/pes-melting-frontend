@@ -22,6 +22,8 @@ namespace MeltingApp.Resources
             public const string ShowEvent = "ShowEvent";
             public const string ShowFacultyInfo = "ShowFacultyInfo";
             public const string GetAllEvents = "GetAllEvents";
+            public const string CreateComment = "CreateComment";
+            public const string GetAllComments = "GetAllComments";
         }
 
         /// <summary>
@@ -29,6 +31,7 @@ namespace MeltingApp.Resources
         /// </summary>
         public struct Endpoints
         {
+            //TODO: Remove this fake url
             public const string ActivateUser = "/auth/activate";
             public const string RegisterUser = "/auth/register";
             public const string LoginUser = "/auth/login";
@@ -39,6 +42,8 @@ namespace MeltingApp.Resources
             public const string ShowEvent = "/events/2/event";
             public const string ShowFacultyInfo = "/users/3/profile/faculty";
             public const string GetAllEvents = "/users/1/events";
+            public const string CreateComment = "/users/5/events/2/comments";
+            public const string GetAllComments = "/users/5/events/2/comments";
         }
 
     }

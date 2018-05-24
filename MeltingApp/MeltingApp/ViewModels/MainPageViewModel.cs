@@ -22,6 +22,8 @@ namespace MeltingApp.ViewModels
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
+	    private Comment _comment;
+	    private IEnumerable<Comment> _allComments;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
@@ -33,6 +35,8 @@ namespace MeltingApp.ViewModels
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
 	    public Command NavigateToViewEventPageCommand { get; set; }
+	    public Command CreateCommentCommand { get; set; }
+        public Command GetAllCommentsCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
 
 
@@ -50,13 +54,48 @@ namespace MeltingApp.ViewModels
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
-
-            NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
+		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
+		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
+            GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
+            Comment = new Comment();
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
             StaticInfo = new StaticInfo();
         }
+
+        async void HandleGetAllCommentsCommand()
+        {
+            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>>(ApiRoutes.Methods.GetAllComments, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    //_navigationService.PushAsync<ViewEvent>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+        }
+
+        async void HandleCreateCommentCommand()
+	    {
+	        await _apiClientService.PostAsync<Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) => {
+	            ResponseMessage = responseMessage;
+	            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            if (isSuccess)
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comment created successfully");
+	                _navigationService.PopAsync();
+                    HandleNavigateToViewEventPageCommand();
+	            }
+	            else
+	            {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+	        });
+	    }
 
         void HandleInfoEventCommand()
 	    {
@@ -71,6 +110,7 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
+	                HandleGetAllCommentsCommand();
 	                _navigationService.PushAsync<ViewEvent>(this);
 	            }
 	            else
@@ -187,6 +227,26 @@ namespace MeltingApp.ViewModels
 	        {
 	            _eventSelected = value;
 	            OnPropertyChanged(nameof(EventSelected));
+	        }
+	    }
+
+	    public Comment Comment
+	    {
+	        get { return _comment; }
+	        set
+	        {
+	            _comment = value;
+	            OnPropertyChanged(nameof(Comment));
+	        }
+	    }
+
+	    public IEnumerable<Comment> AllComments
+	    {
+	        get { return _allComments; }
+	        set
+	        {
+	            _allComments = value;
+	            OnPropertyChanged(nameof(AllComments));
 	        }
 	    }
 

@@ -10,41 +10,31 @@ using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
 {
-    public class StaticInfoViewModel : ViewModelBase
-    { 
-
+    public class FinderViewModel : ViewModelBase
+    {
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private StaticInfo _staticInfo;
+        private Event _event;
+        private string _selectedFilter;
         private string _responseMessage;
 
-        
-        public Command NavigateToStaticInfoPage { get; set; }
-
-        public StaticInfo StaticInfo
+        public String filter
         {
-            get { return _staticInfo; }
+            get { return _selectedFilter; }
             set
             {
-                _staticInfo = value;
-                OnPropertyChanged(nameof(StaticInfo));
-            }
-        }
-        public string ResponseMessage
-        {
-            get { return _responseMessage; }
-            set
-            {
-                _responseMessage = value;
-                OnPropertyChanged(nameof(ResponseMessage));
+                _selectedFilter = value;
+                OnPropertyChanged(nameof(filter));
             }
         }
 
-        public StaticInfoViewModel()
+        public FinderViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>();
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
+            _event = new Event();
         }
     }
 }

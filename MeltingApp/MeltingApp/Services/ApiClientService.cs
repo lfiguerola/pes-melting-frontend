@@ -45,8 +45,8 @@ namespace MeltingApp.Services
         {
             //TODO: Remove this fake url
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent},
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/11" + ApiRoutes.Endpoints.GetProfileUser },
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowFacultyInfo), ApiRoutes.Endpoints.ShowFacultyInfo},
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/3" + ApiRoutes.Endpoints.GetProfileUser },
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), ApiRoutes.Endpoints.GetAllEvents },
             {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetAllComments), ApiRoutes.Endpoints.GetAllComments  }
         };

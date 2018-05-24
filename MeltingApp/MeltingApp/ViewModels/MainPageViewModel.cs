@@ -37,6 +37,7 @@ namespace MeltingApp.ViewModels
 	    public Command NavigateToViewEventPageCommand { get; set; }
 	    public Command CreateCommentCommand { get; set; }
         public Command GetAllCommentsCommand { get; set; }
+        public Command NavigateToFinderPage { get; set; }
 
 
 
@@ -52,7 +53,7 @@ namespace MeltingApp.ViewModels
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
-
+            NavigateToFinderPage = new Command(HandleFinderCommand);
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
 		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
             GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
@@ -290,18 +291,15 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });
-            /* = new StaticInfo()
-             {
-                 address = "Carrer Sparragus",
-                 name = "UPC",
-                 latitude = 41.4113891882873F,
-                 longitude = 41.4113891882873F,
-                 telephone = "123456789"
-             };
-             _navigationService.PushAsync<StaticInfoPage>(this);*/
         }
 
-	    private async void HandleUploadImageCommand()
+        void HandleFinderCommand()
+        {
+            /*rellenar*/
+            _navigationService.PushAsync<FinderPage>(this);
+        }
+
+        private async void HandleUploadImageCommand()
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {

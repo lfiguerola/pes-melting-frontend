@@ -8,6 +8,8 @@ using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
 using Plugin.Media;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Plugin.ExternalMaps;
 
 namespace MeltingApp.ViewModels
 {
@@ -38,7 +40,7 @@ namespace MeltingApp.ViewModels
 	    public Command CreateCommentCommand { get; set; }
         public Command GetAllCommentsCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
-
+        public Command OpenMapCommand { get; set; }
 
 
         public MainPageViewModel ()
@@ -57,11 +59,22 @@ namespace MeltingApp.ViewModels
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
 		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
             GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
+            OpenMapCommand = new Command(HandleOpenMapCommand);
             Comment = new Comment();
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
             StaticInfo = new StaticInfo();
+        }
+
+        private async void HandleOpenMapCommand()
+        {
+            //var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(StaticInfo.latitude.ToString()), Double.Parse(StaticInfo.longitude.ToString()));
+            var success = await CrossExternalMaps.Current.NavigateTo("Location", 41.378949261870424, 2.1794413405262176);
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
         }
 
         async void HandleGetAllCommentsCommand()
@@ -120,7 +133,7 @@ namespace MeltingApp.ViewModels
 	        });
 	     }
 
-    async void HandleNavigateToGetAllEventsCommand()
+        async void HandleNavigateToGetAllEventsCommand()
 	    {
 	        AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
 	        {

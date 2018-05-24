@@ -4,20 +4,19 @@
              x:Class="MeltingApp.ViewModels.CreateProfilePage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Oh, you don't update your profile yet, please enter the fields bellow!" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize ="Large" FontAttributes="Bold"/>
+            <Label Text="Hi, this is your first time here, please enter the fields bellow!" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize ="Large" FontAttributes="Bold"/>
             <Label x:Name="NameTitleLabel" Text="Name:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Entry Text="{Binding User.full_name}"></Entry>
             <Label x:Name="CountryLabelTitle" Text="Country:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
-            <!--Omplir amb lo de la Carla -->
-            <Entry Text="{Binding User.country_code}"></Entry>
-            <Label x:Name="UniversityLabelTitle" Text="UniversityId:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
-            <Picker ItemsSource="{Binding Universities}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"></Picker>
+            <Picker x:Name="CountryPicker" SelectedIndex="{Binding CountriesSelectedIndex }" ItemsSource="{Binding Countries}"></Picker>
+            <Label x:Name="UniversityLabelTitle" Text="University:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Picker ItemsSource="{Binding Universities}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding MySelectedUniversity}"></Picker>
+            <Label x:Name="FacultyLabelTitle" Text="Faculty:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Picker ItemsSource="{Binding Faculties}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding MySelectedFaculty, Mode=OneWayToSource}"></Picker>
             <Label x:Name="BiographyTitleLabel" Text="Biography:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Entry Text="{Binding User.biography}"></Entry>
-            <!--<Label x:Name="AvatarLabelTitle" Text="Avatar"></Label>
-            <Label x:Name="AvatarLabel" Text="{Binding User.avatarURL}"></Label>-->
             <Button x:Name="CreateButton" Text="Create" Command="{Binding CreateProfileCommand}"></Button>
-      
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

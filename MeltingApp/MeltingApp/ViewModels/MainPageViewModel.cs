@@ -55,7 +55,8 @@ namespace MeltingApp.ViewModels
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
-            StaticInfo = new StaticInfo();
+            FacultyStaticInfo = new StaticInfo();
+            UniversityStaticInfo = new StaticInfo();
         }
 
         void HandleInfoEventCommand()
@@ -148,18 +149,26 @@ namespace MeltingApp.ViewModels
 	    }
 
 
-        public StaticInfo StaticInfo
+        public StaticInfo FacultyStaticInfo
         {
             get { return _staticInfo; }
             set
             {
                 _staticInfo = value;
-                OnPropertyChanged(nameof(StaticInfo));
+                OnPropertyChanged(nameof(FacultyStaticInfo));
+            }
+        }
+        public StaticInfo UniversityStaticInfo
+        {
+            get { return _staticInfo; }
+            set
+            {
+                _staticInfo = value;
+                OnPropertyChanged(nameof(UniversityStaticInfo));
             }
         }
 
-
-	    public IEnumerable<Event> AllEvents
+        public IEnumerable<Event> AllEvents
 	    {
 	        get { return _allEvents; }
 	        set
@@ -219,11 +228,23 @@ namespace MeltingApp.ViewModels
 
         async void HandleStaticInfoCommand()
         {
-            StaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
+            FacultyStaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Static Info requested successfully");
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+
+            UniversityStaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowUniversityInfo, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
                     _navigationService.PushAsync<StaticInfoPage>(this);
                 }
                 else

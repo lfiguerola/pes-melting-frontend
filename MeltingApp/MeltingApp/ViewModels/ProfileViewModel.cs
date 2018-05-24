@@ -449,6 +449,9 @@ namespace MeltingApp.ViewModels
                 else
                 {
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    //llavors s'ha de crear el perfil
+                    HandleCreateProfileCommand();
+
                 }
             });
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MeltingApp.Exceptions;
 using MeltingApp.Models;
 using MeltingApp.Resources;
+using Newtonsoft.Json;
 
 namespace MeltingApp.Services
 {
@@ -158,7 +159,7 @@ namespace MeltingApp.Services
             {
                 MissingMemberHandling = MissingMemberHandling.Error
             };
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.3SOZiH5MljflG8xy9lzHDg-5ioF8F1UDJwkdVJbByAg");
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             ApiResponseMessage responseMessage = null;
             string putResult = null;

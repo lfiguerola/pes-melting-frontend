@@ -462,15 +462,12 @@ namespace MeltingApp.ViewModels
                 }
                 else
                 {
-                    if (success)
-                    {
-                        b = true;
-                    }
-                    else
-                    {
-                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                    }
-                });
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    //llavors s'ha de crear el perfil
+                    HandleCreateProfileCommand();
+
+                }
+            });
 
             if (b)
             {

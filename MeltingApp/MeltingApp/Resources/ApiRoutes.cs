@@ -30,6 +30,7 @@ namespace MeltingApp.Resources
             public const string GetAllComments = "GetAllComments";
             public const string CreateProfileUser = "CreateProfile";
             public const string GetUniversities = "GetUniversities";
+            public const string GetFaculties = "GetFaculties";
         }
 
         /// <summary>
@@ -56,6 +57,7 @@ namespace MeltingApp.Resources
             public const string GetAllComments = "/users/5/events/2/comments";
             public const string CreateProfileUser = "/profile";
             public const string GetUniversities = "/locations/universities";
+            public const string GetFaculties = "/locations/universities/";
 
         }
 

@@ -244,23 +244,29 @@ namespace MeltingApp.ViewModels
 
 	    async void HandleViewProfileCommand()
 	    {
-	        bool b = false;
-	        User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
-	        {
-	            if (success)
-	            {
-	                b = true;
-	            }
-	            else
-	            {
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-	            }
-	        });
+            //si el perfil ja s'ha creat
+            bool b = false;
+            User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, -1, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    b = true;
+                }
+                else
+                {
+                    //si el perfil no s'ha creat faig crida a la creació d'aquest
+                    //TODO: Treure aquest toast
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    HandleNavigateToCreateProfilePageCommand();
+                }
+            });
 
-	        if (b)
-	        {
-	            await _navigationService.PushAsync<ProfilePage>(this);
+            if (b)
+            {
+                await _navigationService.PushAsync<ProfilePage>(this);
             }
+            //si no s'ha creat
+
         }
 
         async void HandleSaveEditProfileCommand()

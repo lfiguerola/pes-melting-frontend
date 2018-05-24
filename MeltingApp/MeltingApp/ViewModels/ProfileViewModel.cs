@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
+using System.Linq;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -16,9 +17,16 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private User _user;
         private University _university;
-        private List<University> _universities;
+        private ObservableCollection<University> _universities;
+        private Faculty _faculty;
+        private IEnumerable<Faculty> _faculties;
         private string _responseMessage;
         private ImageSource _image1;
+
+        private int countriesSelectedIndex;
+        private string SelectedCountry;
+        private University _mySelectedUniversity;
+        private Faculty _mySelectedFaculty;
 
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
@@ -26,8 +34,289 @@ namespace MeltingApp.ViewModels
         public Command ViewProfileCommand { get; set; }
         public Command UploadImageCommand { get; set; }
         public Command ViewUniversitiesCommand { get; set; }
+        public University MySelectedUniversity
+        {
+            get => _mySelectedUniversity;
+            set
+            {
+                _mySelectedUniversity = value;
+                if (_mySelectedUniversity != null)
+                {
+                    getFaculties(_mySelectedUniversity.location_id);
+                }                
+            }
+        }
+
+        public Faculty MySelectedFaculty
+        {
+            get => _mySelectedFaculty;
+            set
+            {
+                _mySelectedFaculty = value;
+                if (_mySelectedFaculty != null)
+                {
+                    User.faculty_id = _mySelectedFaculty.location_id;
+                }
+            }
+
+        }
         //public Command SetAvatarProfileCommand { get; set; }
 
+        private List<string> countries = new List<string>
+        {
+            "AD",
+            "AE",
+            "AF",
+            "AG",
+            "AI",
+            "AL",
+            "AM",
+            "AO",
+            "AQ",
+            "AR",
+            "AS",
+            "AT",
+            "AU",
+            "AW",
+            "AX",
+            "AZ",
+            "BA",
+            "BB",
+            "BD",
+            "BE",
+            "BF",
+            "BG",
+            "BH",
+            "BI",
+            "BJ",
+            "BL",
+            "BM",
+            "BN",
+            "BO",
+            "BQ",
+            "BR",
+            "BS",
+            "BT",
+            "BV",
+            "BW",
+            "BY",
+            "BZ",
+            "CA",
+            "CC",
+            "CD",
+            "CF",
+            "CG",
+            "CH",
+            "CI",
+            "CK",
+            "CL",
+            "CM",
+            "CN",
+            "CO",
+            "CR",
+            "CU",
+            "CV",
+            "CW",
+            "CX",
+            "CY",
+            "CZ",
+            "DE",
+            "DJ",
+            "DK",
+            "DM",
+            "DO",
+            "DZ",
+            "EC",
+            "EE",
+            "EG",
+            "EH",
+            "ER",
+            "ES",
+            "ET",
+            "FI",
+            "FJ",
+            "FK",
+            "FM",
+            "FO",
+            "FR",
+            "GA",
+            "GB",
+            "GD",
+            "GE",
+            "GF",
+            "GG",
+            "GH",
+            "GI",
+            "GL",
+            "GM",
+            "GN",
+            "GP",
+            "GQ",
+            "GR",
+            "GS",
+            "GT",
+            "GU",
+            "GW",
+            "GY",
+            "HK",
+            "HM",
+            "HN",
+            "HR",
+            "HT",
+            "HU",
+            "ID",
+            "IE",
+            "IL",
+            "IM",
+            "IN",
+            "IO",
+            "IQ",
+            "IR",
+            "IS",
+            "IT",
+            "JE",
+            "JM",
+            "JO",
+            "JP",
+            "KE",
+            "KG",
+            "KH",
+            "KI",
+            "KM",
+            "KN",
+            "KP",
+            "KR",
+            "KW",
+            "KY",
+            "KZ",
+            "LA",
+            "LB",
+            "LC",
+            "LI",
+            "LK",
+            "LR",
+            "LS",
+            "LT",
+            "LU",
+            "LV",
+            "LY",
+            "MA",
+            "MC",
+            "MD",
+            "ME",
+            "MF",
+            "MG",
+            "MH",
+            "MK",
+            "ML",
+            "MM",
+            "MN",
+            "MO",
+            "MP",
+            "MQ",
+            "MR",
+            "MS",
+            "MT",
+            "MU",
+            "MV",
+            "MW",
+            "MX",
+            "MY",
+            "MZ",
+            "NA",
+            "NC",
+            "NE",
+            "NF",
+            "NG",
+            "NI",
+            "NL",
+            "NO",
+            "NP",
+            "NR",
+            "NU",
+            "NZ",
+            "OM",
+            "PA",
+            "PE",
+            "PF",
+            "PG",
+            "PH",
+            "PK",
+            "PL",
+            "PM",
+            "PN",
+            "PR",
+            "PS",
+            "PT",
+            "PW",
+            "PY",
+            "QA",
+            "RE",
+            "RO",
+            "RS",
+            "RU",
+            "RW",
+            "SA",
+            "SB",
+            "SC",
+            "SD",
+            "SE",
+            "SG",
+            "SH",
+            "SI",
+            "SJ",
+            "SK",
+            "SL",
+            "SM",
+            "SN",
+            "SO",
+            "SR",
+            "SS",
+            "ST",
+            "SV",
+            "SX",
+            "SY",
+            "SZ",
+            "TC",
+            "TD",
+            "TF",
+            "TG",
+            "TH",
+            "TJ",
+            "TK",
+            "TL",
+            "TM",
+            "TN",
+            "TO",
+            "TR",
+            "TT",
+            "TV",
+            "TW",
+            "TZ",
+            "UA",
+            "UG",
+            "UM",
+            "US",
+            "UY",
+            "UZ",
+            "VA",
+            "VC",
+            "VE",
+            "VG",
+            "VI",
+            "VN",
+            "VU",
+            "WF",
+            "WS",
+            "YE",
+            "YT",
+            "ZA",
+            "ZM",
+            "ZW"
+        };
+
+        public List<string> Countries => countries;
+        
         public User User
         {
             get { return _user; }
@@ -35,6 +324,35 @@ namespace MeltingApp.ViewModels
             {
                 _user = value;
                 OnPropertyChanged(nameof(User));
+            }
+        }
+
+        public ObservableCollection<University> Universities
+        {
+            get { return _universities; }
+            set
+            {
+                _universities = value;
+                OnPropertyChanged(nameof(Universities));
+            }
+        }
+
+        public IEnumerable<Faculty> Faculties
+        {
+            get { return _faculties; }
+            set
+            {
+                _faculties = value;
+                OnPropertyChanged(nameof(Faculties));
+            }
+        }
+        public Faculty Faculty
+        {
+            get { return _faculty; }
+            set
+            {
+                _faculty = value;
+                OnPropertyChanged(nameof(Faculty));
             }
         }
 
@@ -68,6 +386,39 @@ namespace MeltingApp.ViewModels
             }
         }
 
+        public int CountriesSelectedIndex
+        {
+            get
+            {
+                return countriesSelectedIndex;
+            }
+            set
+            {
+                if (countriesSelectedIndex != value)
+                {
+                    countriesSelectedIndex = value;
+
+                    // trigger some action to take such as updating other labels or fields
+                    OnPropertyChanged(nameof(CountriesSelectedIndex));
+                    SelectedCountry = Countries[countriesSelectedIndex];
+                    User.country_code = SelectedCountry;
+                }
+            }
+        }
+
+        
+        async void getFaculties(int location_id_uni)
+        {
+            Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties, location_id_uni, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("ja les tenim");
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            });
+        }
+
         public ProfileViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
@@ -78,10 +429,13 @@ namespace MeltingApp.ViewModels
             UploadImageCommand = new Command(HandleUploadImageCommand);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
-            ViewUniversitiesCommand = new Command(HandleViewUniversitiesCommand);
+            //MySelectedItem = new Command(HandleMySelectedItem);
             User = new User();
+            //Omplim desplegable de universities
+            HandleViewUniversitiesCommand();
+            
         }
-
+        
         //async void HandleSetAvatarProfileCommand()
         //{
         /* await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.AvatarProfileUser, (success, responseMessage) =>
@@ -100,8 +454,13 @@ namespace MeltingApp.ViewModels
         async void HandleViewProfileCommand()
         {
             bool b = false;
-            User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser,
-                (success, responseMessage) =>
+            User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser,-1, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    b = true;
+                }
+                else
                 {
                     if (success)
                     {
@@ -121,8 +480,18 @@ namespace MeltingApp.ViewModels
 
         async void HandleViewUniversitiesCommand()
         {
-           
-            
+            var universities = await _apiClientService.GetAsync<IEnumerable<University>>(ApiRoutes.Methods.GetUniversities,(success, responseMessage) =>
+                {
+                    if (success)
+                    {
+
+                    }
+                    else
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    }
+                });
+            Universities = new ObservableCollection<University>(universities);
         }
 
         async void HandleSaveEditProfileCommand()
@@ -144,20 +513,19 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateProfileCommand()
         {
-
             await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.CreateProfileUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 if (isSuccess)
                 {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("User created correctly");
+                    _navigationService.PopAsync();
                     HandleViewProfileCommand();
-                   
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                _navigationService.PopAsync(); //tornem a la main page
-                _navigationService.PushAsync<ProfilePage>();
             });
+            
         }
-
+        
         void HandleNavigateToEditProfilePageCommand()
         {
             _navigationService.PushAsync<EditProfilePage>(this);

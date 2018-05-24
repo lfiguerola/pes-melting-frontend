@@ -1,8 +1,7 @@
 ﻿namespace MeltingApp.Models
 {
-    public class University : EntityBase
+    public class Faculty : EntityBase
     {
-
         private string _name;
         private int _location_id;
         private string _address;
@@ -11,7 +10,7 @@
         private string _alias;
         private string _telephone;
         private string _url;
-        
+
         public string name
         {
             get { return _name; }
@@ -62,7 +61,6 @@
             }
 
         }
-
         public string alias
         {
             get { return _alias; }

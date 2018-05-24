@@ -19,7 +19,6 @@ namespace MeltingApp.ViewModels
         private IApiClientService _apiClientService;
         private User _user;
         private string _responseMessage;
-        private IEnumerable<University> _universities;
 
         readonly IValidator _validator;
 
@@ -41,16 +40,6 @@ namespace MeltingApp.ViewModels
             }
         }
         
-        public IEnumerable<University> Universities
-        {
-            get { return _universities; }
-            set
-            {
-                _universities = value;
-                OnPropertyChanged(nameof(Universities));
-            }
-        }
-
         public string ResponseMessage
         {
             get { return _responseMessage; }
@@ -72,7 +61,6 @@ namespace MeltingApp.ViewModels
             LoginUserCommand = new Command(HandleLoginUserCommand);
             NavigateToRegisterPageCommand = new Command(HandleNavigateToRegisterPage);
             NavigateToLoginPageCommand = new Command(HandleNavigateToLoginPage);
-            ViewUniversitiesCommand = new Command(HandleViewUniversitiesCommand);
             User = new User();
         }
 
@@ -115,22 +103,6 @@ namespace MeltingApp.ViewModels
             
         }
 
-
-        async void HandleViewUniversitiesCommand()
-        {
-            Universities = await _apiClientService.GetAsync<IEnumerable<University>>(ApiRoutes.Methods.GetUniversities, (success, responseMessage) =>
-            {
-                if (success)
-                {
-
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            });
-            Universities.ToList();
-        } 
 
         public void EncodeTokenAndSaveUserId()
         {

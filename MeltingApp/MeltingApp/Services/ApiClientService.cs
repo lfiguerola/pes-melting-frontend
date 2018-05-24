@@ -1,8 +1,6 @@
 ﻿using MeltingApp.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -19,8 +17,7 @@ using Exception = System.Exception;
 namespace MeltingApp.Services
 {
     public class ApiClientService : IApiClientService
-    {
-
+    {        
         public HttpClient HttpClient { get; set; } = new HttpClient()
         {
             BaseAddress = new Uri("https://melting-app.herokuapp.com")
@@ -42,7 +39,7 @@ namespace MeltingApp.Services
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
             //TODO: Remove this fake url
-            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), "/users/11" + ApiRoutes.Endpoints.EditProfileUser }
+            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), "/users/2" + ApiRoutes.Endpoints.EditProfileUser }
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
@@ -55,7 +52,8 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/3" + ApiRoutes.Endpoints.GetProfileUser },
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), ApiRoutes.Endpoints.GetAllEvents },
             {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetAllComments), ApiRoutes.Endpoints.GetAllComments},
-            {new Tuple<Type, string>(typeof(IEnumerable<University>), ApiRoutes.Methods.GetUniversities), ApiRoutes.Endpoints.GetUniversities }
+            {new Tuple<Type, string>(typeof(IEnumerable<University>), ApiRoutes.Methods.GetUniversities), ApiRoutes.Endpoints.GetUniversities},
+            {new Tuple<Type, string>(typeof(IEnumerable<Faculty>), ApiRoutes.Methods.GetFaculties), ApiRoutes.Endpoints.GetFaculties +"1/faculties"}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
@@ -63,14 +61,14 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), ApiRoutes.Endpoints.UnconfirmAssistance },
         };
 
-        public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null)
+        public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
         {
             var json = JsonConvert.SerializeObject(entity);
             var jsonSerializerSettings = new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Error
             };
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxLCJyb2xlIjoic3R1ZGVudCIsImxhc3Rfc3RhdHVzIjoxNTI2MjI5NTQyfQ._JGlxMqXcX_8RuJgJziKY-HhAHSk8S8BNhRQH7wezYg");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.3SOZiH5MljflG8xy9lzHDg-5ioF8F1UDJwkdVJbByAg");
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             ApiResponseMessage responseMessage = null;
             string postResult = null;
@@ -78,7 +76,7 @@ namespace MeltingApp.Services
             {
                 var result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
                 postResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = default(T);
+                T deserializedObject = null;
                 try
                 {
                     deserializedObject = JsonConvert.DeserializeObject<T>(postResult, jsonSerializerSettings);
@@ -95,7 +93,7 @@ namespace MeltingApp.Services
                     {
                         //token de l'estil a: {"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI"}
                         var token = postResult.Substring(8, postResult.Length - 8 - 2);
-                       // entity.token = token;
+                        entity.token = token;
 
                     }
                     successResultCallback?.Invoke(true, responseMessage?.message);
@@ -107,7 +105,7 @@ namespace MeltingApp.Services
             catch (HttpRequestException ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                return default(T);
+                return null;
             }
         }
 
@@ -189,7 +187,7 @@ namespace MeltingApp.Services
         }
 
 
-        public async Task<T> PutAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null)
+        public async Task<T> PutAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
         {
 
             var json = JsonConvert.SerializeObject(entity);

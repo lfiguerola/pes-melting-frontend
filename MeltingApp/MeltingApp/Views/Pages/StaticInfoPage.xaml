@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
+             x:Class="MeltingApp.Views.Pages.StaticInfoPage">
+    <ContentPage.Content>
+        <StackLayout Spacing="0" Padding="0">                
+            <Label Text="Faculty information" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Alias:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniAliasLabel" Text="{Binding StaticInfo.alias}" FontSize="Large"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige">
+                <Label FontSize="14" Text="Name:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniNameLabel" Text="{Binding StaticInfo.name}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Telephone:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniTelephoneLabel" Text="{Binding StaticInfo.telephone}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
+                <Label FontSize="14" Text="Latitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniLatitudeLabel" Text="{Binding StaticInfo.latitude}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Longitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniLongitudeLabel" Text="{Binding StaticInfo.longitude}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
+                <Label FontSize="14" Text="Address:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniAdressLabel" Text="{Binding StaticInfo.address}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Id:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniPhoneLabel" Text="{Binding StaticInfo.location_id}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
+                <Label FontSize="14" Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniUrlLabel" Text="{Binding StaticInfo.url}"></Label>
+            </StackLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

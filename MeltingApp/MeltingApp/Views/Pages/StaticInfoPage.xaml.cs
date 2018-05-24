@@ -1,19 +1,18 @@
-﻿using MeltingApp.ViewModels;
+﻿
+using MeltingApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
 
 namespace MeltingApp.Views.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MainPage : ContentPage
+	public partial class StaticInfoPage : ContentPage
 	{
-		public MainPage ()
+		public StaticInfoPage()
 		{
 			InitializeComponent ();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new MainPageViewModel();
-		}
-
-	}
+            BindingContext = new StaticInfoViewModel();
+        }
+    }
 }

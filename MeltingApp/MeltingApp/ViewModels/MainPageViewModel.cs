@@ -15,21 +15,30 @@ namespace MeltingApp.ViewModels
 	{
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private StaticInfo _staticInfo;
         private string _responseMessage;
 	    private User _user;
 	    private Event _event;
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
+	    private Comment _comment;
+	    private IEnumerable<Comment> _allComments;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
 	    public Command ViewProfileCommand { get; set; }
+        public Command NavigateToStaticInfoPage { get; set; }
+        public Command ShowEventCommand { get; set; }
 	    public Command UploadImageCommand { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
 	    public Command NavigateToViewEventPageCommand { get; set; }
+	    public Command CreateCommentCommand { get; set; }
+        public Command GetAllCommentsCommand { get; set; }
+        public Command NavigateToFinderPage { get; set; }
+
 
 
         public MainPageViewModel ()
@@ -40,16 +49,55 @@ namespace MeltingApp.ViewModels
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
+            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
+            NavigateToFinderPage = new Command(HandleFinderCommand);
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
+		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
+            GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
+            Comment = new Comment();
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
+            StaticInfo = new StaticInfo();
         }
 
-	    void HandleInfoEventCommand()
+        async void HandleGetAllCommentsCommand()
+        {
+            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>>(ApiRoutes.Methods.GetAllComments, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    //_navigationService.PushAsync<ViewEvent>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+        }
+
+        async void HandleCreateCommentCommand()
+	    {
+	        await _apiClientService.PostAsync<Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) => {
+	            ResponseMessage = responseMessage;
+	            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            if (isSuccess)
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comment created successfully");
+	                _navigationService.PopAsync();
+                    HandleNavigateToViewEventPageCommand();
+	            }
+	            else
+	            {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+	        });
+	    }
+
+        void HandleInfoEventCommand()
 	    {
 	        Event = EventSelected;
 	        //Event = AllEvents.ElementAt(id);
@@ -62,6 +110,7 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
+	                HandleGetAllCommentsCommand();
 	                _navigationService.PushAsync<ViewEvent>(this);
 	            }
 	            else
@@ -138,6 +187,18 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+
+        public StaticInfo StaticInfo
+        {
+            get { return _staticInfo; }
+            set
+            {
+                _staticInfo = value;
+                OnPropertyChanged(nameof(StaticInfo));
+            }
+        }
+
+
 	    public IEnumerable<Event> AllEvents
 	    {
 	        get { return _allEvents; }
@@ -147,6 +208,7 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(AllEvents));
 	        }
 	    }
+
 
 	    public Event Event
 	    {
@@ -165,6 +227,26 @@ namespace MeltingApp.ViewModels
 	        {
 	            _eventSelected = value;
 	            OnPropertyChanged(nameof(EventSelected));
+	        }
+	    }
+
+	    public Comment Comment
+	    {
+	        get { return _comment; }
+	        set
+	        {
+	            _comment = value;
+	            OnPropertyChanged(nameof(Comment));
+	        }
+	    }
+
+	    public IEnumerable<Comment> AllComments
+	    {
+	        get { return _allComments; }
+	        set
+	        {
+	            _allComments = value;
+	            OnPropertyChanged(nameof(AllComments));
 	        }
 	    }
 
@@ -194,7 +276,30 @@ namespace MeltingApp.ViewModels
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
 
-	    private async void HandleUploadImageCommand()
+
+        async void HandleStaticInfoCommand()
+        {
+            StaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Static Info requested successfully");
+                    _navigationService.PushAsync<StaticInfoPage>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+        }
+
+        void HandleFinderCommand()
+        {
+            /*rellenar*/
+            _navigationService.PushAsync<FinderPage>(this);
+        }
+
+        private async void HandleUploadImageCommand()
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {

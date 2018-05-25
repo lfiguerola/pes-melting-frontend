@@ -51,7 +51,6 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
-
             _validator = new UserValidation();
 
             CodeConfirmationCommand = new Command(HandleCodeConfirmationCommand);

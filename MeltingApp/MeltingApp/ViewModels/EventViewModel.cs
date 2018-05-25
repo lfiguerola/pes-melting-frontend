@@ -18,6 +18,9 @@ namespace MeltingApp.ViewModels
 	    private Event _event;
 	    private Boolean _userAssists;
 	    private int _userAssistsInt;
+	    private TimeSpan _time;
+	    private DateTime _date;
+	    private DateTime _minDate;
         private string _responseMessage;
         public Command CreateEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
@@ -31,8 +34,35 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(Event));
 	        }
 	    }
+        public TimeSpan Time
+	    {
+	        get { return _time; }
+	        set
+	        {
+	            _time = value;
+	            OnPropertyChanged(nameof(Time));
+	        }
+	    }
 
-	  public string ResponseMessage
+	    public DateTime Date
+	    {
+	        get { return _date; }
+	        set
+	        {
+	            _date = value;
+	            OnPropertyChanged(nameof(Date));
+	        }
+	    }
+        public DateTime MinDate
+	    {
+	        get { return _minDate; }
+	        set
+	        {
+	            _minDate = value;
+	            OnPropertyChanged(nameof(MinDate));
+	        }
+	    }
+    public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
 	        set
@@ -78,7 +108,8 @@ namespace MeltingApp.ViewModels
             Event.longitude = "0";
             Event.address = "C/ Jordi Girona, 1";
             Event.name = "Infern";
-            Event.date = "La fi del mon";
+
+            MinDate = DateTime.Today;
         }
 	    async void HandleConfirmAssistanceCommand()
 	    {
@@ -131,6 +162,7 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateEventCommand()
         {
+            Event.date = Time + " " + Date.ToLongDateString();
             await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);

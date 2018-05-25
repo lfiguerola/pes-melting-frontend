@@ -4,7 +4,7 @@
              x:Class="MeltingApp.Views.Pages.CreateEvent">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Crerar un Esdeveniment" HorizontalOptions="CenterAndExpand" />
+            <Label Text="Crear un Esdeveniment" HorizontalOptions="CenterAndExpand" />
             <Label x:Name="EventTitleLabel" Text="Event Title:"></Label>
             <Entry x:Name="EventTitleEntry" Text="{Binding Event.title}"></Entry> <!-- have to create the binding -->
             <Label x:Name="DescriptionLabel" Text="Add a description to the event"></Label>

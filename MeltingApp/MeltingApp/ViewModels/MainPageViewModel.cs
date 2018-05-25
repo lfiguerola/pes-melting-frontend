@@ -47,6 +47,7 @@ namespace MeltingApp.ViewModels
         public Command OpenMapStaticFacultyCommand { get; set; }
 	    public Command OpenMapStaticUniversityCommand { get; set; }
         public Command OpenMapEventCommand { get; set; }
+	    public Command NavigateToEditEventPageCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -66,6 +67,7 @@ namespace MeltingApp.ViewModels
             OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
             OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
 		    OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
+		    NavigateToEditEventPageCommand = new Command(HandleNavigateToEditEventPageCommand);
 
             Event = new Event();
 		    EventSelected = new Event(); 
@@ -78,7 +80,13 @@ namespace MeltingApp.ViewModels
 		    Init();
 		}
 
-	    async private void Init()
+        void HandleNavigateToEditEventPageCommand()
+        {
+            _navigationService.PushAsync<EditEvent>();
+        }
+
+
+        async private void Init()
 	    {
 	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
 	        {

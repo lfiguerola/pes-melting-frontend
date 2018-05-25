@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
+             x:Class="MeltingApp.Views.Pages.FinderPage">
+    <ContentPage.Content>
+        <StackLayout>
+        
+            <StackLayout Spacing="0" Padding="0">
+                <Label Text="Finder" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
+                <Label FontSize="14" Text="Text to find:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Entry x:Name="FilterEntry" Text="{Binding FinderViewModel.filter }" WidthRequest="300" ></Entry>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
+                <Label FontSize="14" Text="Filter:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Picker x:Name="picker" Title="Select a filter">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Faculty</x:String>
+                            <x:String>University</x:String>
+                            <x:String>Event</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="FinderButton" Text="Find" HorizontalOptions="Center"></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

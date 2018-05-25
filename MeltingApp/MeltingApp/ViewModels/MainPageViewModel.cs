@@ -8,6 +8,8 @@ using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
 using Plugin.Media;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Plugin.ExternalMaps;
 
 namespace MeltingApp.ViewModels
 {
@@ -16,12 +18,17 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private StaticInfo _staticInfo;
+	    private StaticInfo _staticInfoUni;
         private string _responseMessage;
 	    private User _user;
 	    private Event _event;
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
+	    private Boolean _userAssists;
+	    private int _userAssistsInt;
+	    private Comment _comment;
+	    private IEnumerable<Comment> _allComments;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
@@ -33,8 +40,13 @@ namespace MeltingApp.ViewModels
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
 	    public Command NavigateToViewEventPageCommand { get; set; }
-
-
+	    public Command ConfirmAssistanceCommand { get; set; }
+	    public Command CreateCommentCommand { get; set; }
+        public Command GetAllCommentsCommand { get; set; }
+        public Command NavigateToFinderPage { get; set; }
+        public Command OpenMapStaticFacultyCommand { get; set; }
+	    public Command OpenMapStaticUniversityCommand { get; set; }
+        public Command OpenMapEventCommand { get; set; }
 
         public MainPageViewModel ()
 		{
@@ -48,13 +60,136 @@ namespace MeltingApp.ViewModels
 		    ViewProfileCommand = new Command(HandleViewProfileCommand);
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
-
+            NavigateToFinderPage = new Command(HandleFinderCommand);
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
+		    ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
+            OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
+            OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
+		    OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
+
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
-            StaticInfo = new StaticInfo();
+            CreateCommentCommand = new Command(HandleCreateCommentCommand);
+            GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
+            Comment = new Comment();
+            FacultyStaticInfo = new StaticInfo();
+            UniversityStaticInfo = new StaticInfo();
+		    Init();
+		}
+
+	    async private void Init()
+	    {
+	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        {
+	            if (isSuccess)
+	            {
+	                if (UserAssistsInt == 1) UserAssists = true;
+	                else UserAssists = false;
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        });
         }
+
+	    async void HandleConfirmAssistanceCommand()
+	    {
+            if (!UserAssists)
+	        {
+	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+	                    if (isSuccess)
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Confirmed");
+	                        UserAssists = true;
+	                    }
+	                    else
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                    }
+                    });
+	        }
+	        else
+	        {
+	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+	                    if (isSuccess)
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Unconfirmed");
+	                        UserAssists = false;
+	                    }
+	                    else
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                    }
+                    });
+	        }
+		    
+        }
+
+        private async void HandleOpenMapStaticUniversityCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("University", Double.Parse(UniversityStaticInfo.latitude.ToString()), Double.Parse(UniversityStaticInfo.longitude.ToString()));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
+        }
+
+        private async void HandleOpenMapEventCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(Event.latitude), Double.Parse(Event.longitude));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
+        }
+
+        private async void HandleOpenMapStaticFacultyCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(FacultyStaticInfo.latitude.ToString()), Double.Parse(FacultyStaticInfo.longitude.ToString()));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
+        }
+
+        async void HandleGetAllCommentsCommand()
+        {
+            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>>(ApiRoutes.Methods.GetAllComments, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    //_navigationService.PushAsync<ViewEvent>(this);
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+        }
+
+        async void HandleCreateCommentCommand()
+	    {
+	        await _apiClientService.PostAsync<Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) => {
+	            ResponseMessage = responseMessage;
+	            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            if (isSuccess)
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comment created successfully");
+	                _navigationService.PopAsync();
+                    HandleNavigateToViewEventPageCommand();
+	            }
+	            else
+	            {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+	        });
+	    }
 
         void HandleInfoEventCommand()
 	    {
@@ -69,6 +204,7 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
+	                HandleGetAllCommentsCommand();
 	                _navigationService.PushAsync<ViewEvent>(this);
 	            }
 	            else
@@ -78,7 +214,7 @@ namespace MeltingApp.ViewModels
 	        });
 	     }
 
-    async void HandleNavigateToGetAllEventsCommand()
+        async void HandleNavigateToGetAllEventsCommand()
 	    {
 	        AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
 	        {
@@ -146,18 +282,26 @@ namespace MeltingApp.ViewModels
 	    }
 
 
-        public StaticInfo StaticInfo
+        public StaticInfo FacultyStaticInfo
         {
             get { return _staticInfo; }
             set
             {
                 _staticInfo = value;
-                OnPropertyChanged(nameof(StaticInfo));
+                OnPropertyChanged(nameof(FacultyStaticInfo));
+            }
+        }
+        public StaticInfo UniversityStaticInfo
+        {
+            get { return _staticInfoUni; }
+            set
+            {
+                _staticInfoUni = value;
+                OnPropertyChanged(nameof(UniversityStaticInfo));
             }
         }
 
-
-	    public IEnumerable<Event> AllEvents
+        public IEnumerable<Event> AllEvents
 	    {
 	        get { return _allEvents; }
 	        set
@@ -188,6 +332,26 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public Comment Comment
+	    {
+	        get { return _comment; }
+	        set
+	        {
+	            _comment = value;
+	            OnPropertyChanged(nameof(Comment));
+	        }
+	    }
+
+	    public IEnumerable<Comment> AllComments
+	    {
+	        get { return _allComments; }
+	        set
+	        {
+	            _allComments = value;
+	            OnPropertyChanged(nameof(AllComments));
+	        }
+	    }
+
         public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
@@ -208,8 +372,27 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public Boolean UserAssists
+	    {
+	        get { return _userAssists; }
+	        set
+	        {
+	            _userAssists = value;
+	            OnPropertyChanged(nameof(UserAssists));
+	        }
+	    }
+	    public int UserAssistsInt
+	    {
+	        get { return _userAssistsInt; }
+	        set
+	        {
+	            _userAssistsInt = value;
+	            OnPropertyChanged(nameof(UserAssistsInt));
+	        }
+	    }
 
-	    void HandleNavigateToEditProfilePageCommand()
+
+        void HandleNavigateToEditProfilePageCommand()
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }
@@ -217,11 +400,23 @@ namespace MeltingApp.ViewModels
 
         async void HandleStaticInfoCommand()
         {
-            StaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
+            FacultyStaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Static Info requested successfully");
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+
+            UniversityStaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowUniversityInfo, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
                     _navigationService.PushAsync<StaticInfoPage>(this);
                 }
                 else
@@ -229,18 +424,15 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });
-            /* = new StaticInfo()
-             {
-                 address = "Carrer Sparragus",
-                 name = "UPC",
-                 latitude = 41.4113891882873F,
-                 longitude = 41.4113891882873F,
-                 telephone = "123456789"
-             };
-             _navigationService.PushAsync<StaticInfoPage>(this);*/
         }
 
-	    private async void HandleUploadImageCommand()
+        void HandleFinderCommand()
+        {
+            /*rellenar*/
+            _navigationService.PushAsync<FinderPage>(this);
+        }
+
+        private async void HandleUploadImageCommand()
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {

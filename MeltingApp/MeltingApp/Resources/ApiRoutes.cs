@@ -20,9 +20,15 @@ namespace MeltingApp.Resources
             public const string EditProfileUser = "EditProfile";
             public const string AvatarProfileUser = "AvatarProfile";
             public const string ShowEvent = "ShowEvent";
+            public const string ConfirmAssistance = "ConfirmAssitance";
+            public const string UnconfirmAssistance = "UnconfirmAssistance";
+            public const string GetUserAssistance = "GetUserAssistance";
             public const string ShowFacultyInfo = "ShowFacultyInfo";
+            public const string ShowUniversityInfo = "ShowUniversityInfo";
             public const string GetAllEvents = "GetAllEvents";
-            public const string EditEvent = "EditEvent;"
+            public const string EditEvent = "EditEvent";
+            public const string CreateComment = "CreateComment";
+            public const string GetAllComments = "GetAllComments";
         }
 
         /// <summary>
@@ -30,6 +36,7 @@ namespace MeltingApp.Resources
         /// </summary>
         public struct Endpoints
         {
+            //TODO: Remove this fake url
             public const string ActivateUser = "/auth/activate";
             public const string RegisterUser = "/auth/register";
             public const string LoginUser = "/auth/login";
@@ -37,10 +44,16 @@ namespace MeltingApp.Resources
             public const string GetProfileUser = "/profile";
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
-            public const string ShowEvent = "/events/2/event";
-            public const string ShowFacultyInfo = "/locations/universities/2/faculties";
-            public const string GetAllEvents = "/users/1/events";
             public const string EditEvent = "/users/1/events/2/event";
+            public const string GetAllEvents = "/users/5/events";
+            public const string ShowEvent = "/events/5/event";
+            public const string ConfirmAssitance = "/users/5/events/5/votes";
+            public const string UnconfirmAssistance = "/users/5/events/5/vote";
+            public const string GetUserAssistance = "/users/5/events/5";
+            public const string ShowFacultyInfo = "/users/3/profile/faculty";
+            public const string ShowUniversityInfo = "/locations/2";
+            public const string CreateComment = "/users/5/events/2/comments";
+            public const string GetAllComments = "/users/5/events/2/comments";
         }
 
     }

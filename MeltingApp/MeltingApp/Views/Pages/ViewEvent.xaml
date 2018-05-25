@@ -12,6 +12,28 @@
             <Label Text="{Binding Event.address}"></Label>
             <Label Text="{Binding Event.name}"></Label>
             <Label Text="{Binding Event.date}"></Label>
+            <Button Text="I'll asssit" Command="{Binding ConfirmAssistanceCommand}"></Button>
+            <Button Text="View in Maps" Command="{Binding OpenMapEventCommand}"></Button>
+            <Entry Text="{Binding Comment.content}"></Entry>
+            <Button Text="Create comment" Command="{Binding CreateCommentCommand}"></Button>
+            <ScrollView>
+                <StackLayout HeightRequest="200">
+                    <ListView ItemsSource="{Binding AllComments}" x:Name="listView">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding user_id}"></Label>
+                                            <Label Text="{Binding content}"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

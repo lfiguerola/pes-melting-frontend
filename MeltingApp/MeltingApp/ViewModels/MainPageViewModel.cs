@@ -25,6 +25,8 @@ namespace MeltingApp.ViewModels
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
+	    private Boolean _userAssists;
+	    private int _userAssistsInt;
 	    private Comment _comment;
 	    private IEnumerable<Comment> _allComments;
 
@@ -38,6 +40,7 @@ namespace MeltingApp.ViewModels
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
 	    public Command NavigateToViewEventPageCommand { get; set; }
+	    public Command ConfirmAssistanceCommand { get; set; }
 	    public Command CreateCommentCommand { get; set; }
         public Command GetAllCommentsCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
@@ -59,17 +62,73 @@ namespace MeltingApp.ViewModels
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
-		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
-            GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
+		    ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
             OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
 		    OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
-            Comment = new Comment();
+
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
+            CreateCommentCommand = new Command(HandleCreateCommentCommand);
+            GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
+            Comment = new Comment();
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
+		    Init();
+		}
+
+	    async private void Init()
+	    {
+	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        {
+	            if (isSuccess)
+	            {
+	                if (UserAssistsInt == 1) UserAssists = true;
+	                else UserAssists = false;
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        });
+        }
+
+	    async void HandleConfirmAssistanceCommand()
+	    {
+            if (!UserAssists)
+	        {
+	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+	                    if (isSuccess)
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Confirmed");
+	                        UserAssists = true;
+	                    }
+	                    else
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                    }
+                    });
+	        }
+	        else
+	        {
+	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+	                    if (isSuccess)
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Unconfirmed");
+	                        UserAssists = false;
+	                    }
+	                    else
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                    }
+                    });
+	        }
+		    
         }
 
         private async void HandleOpenMapStaticUniversityCommand()
@@ -313,8 +372,27 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public Boolean UserAssists
+	    {
+	        get { return _userAssists; }
+	        set
+	        {
+	            _userAssists = value;
+	            OnPropertyChanged(nameof(UserAssists));
+	        }
+	    }
+	    public int UserAssistsInt
+	    {
+	        get { return _userAssistsInt; }
+	        set
+	        {
+	            _userAssistsInt = value;
+	            OnPropertyChanged(nameof(UserAssistsInt));
+	        }
+	    }
 
-	    void HandleNavigateToEditProfilePageCommand()
+
+        void HandleNavigateToEditProfilePageCommand()
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }

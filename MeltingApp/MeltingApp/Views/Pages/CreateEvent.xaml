@@ -12,9 +12,9 @@
             <Label x:Name="PhotoLabel" Text="Add a photo for the event"></Label>
             <Entry x:Name="PhotoEntry" Text="Binding with EventPhoto"></Entry> <!-- have to create the binding and find how to upload a photo -->
             <Label x:Name="DateLabel" Text="Which day will the event be?"></Label>
-            <DatePicker x:Name="EventDatePicker"></DatePicker> <!-- have to create the binding  -->
+            <DatePicker x:Name="EventDatePicker" Date="{Binding Date}" MinimumDate="{Binding MinDate}"></DatePicker> <!-- have to create the binding  -->
             <Label x:Name="TimeLabel" Text="When will the event be?"></Label>
-            <TimePicker x:Name="EventTimePicker"></TimePicker> <!-- have to create the binding -->
+            <TimePicker x:Name="EventTimePicker" Time="{Binding Time}"></TimePicker> <!-- have to create the binding -->
             <Label x:Name="LocationLabel" Text="Where will the event be?"></Label>
             <Entry x:Name="LocationEntry" Text="Binding with EventLocation"></Entry> <!-- have to create the binding and find how to express a location -->
 

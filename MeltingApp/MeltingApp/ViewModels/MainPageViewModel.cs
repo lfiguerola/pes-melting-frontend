@@ -18,6 +18,7 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private StaticInfo _staticInfo;
+	    private StaticInfo _staticInfoUni;
         private string _responseMessage;
 	    private User _user;
 	    private Event _event;
@@ -40,7 +41,8 @@ namespace MeltingApp.ViewModels
 	    public Command CreateCommentCommand { get; set; }
         public Command GetAllCommentsCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
-        public Command OpenMapStaticCommand { get; set; }
+        public Command OpenMapStaticFacultyCommand { get; set; }
+	    public Command OpenMapStaticUniversityCommand { get; set; }
         public Command OpenMapEventCommand { get; set; }
 
         public MainPageViewModel ()
@@ -59,7 +61,8 @@ namespace MeltingApp.ViewModels
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
 		    CreateCommentCommand = new Command(HandleCreateCommentCommand);
             GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
-            OpenMapStaticCommand = new Command(HandleOpenMapStaticCommand);
+            OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
+            OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
 		    OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
             Comment = new Comment();
             Event = new Event();
@@ -67,6 +70,15 @@ namespace MeltingApp.ViewModels
             User = new User();
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
+        }
+
+        private async void HandleOpenMapStaticUniversityCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("University", Double.Parse(UniversityStaticInfo.latitude.ToString()), Double.Parse(UniversityStaticInfo.longitude.ToString()));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
         }
 
         private async void HandleOpenMapEventCommand()
@@ -78,9 +90,9 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        private async void HandleOpenMapStaticCommand()
+        private async void HandleOpenMapStaticFacultyCommand()
         {
-            var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(StaticInfo.latitude.ToString()), Double.Parse(StaticInfo.longitude.ToString()));
+            var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(FacultyStaticInfo.latitude.ToString()), Double.Parse(FacultyStaticInfo.longitude.ToString()));
             if (!success)
             {
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
@@ -222,10 +234,10 @@ namespace MeltingApp.ViewModels
         }
         public StaticInfo UniversityStaticInfo
         {
-            get { return _staticInfo; }
+            get { return _staticInfoUni; }
             set
             {
-                _staticInfo = value;
+                _staticInfoUni = value;
                 OnPropertyChanged(nameof(UniversityStaticInfo));
             }
         }

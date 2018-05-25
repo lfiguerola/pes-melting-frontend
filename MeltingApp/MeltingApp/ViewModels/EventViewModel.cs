@@ -80,8 +80,38 @@ namespace MeltingApp.ViewModels
             Event.name = "Infern";
             Event.date = "La fi del mon";
         }
+	    async void HandleConfirmAssistanceCommand()
+	    {
+	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        {
+	            if (isSuccess)
+	            {
+	                if (UserAssistsInt == 1) UserAssists = true;
+	                else UserAssists = false;
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        });
+	        if (UserAssists)
+	        {
+	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
 
-	    async private void Init()
+	                });
+	        }
+	        else
+	        {
+	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+
+	                });
+	        }
+	    }
+        async private void Init()
 	    {
 	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
 	        {
@@ -97,25 +127,7 @@ namespace MeltingApp.ViewModels
             });
         }
 
-	    async void HandleConfirmAssistanceCommand()
-	    {
-	        if (UserAssists)
-	        {
-	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
-	                (isSuccess, responseMessage) =>
-	                {
-	                    
-	                });
-	        }
-	        else
-	        {
-	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
-	                (isSuccess, responseMessage) =>
-	                {
-
-	                });
-            }
-	    }
+	    
 
         async void HandleCreateEventCommand()
         {

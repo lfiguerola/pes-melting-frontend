@@ -34,7 +34,7 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.CreateEvent), ApiRoutes.Endpoints.CreateEvent },
             //TODO: Remove this fake url
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.AvatarProfileUser), "users/11" + ApiRoutes.Endpoints.AvatarProfileUser },
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ConfirmAssistance), ApiRoutes.Endpoints.ConfirmAssitance },
+            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), ApiRoutes.Endpoints.ConfirmAssitance },
 
         };
 
@@ -55,7 +55,7 @@ namespace MeltingApp.Services
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
-            {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.UnconfirmAssistance), ApiRoutes.Endpoints.UnconfirmAssistance },
+            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), ApiRoutes.Endpoints.UnconfirmAssistance },
         };
 
         public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
@@ -156,7 +156,7 @@ namespace MeltingApp.Services
             try
             {
                 HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.yRbv93a6kK4lsBVTrNH-rogHo6_zUxJsTw3vUBKw1Gs");
-                var result = await HttpClient.DeleteAsync(new Uri(GetPostUri<T>(methodName)));
+                var result = await HttpClient.DeleteAsync(new Uri(GetDeleteUri<T>(methodName)));
                 deleteResult = await result.Content.ReadAsStringAsync();
                 T deserializedObject = null;
                 try
@@ -223,10 +223,17 @@ namespace MeltingApp.Services
         }
 
 
-        /*private string GetDeleteUri<T>()
+       private string GetDeleteUri<T>(string methodName)
         {
-            return UrlDeleteDictionary[typeof(T)];
-        }*/
+            foreach (var key in UrlDeleteDictionary.Keys)
+            {
+                if (key.Item1 == typeof(T) && key.Item2.Equals(methodName))
+                {
+                    return UrlDeleteDictionary[key];
+                }
+            }
+            return null;
+        }
         private string GetPutUri<T>(string methodName)
         {
             foreach (var key in UrlPutDictionary.Keys)

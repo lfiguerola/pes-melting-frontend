@@ -21,6 +21,8 @@ namespace MeltingApp.ViewModels
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
+	    private Boolean _userAssists;
+	    private int _userAssistsInt;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
@@ -30,6 +32,8 @@ namespace MeltingApp.ViewModels
         public Command NavigateToGetAllEventsCommand { get; set; }
 	    public Command InfoEventCommand { get; set; }
 	    public Command NavigateToViewEventPageCommand { get; set; }
+	    public Command ConfirmAssistanceCommand { get; set; }
+
 
 
         public MainPageViewModel ()
@@ -44,12 +48,66 @@ namespace MeltingApp.ViewModels
 		    InfoEventCommand = new Command(HandleInfoEventCommand);
 		    UploadImageCommand = new Command(HandleUploadImageCommand);
 		    NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
+		    ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             Event = new Event();
 		    EventSelected = new Event(); 
             User = new User();
+		    Init();
+		}
+
+	    async private void Init()
+	    {
+	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        {
+	            if (isSuccess)
+	            {
+	                if (UserAssistsInt == 1) UserAssists = true;
+	                else UserAssists = false;
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        });
         }
 
-	    void HandleInfoEventCommand()
+	    async void HandleConfirmAssistanceCommand()
+	    {
+            if (!UserAssists)
+	        {
+	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+	                    if (isSuccess)
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Confirmed");
+	                        UserAssists = true;
+	                    }
+	                    else
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                    }
+                    });
+	        }
+	        else
+	        {
+	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
+	                (isSuccess, responseMessage) =>
+	                {
+	                    if (isSuccess)
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Unconfirmed");
+	                        UserAssists = false;
+	                    }
+	                    else
+	                    {
+	                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                    }
+                    });
+	        }
+	    }
+
+        void HandleInfoEventCommand()
 	    {
 	        Event = EventSelected;
 	        //Event = AllEvents.ElementAt(id);
@@ -188,8 +246,27 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public Boolean UserAssists
+	    {
+	        get { return _userAssists; }
+	        set
+	        {
+	            _userAssists = value;
+	            OnPropertyChanged(nameof(UserAssists));
+	        }
+	    }
+	    public int UserAssistsInt
+	    {
+	        get { return _userAssistsInt; }
+	        set
+	        {
+	            _userAssistsInt = value;
+	            OnPropertyChanged(nameof(UserAssistsInt));
+	        }
+	    }
 
-	    void HandleNavigateToEditProfilePageCommand()
+
+        void HandleNavigateToEditProfilePageCommand()
 	    {
 	        _navigationService.PushAsync<EditProfilePage>(this);
 	    }

@@ -413,7 +413,7 @@ namespace MeltingApp.ViewModels
                 ResponseMessage = responseMessage;
                 if (isSuccess)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("ja les tenim");
+                    
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             });
@@ -429,7 +429,6 @@ namespace MeltingApp.ViewModels
             UploadImageCommand = new Command(HandleUploadImageCommand);
             //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
-            //MySelectedItem = new Command(HandleMySelectedItem);
             User = new User();
             //Omplim desplegable de universities
             HandleViewUniversitiesCommand();

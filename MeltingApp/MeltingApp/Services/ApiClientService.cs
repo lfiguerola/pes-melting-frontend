@@ -35,13 +35,15 @@ namespace MeltingApp.Services
             //TODO: Remove this fake url
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.AvatarProfileUser), "users/11" + ApiRoutes.Endpoints.AvatarProfileUser },
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), ApiRoutes.Endpoints.ConfirmAssitance },
-            {new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), ApiRoutes.Endpoints.CreateComment  }
+            {new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), ApiRoutes.Endpoints.CreateComment  },
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
             //TODO: Remove this fake url
-            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), "/users/11" + ApiRoutes.Endpoints.EditProfileUser }
+            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), "/users/11" + ApiRoutes.Endpoints.EditProfileUser },
+            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.EditEvent), ApiRoutes.Endpoints.EditEvent },
+
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>

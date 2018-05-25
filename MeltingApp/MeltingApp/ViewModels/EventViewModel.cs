@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Java.Lang;
 using MeltingApp.Interfaces;
@@ -24,6 +25,7 @@ namespace MeltingApp.ViewModels
         private string _responseMessage;
         public Command CreateEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
+        public Command EditEventCommand { get; set; }
 
         public Event Event
 	    {
@@ -97,6 +99,7 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
 
             CreateEventCommand = new Command(HandleCreateEventCommand);
+            EditEventCommand = new Command(HandleEditEventCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
 
             Init();
@@ -111,6 +114,23 @@ namespace MeltingApp.ViewModels
 
             MinDate = DateTime.Today;
         }
+
+	    async void HandleEditEventCommand()
+	    {
+	        Event.date = Time + " " + Date.ToLongDateString();
+            await _apiClientService.PutAsync<Event>(Event, ApiRoutes.Methods.EditEvent,
+	            (isSuccess, responseMessage) =>
+	            {
+	                if (isSuccess)
+	                {
+	                    _navigationService.PushAsync<ViewEvent>();
+                    }
+                    else
+	                {
+	                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                }
+                });
+	    }
 	    async void HandleConfirmAssistanceCommand()
 	    {
 	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>

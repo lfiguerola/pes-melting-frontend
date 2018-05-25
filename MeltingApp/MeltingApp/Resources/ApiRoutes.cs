@@ -26,9 +26,9 @@ namespace MeltingApp.Resources
             public const string ShowFacultyInfo = "ShowFacultyInfo";
             public const string ShowUniversityInfo = "ShowUniversityInfo";
             public const string GetAllEvents = "GetAllEvents";
+            public const string EditEvent = "EditEvent";
             public const string CreateComment = "CreateComment";
             public const string GetAllComments = "GetAllComments";
-
         }
 
         /// <summary>
@@ -44,6 +44,7 @@ namespace MeltingApp.Resources
             public const string GetProfileUser = "/profile";
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
+            public const string EditEvent = "/users/5/events/5/event";
             public const string GetAllEvents = "/users/5/events";
             public const string ShowEvent = "/events/5/event";
             public const string ConfirmAssitance = "/users/5/events/5/votes";

@@ -60,6 +60,7 @@ namespace MeltingApp
             navigationService.RegisterPage<EditProfilePage>();
             navigationService.RegisterPage<EventList>();
             navigationService.RegisterPage<FinderPage>();
+            navigationService.RegisterPage<EditEvent>();
         }
     }
 }

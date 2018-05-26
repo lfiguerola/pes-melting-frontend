@@ -5,15 +5,15 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Ayuda y sugerencias" />
-
-
-            <Label Text=" Preguntanos"/>
-            <Entry Text="Escribe tu pregunta"></Entry>
-
-            <Label Text="Preguntas Frecuentes"/>
-            <Label Text="¿Que es el Karma?"></Label>
-            <Label Text="Cerrar Sesión"></Label>
-            
+            <Label Text="Popaulars"/>
+            <ListView x:Name="ListHelp">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell  Text="{Binding Nombre}" Detail="{Binding Descripcion}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

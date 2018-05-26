@@ -4,8 +4,9 @@ using System.Text;
 
 namespace MeltingApp.Models
 {
-    class Help : EntityBase
+    public class HelpElment : EntityBase
     {
-        private string _question;
+       public String Nombre {get; set;}
+        public String Descripcion { get; set; }
     }
 }

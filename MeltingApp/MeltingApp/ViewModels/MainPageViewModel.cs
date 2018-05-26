@@ -22,8 +22,8 @@ namespace MeltingApp.ViewModels
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
-        private Help _help;
-        private About _about;
+        private HelpElment helpElment;
+             
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
@@ -62,6 +62,7 @@ namespace MeltingApp.ViewModels
 		    EventSelected = new Event(); 
             User = new User();
             StaticInfo = new StaticInfo();
+            HelpElment = new HelpElment();
         }
 
         void HandleInfoEventCommand()
@@ -164,8 +165,9 @@ namespace MeltingApp.ViewModels
             }
         }
 
+        public HelpElment HelpElment { get; }
 
-	    public IEnumerable<Event> AllEvents
+        public IEnumerable<Event> AllEvents
 	    {
 	        get { return _allEvents; }
 	        set

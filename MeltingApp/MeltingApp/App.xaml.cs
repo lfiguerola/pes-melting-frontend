@@ -1,6 +1,7 @@
 ﻿using System;
 using MeltingApp.Interfaces;
 using MeltingApp.Services;
+using MeltingApp.ViewModels;
 using MeltingApp.Views;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
@@ -16,10 +17,17 @@ namespace MeltingApp
             AddStaticResources();
             RegisterServices();
             RegisterPages();
+		    InitializeDB();
             MainPage = new RootPage();
-        }        
+        }
 
-        protected override void OnStart ()
+	    private void InitializeDB()
+	    {
+	        var dataBaseService = DependencyService.Get<IDataBaseService>();
+            dataBaseService.InitializeTables();
+	    }
+
+	    protected override void OnStart ()
 		{
 			// Handle when your app starts
 		}
@@ -38,6 +46,7 @@ namespace MeltingApp
         {
             DependencyService.Register<INavigationService, NavigationService>();
             DependencyService.Register<IApiClientService, ApiClientService>();
+            DependencyService.Register<IDataBaseService, DataBaseService>();
         }
 
         private void AddStaticResources()
@@ -60,6 +69,7 @@ namespace MeltingApp
             navigationService.RegisterPage<EditProfilePage>();
             navigationService.RegisterPage<EventList>();
             navigationService.RegisterPage<FinderPage>();
+            navigationService.RegisterPage<CreateProfilePage>();
         }
     }
 }

@@ -1,17 +1,13 @@
 ﻿using MeltingApp.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Java.Lang;
 using MeltingApp.Exceptions;
 using MeltingApp.Models;
 using MeltingApp.Resources;
-using MeltingApp.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Exception = System.Exception;
@@ -19,8 +15,7 @@ using Exception = System.Exception;
 namespace MeltingApp.Services
 {
     public class ApiClientService : IApiClientService
-    {
-
+    {        
         public HttpClient HttpClient { get; set; } = new HttpClient()
         {
             BaseAddress = new Uri("https://melting-app.herokuapp.com")
@@ -35,13 +30,14 @@ namespace MeltingApp.Services
             //TODO: Remove this fake url
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.AvatarProfileUser), "users/11" + ApiRoutes.Endpoints.AvatarProfileUser },
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), ApiRoutes.Endpoints.ConfirmAssitance },
-            {new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), ApiRoutes.Endpoints.CreateComment  }
+            {new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), ApiRoutes.Endpoints.CreateComment},
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.CreateProfileUser), "/users/13" + ApiRoutes.Endpoints.CreateProfileUser}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
             //TODO: Remove this fake url
-            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), "/users/11" + ApiRoutes.Endpoints.EditProfileUser }
+            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), "/users/13" + ApiRoutes.Endpoints.EditProfileUser }
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
@@ -51,9 +47,11 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(int), ApiRoutes.Methods.GetUserAssistance), ApiRoutes.Endpoints.GetUserAssistance},
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowFacultyInfo), ApiRoutes.Endpoints.ShowFacultyInfo},
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowUniversityInfo), ApiRoutes.Endpoints.ShowUniversityInfo},
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/3" + ApiRoutes.Endpoints.GetProfileUser },
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), "/users/13" + ApiRoutes.Endpoints.GetProfileUser },
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), ApiRoutes.Endpoints.GetAllEvents },
-            {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetAllComments), ApiRoutes.Endpoints.GetAllComments  }
+            {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetAllComments), ApiRoutes.Endpoints.GetAllComments},
+            {new Tuple<Type, string>(typeof(IEnumerable<University>), ApiRoutes.Methods.GetUniversities), ApiRoutes.Endpoints.GetUniversities},
+            {new Tuple<Type, string>(typeof(IEnumerable<Faculty>), ApiRoutes.Methods.GetFaculties), ApiRoutes.Endpoints.GetFaculties +"1/faculties"}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
@@ -61,25 +59,25 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), ApiRoutes.Endpoints.UnconfirmAssistance },
         };
 
-        public async Task<T> PostAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<TResult> PostAsync<TRequest, TResult>(TRequest entity, string methodName, Action<bool, string> successResultCallback = null) where TResult : EntityBase where TRequest : EntityBase
         {
             var json = JsonConvert.SerializeObject(entity);
             var jsonSerializerSettings = new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Error
             };
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEzLCJyb2xlIjoic3R1ZGVudCIsImxhc3Rfc3RhdHVzIjoxNTI3MzM4NDA5fQ.lbm3GwKE1gb9E8WFIAl12cL3XHLj0E9nfT4lrkV2Fmw");
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             ApiResponseMessage responseMessage = null;
             string postResult = null;
             try
             {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.yRbv93a6kK4lsBVTrNH-rogHo6_zUxJsTw3vUBKw1Gs");
-                var result = await HttpClient.PostAsync(new Uri(GetPostUri<T>(methodName)), content);
+                var result = await HttpClient.PostAsync(new Uri(GetPostUri<TRequest>(methodName)), content);
                 postResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                TResult deserializedObject = null;
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(postResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(postResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {
@@ -88,30 +86,23 @@ namespace MeltingApp.Services
 
                 if (result.IsSuccessStatusCode)
                 {
-                    //si es el login i success, guardem token
-                    if (methodName == ApiRoutes.Methods.LoginUser)
-                    {
-                        //token de l'estil a: {"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExLCJyb2xlIjoic3R1ZGVudCJ9.WTHO81A7YfIlwdNzik5-roNNU6jBF7u35YoX0tNflTI"}
-                        var token = postResult.Substring(8, postResult.Length - 8 - 2);
-                        entity.token = token;
-
-                    }
                     successResultCallback?.Invoke(true, responseMessage?.message);
                 }
                 else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
 
                 return deserializedObject;
             }
-            catch (Exception)
+            catch (HttpRequestException ex)
             {
-                throw new ApiClientException(postResult);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                return null;
             }
         }
 
-        public async Task<T> GetAsync<T>(string methodName, Action<bool, string> successResultCallback = null) 
+        public async Task<TResult> GetAsync<TRequest,TResult>(string methodName, Action<bool, string> successResultCallback = null) where TResult : EntityBase where TRequest : EntityBase
         {
 
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.rLzcTl4Rx0HbthKITbMjgHJr0lB_avE-O1Tj0WxtWKs");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEzLCJyb2xlIjoic3R1ZGVudCIsImxhc3Rfc3RhdHVzIjoxNTI3MzM4NDA5fQ.lbm3GwKE1gb9E8WFIAl12cL3XHLj0E9nfT4lrkV2Fmw");
             ApiResponseMessage responseMessage = null;
             string getResult = null;
             var jsonSerializerSettings = new JsonSerializerSettings()
@@ -120,15 +111,13 @@ namespace MeltingApp.Services
             };
             try
             {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.rLzcTl4Rx0HbthKITbMjgHJr0lB_avE-O1Tj0WxtWKs");
-
-                var result = await HttpClient.GetAsync(new Uri(GetGetUri<T>(methodName)));
+                var result = await HttpClient.GetAsync(new Uri(GetGetUri<TRequest>(methodName)));
                 getResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = default(T);
+                TResult deserializedObject = null;
 
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(getResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(getResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {
@@ -187,26 +176,26 @@ namespace MeltingApp.Services
         }
 
 
-
-        public async Task<T> PutAsync<T>(T entity, string methodName, Action<bool, string> successResultCallback = null) where T : EntityBase
+        public async Task<TResult> PutAsync<TRequest, TResult>(TRequest entity, string methodName, Action<bool, string> successResultCallback = null) where TResult : EntityBase where TRequest : EntityBase
         {
+
             var json = JsonConvert.SerializeObject(entity);
             var jsonSerializerSettings = new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Error
             };
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUsInJvbGUiOiJzdHVkZW50IiwibGFzdF9zdGF0dXMiOjB9.yRbv93a6kK4lsBVTrNH-rogHo6_zUxJsTw3vUBKw1Gs");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", @"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEzLCJyb2xlIjoic3R1ZGVudCIsImxhc3Rfc3RhdHVzIjoxNTI3MzM4NDA5fQ.lbm3GwKE1gb9E8WFIAl12cL3XHLj0E9nfT4lrkV2Fmw");
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             ApiResponseMessage responseMessage = null;
             string putResult = null;
             try
             {
-                var result = await HttpClient.PutAsync(new Uri(GetPutUri<T>(methodName)), content);
+                var result = await HttpClient.PutAsync(new Uri(GetPutUri<TRequest>(methodName)), content);
                 putResult = await result.Content.ReadAsStringAsync();
-                T deserializedObject = null;
+                TResult deserializedObject = null;
                 try
                 {
-                    deserializedObject = JsonConvert.DeserializeObject<T>(putResult, jsonSerializerSettings);
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(putResult, jsonSerializerSettings);
                 }
                 catch (JsonSerializationException)
                 {

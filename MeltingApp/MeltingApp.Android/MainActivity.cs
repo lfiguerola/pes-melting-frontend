@@ -17,13 +17,16 @@ namespace MeltingApp.Droid
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = this;
 
             base.OnCreate(bundle);
+            RegisterDependencies();
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+        }
 
+        private static void RegisterDependencies()
+        {
             //registrem les funcionalitats del sistema operatiu
             DependencyService.Register<IOperatingSystemMethods, OperatingSystemMethods>();
-            
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)

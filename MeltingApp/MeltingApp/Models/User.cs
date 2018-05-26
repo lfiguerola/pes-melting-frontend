@@ -186,5 +186,7 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(avatarURL));
             }
         }
+        public Token Token { get; set; }
+
     }
 }

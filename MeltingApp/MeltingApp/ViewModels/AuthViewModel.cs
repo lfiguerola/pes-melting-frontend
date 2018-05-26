@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using FluentValidation;
@@ -26,6 +27,8 @@ namespace MeltingApp.ViewModels
         public Command RegisterUserCommand { get; set; }
         public Command LoginUserCommand { get; set; }
         public Command CodeConfirmationCommand { get; set; }
+        public Command ViewUniversitiesCommand { get; set; }
+        
 
         public User User
         {
@@ -36,7 +39,7 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(User));
             }
         }
-
+        
         public string ResponseMessage
         {
             get { return _responseMessage; }
@@ -99,6 +102,7 @@ namespace MeltingApp.ViewModels
             });
             
         }
+
 
         public void EncodeTokenAndSaveUserId()
         {

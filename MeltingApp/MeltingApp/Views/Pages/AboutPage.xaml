@@ -3,22 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeltingApp.Views.Pages.AboutPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="About"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
+     
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
 
-            <Label Text="¿Que es MeltingApp?"></Label>
-            <Label Text="Aqui iría una mini descripción de la app"></Label>
+            <Image Source="logoLogin.png" WidthRequest="200" HeightRequest="200"  ></Image>
 
-            <Label Text="Version  1.0"></Label>
-            <Label Text="Developers Team"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
+            <Label Text="MeltingApp is an mobile aplication created to make easier for newcommers and international students to connect with the university life" FontSize="Medium" HorizontalTextAlignment="Center" FontAttributes="Italic"></Label>
 
-            <Label Text=" Aqui iría listado de los nombres del equipo"></Label>
+                <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="EndAndExpand">
+                 <Label  Text="MeltingApp Team"
+                 FontSize="Small" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <Label Text="Sara Bourjila, Pau Carbonell Vives, Alexandre Calle Millan, Laura Figuerola Peña, Ismael Julià Reifs, Adolfo López Oyarzabal
+Carla Varea Parra" FontSize="Micro" HorizontalTextAlignment="Center">
+                 </Label>
+                </StackLayout>
+
+
 
 
         </StackLayout>
+
+            
     </ContentPage.Content>
 </ContentPage>

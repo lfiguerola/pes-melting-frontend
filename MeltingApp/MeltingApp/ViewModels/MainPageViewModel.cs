@@ -32,6 +32,8 @@ namespace MeltingApp.ViewModels
         private IEnumerable<Comment> _allComments;
         private Help _help;
         private About _about;
+        private HelpElment helpElment;
+             
 
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToEditProfilePageCommand { get; set; }
@@ -200,6 +202,8 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });
+            StaticInfo = new StaticInfo();
+            HelpElment = new HelpElment();
         }
 
         void HandleInfoEventCommand()
@@ -333,6 +337,7 @@ namespace MeltingApp.ViewModels
             }
         }
 
+        public HelpElment HelpElment { get; }
 
         public Event Event
         {

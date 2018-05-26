@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MeltingApp.Interfaces
+﻿namespace MeltingApp.Interfaces
 {
     public interface IFileLocatorService
     {

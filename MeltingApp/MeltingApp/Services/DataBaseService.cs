@@ -50,6 +50,7 @@ namespace MeltingApp.Services
             {
                 if (predicate == null) return null;
                 var entity = Get(predicate);
+                if (entity == null) return default(T);
                 return SQLiteConnection.GetWithChildren<T>(entity.dbId, true);
             }
         }
@@ -93,6 +94,7 @@ namespace MeltingApp.Services
 
         public int Insert<T>(T entity) where T : EntityBase, new()
         {
+            if (entity == null) return -1;
             lock (_lockObject)
             {
                 if (!SQLiteConnection.IsInTransaction)
@@ -108,6 +110,7 @@ namespace MeltingApp.Services
 
         public int InsertWithChildren<T>(T entity) where T : EntityBase, new()
         {
+            if (entity == null) return -1;
             lock (_lockObject)
             {
                 if (!SQLiteConnection.IsInTransaction)
@@ -143,14 +146,14 @@ namespace MeltingApp.Services
                 {
                     SQLiteConnection.BeginTransaction();
                 }
-
-                SQLiteConnection.DeleteAll<T>();
+                WriteOperations.DeleteAll(SQLiteConnection, GetCollection<T>(t => true), recursive: true);
                 SQLiteConnection.Commit();
             }
         }
 
         public void InsertCollection<T>(T entities) where T : IEnumerable
         {
+            if (entities == null) return;
             lock (_lockObject)
             {
                 if (!SQLiteConnection.IsInTransaction)
@@ -160,10 +163,11 @@ namespace MeltingApp.Services
                 SQLiteConnection.InsertAll(entities);
                 SQLiteConnection.Commit();
             }
-        }
+         }
 
         public void InsertCollectionWithChildren<T>(T entities) where T : IEnumerable
         {
+            if (entities == null) return;
             lock (_lockObject)
             {
                 if (!SQLiteConnection.IsInTransaction)
@@ -178,6 +182,8 @@ namespace MeltingApp.Services
 
         public int Update<T>(T entity) where T : EntityBase, new()
         {
+            if (entity == null) return -1;
+
             lock (_lockObject)
             {
                 if (!SQLiteConnection.IsInTransaction)
@@ -200,6 +206,8 @@ namespace MeltingApp.Services
 
         public int UpdateWithChildren<T>(T entity) where T : EntityBase, new()
         {
+            if (entity == null) return -1;
+
             lock (_lockObject)
             {
                 if (!SQLiteConnection.IsInTransaction)
@@ -209,7 +217,7 @@ namespace MeltingApp.Services
 
                 if (Get<T>(t => t.dbId == entity.dbId) == null)
                 {
-                    SQLiteConnection.InsertWithChildren(entity);
+                    SQLiteConnection.InsertWithChildren(entity, true);
                 }
                 else
                 {
@@ -223,6 +231,8 @@ namespace MeltingApp.Services
 
         public void UpdateCollection<T>(T entities) where T : IEnumerable
         {
+            if (entities == null) return;
+
             lock (_lockObject)
             {
                 if (!SQLiteConnection.IsInTransaction)
@@ -243,5 +253,34 @@ namespace MeltingApp.Services
                 return SQLiteConnection.Table<T>().Where(predicate).Skip(skip).Take(take).ToList();
             }
         }
+
+        public void Delete<T>(T entity, bool recursive = true) where T : EntityBase, new()
+        {
+            if (entity == null) return;
+            lock (_lockObject)
+            {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+                WriteOperations.Delete(SQLiteConnection, entity, recursive);
+                SQLiteConnection.Commit();
+            }
+        }
+
+        public void DeleteCollection<T>(T entities, bool recursive = true) where T : IEnumerable
+        {
+            if (entities == null) return;
+            lock (_lockObject)
+            {
+                if (!SQLiteConnection.IsInTransaction)
+                {
+                    SQLiteConnection.BeginTransaction();
+                }
+                WriteOperations.DeleteAll(SQLiteConnection, entities, recursive);
+                SQLiteConnection.Commit();
+            }
+        }
+
     }
 }

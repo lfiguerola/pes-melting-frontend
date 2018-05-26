@@ -23,12 +23,10 @@ namespace MeltingApp.ViewModels
         private IEnumerable<Faculty> _faculties;
         private string _responseMessage;
         private ImageSource _image1;
-
         private int countriesSelectedIndex;
         private string SelectedCountry;
         private University _mySelectedUniversity;
         private Faculty _mySelectedFaculty;
-
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
         public Command CreateProfileCommand { get; set; }

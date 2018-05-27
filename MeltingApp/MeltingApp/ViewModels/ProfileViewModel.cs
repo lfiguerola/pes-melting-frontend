@@ -421,6 +421,7 @@ namespace MeltingApp.ViewModels
             }, meltingUriParser);
         }
 
+       
         public ProfileViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);

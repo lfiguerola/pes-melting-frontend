@@ -38,6 +38,12 @@ namespace MeltingApp.ViewModels
         public Command ViewProfileCommand { get; set; }
 
 
+        //////////////////
+        public Command NavigateToEditProfilePageCommand { get; set; }
+        public Command SaveEditProfileCommand { get; set; }
+        public Command ViewProfileCommand { get; set; }
+
+
         public User User
         {
             get { return _user; }

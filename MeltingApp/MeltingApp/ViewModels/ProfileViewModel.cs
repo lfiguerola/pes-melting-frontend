@@ -394,7 +394,7 @@ namespace MeltingApp.ViewModels
         
         async void getFaculties(int location_id_uni)
         {
-            Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties,(isSuccess, responseMessage) => {
+            Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>,IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties,(isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 if (isSuccess)
                 {
@@ -443,7 +443,7 @@ namespace MeltingApp.ViewModels
 
         async void HandleViewUniversitiesCommand()
         {
-            var universities = await _apiClientService.GetAsync<IEnumerable<University>>(ApiRoutes.Methods.GetUniversities,(success, responseMessage) =>
+            var universities = await _apiClientService.GetAsync<IEnumerable<University>, IEnumerable<University>>(ApiRoutes.Methods.GetUniversities,(success, responseMessage) =>
                 {
                     if (success)
                     {
@@ -471,12 +471,17 @@ namespace MeltingApp.ViewModels
                     {
                         DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                     }
-                });
+                }
+
+            });
         }
 
         async void HandleCreateProfileCommand()
         {
-            await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.CreateProfileUser, (isSuccess, responseMessage) => {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            await _apiClientService.PostAsync<User,User>(User, ApiRoutes.Methods.CreateProfileUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 if (isSuccess)
                 {
@@ -485,7 +490,7 @@ namespace MeltingApp.ViewModels
                     HandleViewProfileCommand();
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-            });
+            }, meltingUriParser);
             
         }
         

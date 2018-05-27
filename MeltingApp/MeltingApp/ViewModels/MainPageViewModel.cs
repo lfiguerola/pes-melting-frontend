@@ -271,13 +271,21 @@ namespace MeltingApp.ViewModels
                     HandleNavigateToCreateProfilePageCommand();
                 }
             }, meltingUriParser);
-
             if (b)
             {
                 await _navigationService.PushAsync<ProfilePage>(this);
+                var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+                var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+                //obtenim user i el guardem a la db
+                if (userConsultatDB != null)
+                {
+                    userConsultatDB.faculty_id = User.faculty_id;
+                    userConsultatDB.university_id = User.university_id;
+                    userConsultatDB.full_name = User.full_name;
+                    userConsultatDB.username = User.username;
+                }
+                _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
             }
-            //si no s'ha creat
-
         }
 
         async void HandleSaveEditProfileCommand()
@@ -443,6 +451,11 @@ namespace MeltingApp.ViewModels
                 }
             }, meltingUriParser);
 
+
+            var meltingUriParser2 = new MeltingUriParser();
+            var userSearched = _dataBaseService.GetWithChildren<User>(u => u.id == App.LoginRequest.LoggedUserIdBackend);
+            meltingUriParser2.AddParseRule(ApiRoutes.UriParameters.OnlyUniversityId, $"{userSearched.university_id}");
+
             UniversityStaticInfo = await _apiClientService.GetAsync<StaticInfo,StaticInfo>(ApiRoutes.Methods.ShowUniversityInfo, (success, responseMessage) =>
             {
                 if (success)
@@ -454,7 +467,7 @@ namespace MeltingApp.ViewModels
                 {
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
-            });
+            },meltingUriParser2);
         }
 
         void HandleFinderCommand()

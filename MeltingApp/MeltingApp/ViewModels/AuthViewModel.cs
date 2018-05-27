@@ -38,12 +38,6 @@ namespace MeltingApp.ViewModels
         public Command ViewProfileCommand { get; set; }
 
 
-        //////////////////
-        public Command NavigateToEditProfilePageCommand { get; set; }
-        public Command SaveEditProfileCommand { get; set; }
-        public Command ViewProfileCommand { get; set; }
-
-
         public User User
         {
             get { return _user; }
@@ -132,11 +126,11 @@ namespace MeltingApp.ViewModels
 
         async void HandleLoginUserCommand()
         {
+            bool b = false;
             var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                if(!isSuccess) {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
-                    }
+                if(!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
+                else b = true;                   
             });
             if (token != null)
             {
@@ -144,6 +138,7 @@ namespace MeltingApp.ViewModels
              }
             var allusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
             var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+            
             
         }
             

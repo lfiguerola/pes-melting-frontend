@@ -455,7 +455,11 @@ namespace MeltingApp.ViewModels
 
         async void HandleViewProfileCommand()
         {
+            //si el perfil ja s'ha creat
             bool b = false;
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
             User = await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
                 if (success)
@@ -464,16 +468,27 @@ namespace MeltingApp.ViewModels
                 }
                 else
                 {
+                    //si el perfil no s'ha creat faig crida a la creació d'aquest
+                    //TODO: Treure aquest toast
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                    //llavors s'ha de crear el perfil
-                    HandleCreateProfileCommand();
-
+                   
                 }
-            });
+            }, meltingUriParser);
 
             if (b)
             {
                 await _navigationService.PushAsync<ProfilePage>(this);
+                var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+                var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+                //obtenim user i el guardem a la db
+                if (userConsultatDB != null)
+                {
+                    userConsultatDB.faculty_id = User.faculty_id;
+                    userConsultatDB.university_id = User.university_id;
+                    userConsultatDB.full_name = User.full_name;
+                    userConsultatDB.username = User.username;
+                }
+                _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
             }
         }
 
@@ -491,6 +506,7 @@ namespace MeltingApp.ViewModels
                     }
                 });
             Universities = new ObservableCollection<University>(universities);
+            
         }
 
         async void HandleSaveEditProfileCommand()
@@ -517,17 +533,26 @@ namespace MeltingApp.ViewModels
         {
             var meltingUriParser = new MeltingUriParser();
             meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+            bool b = false;
 
             await _apiClientService.PostAsync<User,User>(User, ApiRoutes.Methods.CreateProfileUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 if (isSuccess)
                 {
+                    b = true;
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast("User created correctly");
                     _navigationService.PopAsync();
                     
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             }, meltingUriParser);
+
+            if (b)
+            {
+                //afegim usuari amb les seves coses a la bd
+                HandleViewProfileCommand();
+                
+            }
             
         }
         

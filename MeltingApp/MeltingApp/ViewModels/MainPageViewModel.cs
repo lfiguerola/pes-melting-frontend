@@ -84,7 +84,7 @@ namespace MeltingApp.ViewModels
 
         async private void Init()
         {
-            UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+            UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
             {
                 if (isSuccess)
                 {
@@ -102,7 +102,7 @@ namespace MeltingApp.ViewModels
         {
             if (!UserAssists)
             {
-                await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+                await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
                     (isSuccess, responseMessage) =>
                     {
                         if (isSuccess)
@@ -118,7 +118,7 @@ namespace MeltingApp.ViewModels
             }
             else
             {
-                await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
+                await _apiClientService.DeleteAsync<Event,Event>(ApiRoutes.Methods.UnconfirmAssistance,
                     (isSuccess, responseMessage) =>
                     {
                         if (isSuccess)
@@ -164,7 +164,7 @@ namespace MeltingApp.ViewModels
 
         async void HandleGetAllCommentsCommand()
         {
-            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>>(ApiRoutes.Methods.GetAllComments, (success, responseMessage) =>
+            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>,IEnumerable<Comment>>(ApiRoutes.Methods.GetAllComments, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -179,7 +179,7 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateCommentCommand()
         {
-            await _apiClientService.PostAsync<Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) =>
+            await _apiClientService.PostAsync<Comment,Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) =>
             {
                 ResponseMessage = responseMessage;
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
@@ -205,7 +205,7 @@ namespace MeltingApp.ViewModels
 
         async void HandleNavigateToViewEventPageCommand()
         {
-            Event = await _apiClientService.GetAsync<Event>(ApiRoutes.Methods.ShowEvent, (success, responseMessage) =>
+            Event = await _apiClientService.GetAsync<Event,Event>(ApiRoutes.Methods.ShowEvent, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -221,7 +221,10 @@ namespace MeltingApp.ViewModels
 
         async void HandleNavigateToGetAllEventsCommand()
         {
-            AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>, IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -231,7 +234,7 @@ namespace MeltingApp.ViewModels
                 {
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
-            });
+            }, meltingUriParser);
         }
 
         private void HandleNavigateToCreateProfilePageCommand()
@@ -248,7 +251,10 @@ namespace MeltingApp.ViewModels
         {
             //si el perfil ja s'ha creat
             bool b = false;
-            User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            User = await _apiClientService.GetAsync<User,User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -261,7 +267,7 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                     HandleNavigateToCreateProfilePageCommand();
                 }
-            });
+            }, meltingUriParser);
 
             if (b)
             {
@@ -273,7 +279,10 @@ namespace MeltingApp.ViewModels
 
         async void HandleSaveEditProfileCommand()
         {
-            await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            await _apiClientService.PutAsync<User,User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -284,7 +293,7 @@ namespace MeltingApp.ViewModels
                 {
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
-            });
+            }, meltingUriParser);
         }
 
         public User User
@@ -416,7 +425,10 @@ namespace MeltingApp.ViewModels
 
         async void HandleStaticInfoCommand()
         {
-            FacultyStaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            FacultyStaticInfo = await _apiClientService.GetAsync<StaticInfo,StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -426,9 +438,9 @@ namespace MeltingApp.ViewModels
                 {
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
-            });
+            }, meltingUriParser);
 
-            UniversityStaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowUniversityInfo, (success, responseMessage) =>
+            UniversityStaticInfo = await _apiClientService.GetAsync<StaticInfo,StaticInfo>(ApiRoutes.Methods.ShowUniversityInfo, (success, responseMessage) =>
             {
                 if (success)
                 {

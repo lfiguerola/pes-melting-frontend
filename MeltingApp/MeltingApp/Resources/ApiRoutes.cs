@@ -33,6 +33,16 @@ namespace MeltingApp.Resources
             public const string GetFaculties = "GetFaculties";
         }
 
+        public struct Prefix
+        {
+            public static string Users = $"/users/{UriParameters.UserId}";
+        }
+
+        public struct UriParameters
+        {
+            public const string UserId = "[User_id]";
+        }
+
         /// <summary>
         /// Endpoints
         /// </summary>
@@ -42,16 +52,16 @@ namespace MeltingApp.Resources
             public const string ActivateUser = "/auth/activate";
             public const string RegisterUser = "/auth/register";
             public const string LoginUser = "/auth/login";
-            public const string CreateEvent = "/users/1/events";     
+            public const string CreateEvent = "/events";     
             public const string GetProfileUser = "/profile";
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
-            public const string GetAllEvents = "/users/5/events";
+            public const string GetAllEvents = "/events";
             public const string ShowEvent = "/events/5/event";
             public const string ConfirmAssitance = "/users/5/events/5/votes";
             public const string UnconfirmAssistance = "/users/5/events/5/vote";
             public const string GetUserAssistance = "/users/5/events/5";
-            public const string ShowFacultyInfo = "/users/3/profile/faculty";
+            public const string ShowFacultyInfo = "/profile/faculty";
             public const string ShowUniversityInfo = "/locations/2";
             public const string CreateComment = "/users/5/events/2/comments";
             public const string GetAllComments = "/users/5/events/2/comments";

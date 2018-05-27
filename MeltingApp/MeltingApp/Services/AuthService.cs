@@ -17,13 +17,14 @@ namespace MeltingApp.Services
 
         public User GetCurrentLoggedUser()
         {
-            return _dataBaseService.GetWithChildren<User>(user => user.dbId == App.LoginRequest.LoggedUserId);
+            var loggedUser = _dataBaseService.GetWithChildren<User>(user => user.dbId == App.LoginRequest.LoggedUserIdDb);
+            return loggedUser;
         }
 
         public void SetCurrentLoggedUser(User user)
         {
             App.LoginRequest.IsLogged = user.Token != null;
-            var dbUser = _dataBaseService.Get<User>(u => u.email == user.email);
+            var dbUser = _dataBaseService.GetWithChildren<User>(u => u.email == user.email);
             if (dbUser != null)
             {
                 dbUser.Token = user.Token;
@@ -33,7 +34,7 @@ namespace MeltingApp.Services
                 dbUser = user;
             }
 
-            App.LoginRequest.LoggedUserId = _dataBaseService.UpdateWithChildren(dbUser);
+            App.LoginRequest.LoggedUserIdDb = _dataBaseService.UpdateWithChildren(dbUser);
         }
 
         public void RefreshToken(Token token)
@@ -47,6 +48,7 @@ namespace MeltingApp.Services
             var loggedUser = GetCurrentLoggedUser();
             loggedUser.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
             loggedUser.Token = token;
+            App.LoginRequest.LoggedUserIdBackend = loggedUser.id;
             _dataBaseService.UpdateWithChildren(loggedUser);
         }
     }

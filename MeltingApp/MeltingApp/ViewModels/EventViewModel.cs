@@ -111,7 +111,7 @@ namespace MeltingApp.ViewModels
         }
 	    async void HandleConfirmAssistanceCommand()
 	    {
-	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
 	        {
 	            if (isSuccess)
 	            {
@@ -125,7 +125,7 @@ namespace MeltingApp.ViewModels
 	        });
 	        if (UserAssists)
 	        {
-	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+	            await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
 	                (isSuccess, responseMessage) =>
 	                {
 
@@ -133,7 +133,7 @@ namespace MeltingApp.ViewModels
 	        }
 	        else
 	        {
-	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
+	            await _apiClientService.DeleteAsync<Event,Event>(ApiRoutes.Methods.UnconfirmAssistance,
 	                (isSuccess, responseMessage) =>
 	                {
 
@@ -142,7 +142,7 @@ namespace MeltingApp.ViewModels
 	    }
         async private void Init()
 	    {
-	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
 	        {
 	            if (isSuccess)
 	            {
@@ -160,15 +160,19 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateEventCommand()
         {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
             Event.date = Time + " " + Date.ToLongDateString();
-            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
+            
+            await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
                     _navigationService.SetRootPage<MainPage>();
                 }
-            });
+            }, meltingUriParser);
         }
     }
 }

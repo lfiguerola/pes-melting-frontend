@@ -118,7 +118,7 @@ namespace MeltingApp.Services
                     SQLiteConnection.BeginTransaction();
                 }
 
-                SQLiteConnection.InsertWithChildren(entity);
+                SQLiteConnection.InsertWithChildren(entity, true);
                 SQLiteConnection.Commit();
                 return entity.dbId;
             }
@@ -215,7 +215,7 @@ namespace MeltingApp.Services
                     SQLiteConnection.BeginTransaction();
                 }
 
-                if (Get<T>(t => t.dbId == entity.dbId) == null)
+                if (GetWithChildren<T>(t => t.dbId == entity.dbId) == null)
                 {
                     SQLiteConnection.InsertWithChildren(entity, true);
                 }

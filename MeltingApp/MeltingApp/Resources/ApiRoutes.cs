@@ -37,12 +37,14 @@ namespace MeltingApp.Resources
         {
             public static string Users = $"/users/{UriParameters.UserId}";
             public static string Universities = $"/universities/{UriParameters.UniversityId}";
+            public static string University_id = $"/{UriParameters.OnlyUniversityId}";
         }
 
         public struct UriParameters
         {
             public const string UserId = "[User_id]";
             public const string UniversityId = "[University_id]";
+            public const string OnlyUniversityId = "[OnlyUniversity_id]";
         }
 
         /// <summary>
@@ -64,9 +66,9 @@ namespace MeltingApp.Resources
             public const string UnconfirmAssistance = "/users/5/events/5/vote";
             public const string GetUserAssistance = "/users/5/events/5";
             public const string ShowFacultyInfo = "/profile/faculty";
-            public const string ShowUniversityInfo = "/locations/2";
-            public const string CreateComment = "/events/5/comments";
-            public const string GetAllComments = "/events/5/comments";
+            public const string ShowUniversityInfo = "/locations";
+            public const string CreateComment = "/users/5/events/2/comments";
+            public const string GetAllComments = "/users/5/events/2/comments";
             public const string CreateProfileUser = "/profile";
             public const string GetUniversities = "/locations/universities";
             public const string GetFacultiesfirstpath = "/locations";

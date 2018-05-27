@@ -126,11 +126,11 @@ namespace MeltingApp.ViewModels
 
         async void HandleLoginUserCommand()
         {
+            bool b = false;
             var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                if(!isSuccess) {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
-                    }
+                if(!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
+                else b = true;                   
             });
             User.Token = token;
             _authService.SetCurrentLoggedUser(User);
@@ -140,6 +140,7 @@ namespace MeltingApp.ViewModels
              }
             var allusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
             var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+            
             
         }
         

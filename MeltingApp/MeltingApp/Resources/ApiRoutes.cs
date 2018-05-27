@@ -36,11 +36,13 @@ namespace MeltingApp.Resources
         public struct Prefix
         {
             public static string Users = $"/users/{UriParameters.UserId}";
+            public static string Universities = $"/universities/{UriParameters.UniversityId}";
         }
 
         public struct UriParameters
         {
             public const string UserId = "[User_id]";
+            public const string UniversityId = "[University_id]";
         }
 
         /// <summary>
@@ -67,7 +69,8 @@ namespace MeltingApp.Resources
             public const string GetAllComments = "/users/5/events/2/comments";
             public const string CreateProfileUser = "/profile";
             public const string GetUniversities = "/locations/universities";
-            public const string GetFaculties = "/locations/universities/";
+            public const string GetFacultiesfirstpath = "/locations";
+            public const string GetFacultiessecondpath = "/faculties";
 
         }
 

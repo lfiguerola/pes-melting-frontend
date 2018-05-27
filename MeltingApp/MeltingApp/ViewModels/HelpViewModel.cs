@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using MeltingApp.Models;
 using Xamarin.Forms;
@@ -8,19 +9,33 @@ namespace MeltingApp.ViewModels
 {
     class HelpViewModel : ViewModelBase
     {
-   
-       public List<HelpElment> _elementos { get; set; }
+
+        private HelpElment _elementos;
+        public Command NavigateToHelpPageCommand { get; set; }
+        public HelpElment elementos {
+
+            get { return _elementos; }
+            set
+            {
+                _elementos = value;
+                OnPropertyChanged(nameof(User));
+            }
+
+        }
+
+        public ObservableCollection<HelpElment> ListElments;
 
        public HelpViewModel()
         {
-            _elementos = new List<HelpElment>();
+            ListElments = new ObservableCollection<HelpElment>();
             LoadElements();
 
         }
 
         public void LoadElements() {
 
-            _elementos.Add(new HelpElment
+            Console.WriteLine("hollaaa");
+            ListElments.Add(new HelpElment
             {
                 Nombre = "¿Que es el Karma?",
                 Descripcion = " Sistema de puntuacion"
@@ -28,7 +43,7 @@ namespace MeltingApp.ViewModels
 
 
 
-            _elementos.Add(new HelpElment
+            ListElments.Add(new HelpElment
             {
                 Nombre = "¿Como encontrar mas información sobre tu universidad?",
                 Descripcion = " Si al resgistrarte has introducido el nombre de tu Facultad/Universidad  podrás ver esta información accediendo  a tu perfil"
@@ -37,6 +52,6 @@ namespace MeltingApp.ViewModels
         }
 
 
-        public Command NavigateToHelpPageCommand { get; set; }
+       
     }
 }

@@ -6,7 +6,7 @@
         <StackLayout>
             <Label Text="Ayuda y sugerencias" />
             <Label Text="Popaulars"/>
-            <ListView x:Name="ListHelp">
+            <ListView ItemsSource="{Binding ListElments}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell  Text="{Binding Nombre}" Detail="{Binding Descripcion}" />

@@ -6,7 +6,26 @@ namespace MeltingApp.Models
 {
     public class HelpElment : EntityBase
     {
-       public String Nombre {get; set;}
-        public String Descripcion { get; set; }
+        private String _nombre;
+        private String _description;
+
+       public String Nombre {
+            get { return _nombre; }
+            set
+            {
+                _nombre = value;
+                OnPropertyChanged(nameof(Nombre));
+            }
+        }
+        public String Descripcion
+        {
+            get { return _description; }
+
+            set
+            {
+                _description = value;
+                OnPropertyChanged(nameof(Descripcion));
+            }
+        }
     }
 }

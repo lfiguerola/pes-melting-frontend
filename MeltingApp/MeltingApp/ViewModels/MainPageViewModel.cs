@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using MeltingApp.Interfaces;
@@ -22,8 +23,8 @@ namespace MeltingApp.ViewModels
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
-        private HelpElment helpElment;
-             
+        private HelpElment _helpElment;
+        private ObservableCollection<HelpElment> _listElments;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
@@ -165,7 +166,25 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public HelpElment HelpElment { get; }
+        public HelpElment HelpElment {
+
+            get { return _helpElment; }
+            set {
+                _helpElment = value;
+                OnPropertyChanged(nameof(HelpElment));
+            } }
+
+        public ObservableCollection<HelpElment> ListElments {
+            
+            get {
+                Console.WriteLine("main page viewModel");
+                return _listElments; }
+            set {
+                _listElments = value;
+                OnPropertyChanged(nameof(ListElments));
+            }
+
+        }
 
         public IEnumerable<Event> AllEvents
 	    {

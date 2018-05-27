@@ -14,7 +14,7 @@
                                     <Label Text="{Binding title}">
                                     <Label.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
-                                                              CommandParameter="{Binding id}" />
+                                                              CommandParameter="{Binding event_id}" />
                                         </Label.GestureRecognizers>
                                     </Label>
                                     <Label Text="{Binding description}"/>

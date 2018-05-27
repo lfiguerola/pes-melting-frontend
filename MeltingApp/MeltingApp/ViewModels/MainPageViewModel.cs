@@ -13,6 +13,7 @@ namespace MeltingApp.ViewModels
     {
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private IDataBaseService _dataBaseService;
         private StaticInfo _staticInfo;
         private StaticInfo _staticInfoUni;
         private string _responseMessage;
@@ -50,6 +51,7 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+            _dataBaseService = DependencyService.Get<IDataBaseService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
 		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
 		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
@@ -198,6 +200,7 @@ namespace MeltingApp.ViewModels
         void HandleInfoEventCommand()
         {
             Event = EventSelected;
+            //var eventscreated = _dataBaseService.GetWithChildren<Event>(e => true);
             //Event = AllEvents.ElementAt(id);
             _navigationService.PushAsync<ViewEvent>(this);
         }

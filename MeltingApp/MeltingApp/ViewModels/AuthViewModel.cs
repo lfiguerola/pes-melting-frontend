@@ -87,59 +87,65 @@ namespace MeltingApp.ViewModels
             }
             
         }
+        /// <summary>
+        /// guarda l'usuari a la base de dades aixi com el seu token, tambe assigna el currentLoggedUser
+        /// </summary>
+        /// <param name="token"></param>
+        void UserRegisterInApp(Token token)
+        {
+            User.Token = _dataBaseService.Get<Token>(t => t.jwt.Equals(token.jwt)); //mirem si es el primer cop que fem login
+            if (User.Token == null) //si es el primer cop, el fiquem a la bd
+            {
+                User.Token = token;
+                var tokenDecoded = new JwtSecurityToken(token.jwt);
+                User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
+                _dataBaseService.UpdateWithChildren(User);
+            }
+            //tant si es el primer cop com si no
+            _authService.SetCurrentLoggedUser(User);
+            _navigationService.SetRootPage<MainPage>();
+        }
 
         async void HandleLoginUserCommand()
         {
             await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.LoginUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                if (isSuccess)
-                {
-                    //decodifiquem el token i posem el id al user
-                    EncodeTokenAndSaveUserId();
-                    _navigationService.SetRootPage<MainPage>();
-                }
-                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                if(!isSuccess) {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
+                    }
             });
+            if (token != null)
+            {
+                UserRegisterInApp(token);
+             }
+            var allusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+            var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
             
         }
-
-
-        public void EncodeTokenAndSaveUserId()
-        {
-            var tokenDecoded = new JwtSecurityToken(token.jwt);
-            User.id = Int32.Parse(tokenDecoded.Claims.First(c => c.Type == "sub").Value);
-            User.Token = token;
-            try
-            {
-                _dataBaseService.Insert(User);
-                _authService.UpdateCurrentToken(token);
-                //Console.WriteLine("sub => " + token.Claims.First(c => c.Type == "sub").Value);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        
+            
         async void HandleCodeConfirmationCommand()
         {
             await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.ActivateUser, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                if (isSuccess)
+                if (isSucessActivation)
                 {
-                    var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser);
-                    _authService.SetCurrentLoggedUser(User);
-
+                    var token = await _apiClientService.PostAsync<User, Token>(User, ApiRoutes.Methods.LoginUser, (isSuccess, responseMessage2) => {
+                        ResponseMessage = responseMessage2;
+                        if (!isSuccess)
+                        {
+                            DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
+                        }
+                    });
                     if (token != null)
                     {
-                        _authService.RefreshToken(token);
-                        _navigationService.SetRootPage<MainPage>();
+                        UserRegisterInApp(token);
                     }
 
                 }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             });
         }
+        
         void HandleNavigateToLoginPage()
         {
             _navigationService.SetRootPage<LoginPage>(this);

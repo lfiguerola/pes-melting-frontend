@@ -394,6 +394,9 @@ namespace MeltingApp.ViewModels
         
         async void getFaculties(int location_id_uni)
         {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UniversityId, $"{location_id_uni}");
+
             Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>,IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties,(isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 if (isSuccess)
@@ -401,7 +404,7 @@ namespace MeltingApp.ViewModels
                     
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-            });
+            }, meltingUriParser);
         }
 
         public ProfileViewModel()
@@ -487,7 +490,7 @@ namespace MeltingApp.ViewModels
                 {
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast("User created correctly");
                     _navigationService.PopAsync();
-                    HandleViewProfileCommand();
+                    
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             }, meltingUriParser);

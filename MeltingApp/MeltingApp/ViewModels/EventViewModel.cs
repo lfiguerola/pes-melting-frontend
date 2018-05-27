@@ -13,7 +13,8 @@ namespace MeltingApp.ViewModels
 	{
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
-	    private Event _event;
+        private IDataBaseService _dataBaseService;
+        private Event _event;
 	    private Boolean _userAssists;
 	    private int _userAssistsInt;
 	    private TimeSpan _time;
@@ -93,19 +94,13 @@ namespace MeltingApp.ViewModels
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+            _dataBaseService = DependencyService.Get<IDataBaseService>();
 
             CreateEventCommand = new Command(HandleCreateEventCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
 
-            //Init();
-
-            
-
+            Init();
             Event = new Event();
-            Event.latitude = "0";
-            Event.longitude = "0";
-            Event.address = "C/ Jordi Girona, 1";
-            Event.name = "Infern";
 
             MinDate = DateTime.Today;
         }
@@ -156,8 +151,6 @@ namespace MeltingApp.ViewModels
             });
         }
 
-	    
-
         async void HandleCreateEventCommand()
         {
             var meltingUriParser = new MeltingUriParser();
@@ -165,7 +158,7 @@ namespace MeltingApp.ViewModels
 
             Event.date = Time + " " + Date.ToLongDateString();
             
-            await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
+            var resultEvent = await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
@@ -173,6 +166,12 @@ namespace MeltingApp.ViewModels
                     _navigationService.SetRootPage<MainPage>();
                 }
             }, meltingUriParser);
+            
+            if (resultEvent != null)
+            {
+                _dataBaseService.UpdateWithChildren<Event>(resultEvent);
+                
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLiteNetExtensions.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,7 @@ namespace MeltingApp.Models
 {
     public class Event : EntityBase
     {
-        private int _id;
+        private int _event_id;
         private string _title;
         //private int _karma;
         private string _description;
@@ -17,19 +18,28 @@ namespace MeltingApp.Models
         private string _address;
         private string _name;
         private string _date;
-
-        private int _userId;
+        private int _user_id;
         //private ?attendee[]  _attendees;
         //private ?comment[] _comments;
 
 
-        public int id
+        public int event_id
         {
-            get { return _id; }
+            get { return _event_id; }
             set
             {
-                _id = value;
-                OnPropertyChanged(nameof(id));
+                _event_id = value;
+                OnPropertyChanged(nameof(event_id));
+            }
+        }
+
+        public int user_id
+        {
+            get { return _user_id; }
+            set
+            {
+                _user_id = value;
+                OnPropertyChanged(nameof(user_id));
             }
         }
 
@@ -45,8 +55,6 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(title));
             }
         }
-
-
 
         /// <summary>
         /// the event description
@@ -111,14 +119,11 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(date));
             }
         }
-        public int user_id
-        {
-            get { return _userId; }
-            set
-            {
-                _userId = value;
-                OnPropertyChanged(nameof(user_id));
-            }
-        }
+
+        //[ManyToOne(CascadeOperations = CascadeOperation.All)]
+        //public User Owner { get; set; }
+
+        //[ForeignKey(typeof(User))]
+        //public int OwnerDbId { get; set; } 
     }
 }

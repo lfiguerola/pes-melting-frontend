@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MeltingApp.Models
 {
-    public class HelpElment : EntityBase
+    public class HelpElement : EntityBase
     {
         private String _nombre;
         private String _description;

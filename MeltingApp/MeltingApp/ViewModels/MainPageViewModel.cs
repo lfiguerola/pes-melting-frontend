@@ -37,6 +37,8 @@ namespace MeltingApp.ViewModels
              
         private HelpElment _helpElment;
         private ObservableCollection<HelpElment> _listElments;
+        private HelpElement _helpElementObject;
+        private ObservableCollection<HelpElement> _helpElements;
 
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToEditProfilePageCommand { get; set; }
@@ -206,7 +208,8 @@ namespace MeltingApp.ViewModels
                 }
             });
             StaticInfo = new StaticInfo();
-            HelpElment = new HelpElment();
+
+            HelpElements = new ObservableCollection<HelpElement>();
         }
 
         void HandleInfoEventCommand()
@@ -340,22 +343,29 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public HelpElment HelpElment {
+        public HelpElement HelpElementObject
+        {
 
-            get { return _helpElment; }
+            get {
+
+               
+                return _helpElementObject; }
             set {
-                _helpElment = value;
-                OnPropertyChanged(nameof(HelpElment));
+                _helpElementObject = value;
+                OnPropertyChanged(nameof(HelpElementObject));
             } }
 
-        public ObservableCollection<HelpElment> ListElments {
+        public ObservableCollection<HelpElement> HelpElements
+        {
             
             get {
-                Console.WriteLine("main page viewModel");
-                return _listElments; }
+               
+                return _helpElements; }
             set {
-                _listElments = value;
-                OnPropertyChanged(nameof(ListElments));
+               
+                _helpElements = value;
+   
+                OnPropertyChanged(nameof(HelpElements));
             }
 
         }
@@ -447,6 +457,7 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToHelpCommand()
         {
+            
             _navigationService.PushAsync<HelpPage>(this);
         }
 

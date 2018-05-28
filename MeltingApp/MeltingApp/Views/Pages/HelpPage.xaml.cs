@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace MeltingApp.Views.Pages
 		{
 			InitializeComponent ();
             NavigationPage.SetHasNavigationBar(this, false);
+          
             BindingContext = new HelpViewModel();
+          
         }
-	}
+    }
 }

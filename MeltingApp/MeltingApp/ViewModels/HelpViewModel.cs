@@ -10,32 +10,47 @@ namespace MeltingApp.ViewModels
     class HelpViewModel : ViewModelBase
     {
 
-        private HelpElment _elementos;
+        private HelpElement _element;
+        private ObservableCollection<HelpElement> _listElements;
         public Command NavigateToHelpPageCommand { get; set; }
-        public HelpElment elementos {
+        public HelpElement Element {
 
-            get { return _elementos; }
+            get { return _element; }
             set
             {
-                _elementos = value;
-                OnPropertyChanged(nameof(User));
+                _element = value;
+                OnPropertyChanged(nameof(Element));
             }
 
         }
 
-        public ObservableCollection<HelpElment> ListElments;
+  
+        public ObservableCollection<HelpElement> ListElements {
+            get {
+              
+                return _listElements;
+            }
+            set {
+                Console.WriteLine("ListElments Set");
+                _listElements = value;
+                OnPropertyChanged(nameof(_listElements));
+            }
+
+
+        }
 
        public HelpViewModel()
         {
-            ListElments = new ObservableCollection<HelpElment>();
+            Console.WriteLine("Help View Model constructora");
+            ListElements = new ObservableCollection<HelpElement>();
             LoadElements();
 
         }
 
         public void LoadElements() {
 
-            Console.WriteLine("hollaaa");
-            ListElments.Add(new HelpElment
+            Console.WriteLine("hollaaa Load Elements");
+            ListElements.Add(new HelpElement
             {
                 Nombre = "¿Que es el Karma?",
                 Descripcion = " Sistema de puntuacion"
@@ -43,7 +58,7 @@ namespace MeltingApp.ViewModels
 
 
 
-            ListElments.Add(new HelpElment
+            ListElements.Add(new HelpElement
             {
                 Nombre = "¿Como encontrar mas información sobre tu universidad?",
                 Descripcion = " Si al resgistrarte has introducido el nombre de tu Facultad/Universidad  podrás ver esta información accediendo  a tu perfil"

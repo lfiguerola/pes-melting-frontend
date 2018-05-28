@@ -4,14 +4,13 @@
              x:Class="MeltingApp.Views.Pages.HelpPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Ayuda y sugerencias" />
-            <Label Text="Popaulars"/>
-            <ListView ItemsSource="{Binding ListElments}">
-                <ListView.ItemTemplate>
+            <Label Text="{Binding Prueba}"/>
+            <ListView  x:Name="ListViewHelp" ItemsSource="{Binding ListElements}"  SelectedItem="{Binding HelpElement}" >
+                <ListViewHelp.ItemTemplate>
                     <DataTemplate>
                         <TextCell  Text="{Binding Nombre}" Detail="{Binding Descripcion}" />
                     </DataTemplate>
-                </ListView.ItemTemplate>
+                </ListViewHelp.ItemTemplate>
                 
             </ListView>
         </StackLayout>

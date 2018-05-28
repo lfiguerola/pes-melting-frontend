@@ -13,44 +13,44 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="ViewModels\Views\Pages\CodeConfirmation.xaml.cs">
+    <Compile Update="Views\Pages\CodeConfirmation.xaml.cs">
       <DependentUpon>CodeConfirmation.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ViewModels\Views\Pages\ProfilePage.xaml.cs">
+    <Compile Update="Views\Pages\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ViewModels\Views\Pages\RootPage.xaml.cs">
+    <Compile Update="Views\Pages\RootPage.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>RootPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="ViewModels\Views\Pages\AboutPage.xaml">
+    <EmbeddedResource Update="Views\Pages\AboutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\EditProfilePage.xaml">
+    <EmbeddedResource Update="Views\Pages\EditProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\EventList.xaml">
+    <EmbeddedResource Update="Views\Pages\EventList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\HelpPage.xaml">
+    <EmbeddedResource Update="Views\Pages\HelpPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\LoginPage.xaml">
+    <EmbeddedResource Update="Views\Pages\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\MainPage.xaml">
+    <EmbeddedResource Update="Views\Pages\MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\Menu.xaml">
+    <EmbeddedResource Update="Views\Pages\Menu.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\ProfilePage.xaml">
+    <EmbeddedResource Update="Views\Pages\ProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\Views\Pages\ViewEvent.xaml">
+    <EmbeddedResource Update="Views\Pages\ViewEvent.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

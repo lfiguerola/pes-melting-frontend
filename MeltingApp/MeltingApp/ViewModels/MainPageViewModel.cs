@@ -238,6 +238,16 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             }, meltingUriParser);
+
+            //guardem tots els events a la base de dades
+            var allevents_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+            for (int i = 0; i < AllEvents.Count(); i++)
+            {
+                _dataBaseService.UpdateWithChildren<Event>(AllEvents.ElementAt(i));
+            }
+            //_dataBaseService.UpdateCollectionWithChildren<IEnumerable<Event>>(AllEvents);
+            var allevents_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+            
         }
 
         private void HandleNavigateToCreateProfilePageCommand()

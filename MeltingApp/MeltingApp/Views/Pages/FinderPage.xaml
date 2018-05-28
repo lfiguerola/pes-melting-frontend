@@ -17,18 +17,10 @@
 
             <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
                 <Label FontSize="14" Text="Filter:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Picker x:Name="picker" Title="Select a filter">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Faculty</x:String>
-                            <x:String>University</x:String>
-                            <x:String>Event</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+                <Picker x:Name="FilterPicker" SelectedIndex="{Binding SelectedFilterIndex }" ItemsSource="{Binding Filters}" WidthRequest="300" ></Picker>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Button x:Name="FinderButton" Text="Find" HorizontalOptions="Center"></Button>
+                <Button x:Name="FinderButton" Text="Find" Command="{Binding NavigateToStaticInfoPage}"></Button>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

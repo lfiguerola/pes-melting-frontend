@@ -55,7 +55,7 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(title));
             }
         }
-
+                
         /// <summary>
         /// the event description
         /// </summary>
@@ -68,8 +68,7 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(description));
             }
         }
-
-
+        
         public string latitude
         {
             get { return _latitude; }
@@ -125,5 +124,6 @@ namespace MeltingApp.Models
 
         //[ForeignKey(typeof(User))]
         //public int OwnerDbId { get; set; } 
+        
     }
 }

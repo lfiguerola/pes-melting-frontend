@@ -31,7 +31,7 @@ namespace MeltingApp.ViewModels
                 return _listElements;
             }
             set {
-                Console.WriteLine("ListElments Set");
+               
                 _listElements = value;
                 OnPropertyChanged(nameof(_listElements));
             }
@@ -41,7 +41,7 @@ namespace MeltingApp.ViewModels
 
        public HelpViewModel()
         {
-            Console.WriteLine("Help View Model constructora");
+            
             ListElements = new ObservableCollection<HelpElement>();
             LoadElements();
 
@@ -49,7 +49,7 @@ namespace MeltingApp.ViewModels
 
         public void LoadElements() {
 
-            Console.WriteLine("hollaaa Load Elements");
+           
             ListElements.Add(new HelpElement
             {
                 Nombre = "¿Que es el Karma?",

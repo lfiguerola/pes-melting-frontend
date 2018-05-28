@@ -4,15 +4,31 @@
              x:Class="MeltingApp.Views.Pages.HelpPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="{Binding Prueba}"/>
-            <ListView  x:Name="ListViewHelp" ItemsSource="{Binding ListElements}"  SelectedItem="{Binding HelpElement}" >
-                <ListViewHelp.ItemTemplate>
+            <Label Text="Frequently Asked" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+
+            <BoxView  Color="Blue" WidthRequest="10" HeightRequest="10"></BoxView>
+
+
+                <Label Text=" 1.What is Karma?" ></Label>
+
+                <Label Text=" 2.How to find people from your university?" ></Label>
+
+                <Label Text=" 3.Privacy " ></Label>
+                
+                
+                
+
+            
+            
+            
+            <!--  <ListView  x:Name="ListViewHelp" ItemsSource="{Binding ListElements}"  SelectedItem="{Binding HelpElement}" >
+                <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell  Text="{Binding Nombre}" Detail="{Binding Descripcion}" />
                     </DataTemplate>
-                </ListViewHelp.ItemTemplate>
+                </ListView.ItemTemplate>
                 
-            </ListView>
+            </ListView> -->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

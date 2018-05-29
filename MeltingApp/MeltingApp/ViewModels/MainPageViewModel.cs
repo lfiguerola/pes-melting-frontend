@@ -323,6 +323,8 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(FacultyStaticInfo));
             }
         }
+
+        
         public StaticInfo UniversityStaticInfo
         {
             get { return _staticInfoUni; }

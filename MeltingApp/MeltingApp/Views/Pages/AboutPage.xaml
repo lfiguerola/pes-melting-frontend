@@ -8,19 +8,15 @@
 
             <Image Source="logoLogin.png" WidthRequest="200" HeightRequest="200"  ></Image>
 
-            <Label Text="MeltingApp is an mobile aplication created to make easier for newcommers and international students to connect with the university life" FontSize="Medium" HorizontalTextAlignment="Center" FontAttributes="Italic"></Label>
+            <Label Text="MeltingApp is an mobile aplication created to make easier for newcomers and international students to connect with the university life and people from different countries." FontSize="Medium" HorizontalTextAlignment="Center" FontAttributes="Italic"></Label>
 
-                <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="EndAndExpand">
-                 <Label  Text="MeltingApp Team"
+            <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="EndAndExpand">
+                <Label  Text="MeltingApp Team"
                  FontSize="Small" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                <Label Text="Sara Bourjila, Pau Carbonell Vives, Alexandre Calle Millan, Laura Figuerola Peña, Ismael Julià Reifs, Adolfo López Oyarzabal
+                <Label Text="Sara Bourjila, Alexandre Calle Millan, Pau Carbonell Vives, Laura Figuerola Peña, Ismael Julià Reifs, Adolfo López Oyarzabal
 Carla Varea Parra" FontSize="Micro" HorizontalTextAlignment="Center">
-                 </Label>
-                </StackLayout>
-
-
-
-
+                </Label>
+            </StackLayout>
         </StackLayout>
 
             

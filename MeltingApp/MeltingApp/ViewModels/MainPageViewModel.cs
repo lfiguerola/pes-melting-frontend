@@ -23,9 +23,7 @@ namespace MeltingApp.ViewModels
 	    private Event _eventSelected;
 	    private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
-        private HelpElement _helpElementObject;
-        private ObservableCollection<HelpElement> _helpElements;
-
+       
         public Command NavigateToCreateEventPageCommand { get; set; }
 	    public Command NavigateToEditProfilePageCommand { get; set; }
 	    public Command SaveEditProfileCommand { get; set; }
@@ -63,8 +61,6 @@ namespace MeltingApp.ViewModels
 		    EventSelected = new Event(); 
             User = new User();
             StaticInfo = new StaticInfo();
-
-            HelpElements = new ObservableCollection<HelpElement>();
         }
 
         void HandleInfoEventCommand()
@@ -165,33 +161,6 @@ namespace MeltingApp.ViewModels
                 _staticInfo = value;
                 OnPropertyChanged(nameof(StaticInfo));
             }
-        }
-
-        public HelpElement HelpElementObject
-        {
-
-            get {
-
-               
-                return _helpElementObject; }
-            set {
-                _helpElementObject = value;
-                OnPropertyChanged(nameof(HelpElementObject));
-            } }
-
-        public ObservableCollection<HelpElement> HelpElements
-        {
-            
-            get {
-               
-                return _helpElements; }
-            set {
-               
-                _helpElements = value;
-   
-                OnPropertyChanged(nameof(HelpElements));
-            }
-
         }
 
         public IEnumerable<Event> AllEvents

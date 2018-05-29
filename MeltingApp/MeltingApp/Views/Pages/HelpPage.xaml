@@ -42,16 +42,8 @@
              <Label FontAttributes="Bold"  Text=" 7. Contact " ></Label>
              <Label  FontAttributes="Italic" Text=" You can send us an email with your questions and suggestions, we will be  glad to answer you." ></Label>
 
-             <Label HorizontalTextAlignment="Center"  VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="Micro" Text=" We hope you find this information useful!" ></Label>
-                <!--  <ListView  x:Name="ListViewHelp" ItemsSource="{Binding ListElements}"  SelectedItem="{Binding HelpElement}" >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell  Text="{Binding Nombre}" Detail="{Binding Descripcion}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                
-            </ListView> -->
-        </StackLayout>
+                <Label HorizontalTextAlignment="Center"  VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="Micro" Text=" We hope you find this information useful!" ></Label>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

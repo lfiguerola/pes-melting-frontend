@@ -41,11 +41,6 @@
             </StackLayout>
 
             <StackLayout Orientation="Horizontal">
-                <Label FontSize="14" Text="Id:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                    <Label x:Name="FacultyPhoneLabel" Text="{Binding FacultyStaticInfo.location_id}"></Label>
-            </StackLayout>
-
-            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
                 <Label FontSize="14" Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
                     <Label x:Name="FacultyUrlLabel" Text="{Binding FacultyStaticInfo.url}"></Label>
             </StackLayout>
@@ -88,11 +83,6 @@
             </StackLayout>
 
             <StackLayout Orientation="Horizontal">
-                <Label FontSize="14" Text="Id:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Label x:Name="UniPhoneLabel" Text="{Binding UniversityStaticInfo.location_id}"></Label>
-            </StackLayout>
-
-            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
                 <Label FontSize="14" Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
                 <Label x:Name="UniUrlLabel" Text="{Binding UniversityStaticInfo.url}"></Label>
             </StackLayout>

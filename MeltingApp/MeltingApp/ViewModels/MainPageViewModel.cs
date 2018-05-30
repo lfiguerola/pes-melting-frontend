@@ -440,7 +440,7 @@ namespace MeltingApp.ViewModels
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
+                    //DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
                 }
                 else
                 {
@@ -452,7 +452,7 @@ namespace MeltingApp.ViewModels
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
+                    //DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
                     _navigationService.PushAsync<StaticInfoPage>(this);
                 }
                 else

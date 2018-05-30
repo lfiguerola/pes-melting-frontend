@@ -24,22 +24,21 @@
             </StackLayout>
             <ScrollView>
                 <StackLayout HeightRequest="200">
-                    <ListView x:Name="listViewFinder">
+                    <ListView ItemsSource="{Binding AllUniversities}" x:Name="listView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                
+                                <ViewCell>
                                     <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Prueba 1"/>
+                                            <Label Text="Prueba"></Label>
                                         </StackLayout>
-                                        <Label Text="Prueba 1"/>
                                     </StackLayout>
+                                </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </StackLayout>
-            </ScrollView>
-            
+            </ScrollView>            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

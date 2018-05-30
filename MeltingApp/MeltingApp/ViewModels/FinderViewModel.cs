@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
@@ -88,6 +89,7 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
             _event = new Event();
+
         }
 
         async void HandleApplyFinder()
@@ -105,8 +107,8 @@ namespace MeltingApp.ViewModels
                     { DependencyService.Get<IOperatingSystemMethods>().ShowToast("Carreguem Universitats"); }
                     else
                     { DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage); }
-                }); 
-                
+                });
+
                 //obtenim iterador i declarem les variables
                 IEnumerator i = AllUniversities.GetEnumerator();
                 _allFinderStructures = new List<FinderStructure>();

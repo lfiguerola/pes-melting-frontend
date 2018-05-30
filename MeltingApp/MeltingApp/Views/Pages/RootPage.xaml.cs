@@ -49,14 +49,49 @@ namespace MeltingApp.Views.Pages
                         vm.ViewProfileCommand.Execute(null);
                     }
                 }
-                else if(itemTitle =="Help")
+                else if (itemTitle == "Static Info")
+                {
+                    if (vm.NavigateToStaticInfoPage.CanExecute(null))
+                    {
+                        vm.NavigateToStaticInfoPage.Execute(null);
+                    }
+                }
+                else if (itemTitle == "Create Event")
+                {
+                    if (vm.NavigateToCreateEventPageCommand.CanExecute(null))
+                    {
+                        vm.NavigateToCreateEventPageCommand.Execute(null);
+                    }
+                }
+                else if (itemTitle == "All Events")
+                {
+                    if (vm.NavigateToGetAllEventsCommand.CanExecute(null))
+                    {
+                        vm.NavigateToGetAllEventsCommand.Execute(null);
+                    }
+                }
+                else if (itemTitle == "View Event")
+                {
+                    if (vm.NavigateToViewEventPageCommand.CanExecute(null))
+                    {
+                        vm.NavigateToViewEventPageCommand.Execute(null);
+                    }
+                }
+                else if (itemTitle == "Search")
+                {
+                    if (vm.NavigateToFinderPage.CanExecute(null))
+                    {
+                        vm.NavigateToFinderPage.Execute(null);
+                    }
+                }
+                else if(itemTitle == "Help")
                 {
                     if (vm.NavigateToHelpPageCommand.CanExecute(null))
                     {
                         vm.NavigateToHelpPageCommand.Execute(null);
                     }
                 }
-                else
+                else if(itemTitle == "About")
                 {
                     if (vm.NavigateToAboutPageCommand.CanExecute(null))
                     {

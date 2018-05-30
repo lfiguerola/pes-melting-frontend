@@ -12,6 +12,11 @@
                 <ListView.ItemsSource>
                     <x:Array Type="{x:Type viewModels:MainPageViewModel}">
                         <viewModels:MainPageViewModel Title="Profile"/>
+                        <viewModels:MainPageViewModel Title="Static Info"/>
+                        <viewModels:MainPageViewModel Title="Create Event"/>
+                        <viewModels:MainPageViewModel Title="All Events"/>
+                        <viewModels:MainPageViewModel Title="View Event"/>
+                        <viewModels:MainPageViewModel Title="Search"/>
                         <viewModels:MainPageViewModel Title="Help" />
                         <viewModels:MainPageViewModel Title="About"/>
                     </x:Array>

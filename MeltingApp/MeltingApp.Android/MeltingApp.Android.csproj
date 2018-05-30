@@ -96,5 +96,11 @@
       <Name>MeltingApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logoLogin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drawable\duck.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

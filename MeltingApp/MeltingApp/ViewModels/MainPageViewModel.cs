@@ -251,37 +251,26 @@ namespace MeltingApp.ViewModels
             for (int i = 0; i < AllEvents.Count(); i++)
             {
                 //comprovar si el event ja esta a la bd
-                if (!allevents_before.Contains(AllEvents.ElementAt(i)))
+                var eventt = AllEvents.ElementAt(i);
+                bool b = false;
+                for (int j = 0; j < allevents_before.Count() && !b ; j++)
                 {
-                    var iduseri = AllEvents.ElementAt(i).user_id;
-                    var allusers = _dataBaseService.GetCollection<User>(u => true);
-                    var userEvent = _dataBaseService.Get<User>(u => u.id == iduseri); //comprovo si esta a la bd
-                    if (userEvent != null) //si hi és
+                    if (allevents_before.ElementAt(j).id == eventt.id)
                     {
-                        var eventToSave = AllEvents.ElementAt(i);
-                        eventToSave.Owner = userEvent;
-                        _dataBaseService.UpdateWithChildren<Event>(eventToSave);
-                    }
-                    else
-                    {
-                        //obtenim l'usuari a través del seu id i el guardem a la db
-                        getAndSaveProfileInDB(iduseri);
-                        var eventToSave = AllEvents.ElementAt(i);
-                        var userEvent2 = _dataBaseService.Get<User>(u => u.id == iduseri);
-                        if (userEvent2 != null)
-                        {
-                            eventToSave.Owner = userEvent2;
-                            _dataBaseService.UpdateWithChildren<Event>(eventToSave);
-                        }
+                        b = true;
                     }
                 }
+                if (!b)
+                {
+                    //si levent no esta a la bd
+                    var eventToSave = AllEvents.ElementAt(i);
+                    _dataBaseService.UpdateWithChildren<Event>(eventToSave);
+                }
+                
             }
-
-            //_dataBaseService.UpdateCollectionWithChildren<IEnumerable<Event>>(AllEvents);
             var allevents_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
         }
-
-
+        
         async void getAndSaveProfileInDB(int iduser)
         {
             bool b = false;

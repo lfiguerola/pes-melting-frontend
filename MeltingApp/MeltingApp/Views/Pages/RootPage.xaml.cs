@@ -1,4 +1,5 @@
-﻿using MeltingApp.Interfaces;
+﻿using System;
+using MeltingApp.Interfaces;
 using MeltingApp.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -28,6 +29,20 @@ namespace MeltingApp.Views.Pages
             Detail = navigationPage;
             navigationService.NavigationPage = navigationPage;
             navigationService.MasterDetailPage = this;
+            Menu = new Menu();
+            Master = Menu;
+            Menu.ListView.ItemSelected += OnItemSelected;
+        }
+
+        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            var item = e.SelectedItem as MenuPageItem;
+            if (item != null)
+            {
+                Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType)); ;
+                Menu.ListView.SelectedItem = null;
+                IsPresented = false;
+            }
         }
     }
 }

@@ -14,7 +14,10 @@ namespace MeltingApp.Views.Pages
             "Forum",
             "Etc.."
         };
-		public Menu ()
+
+	    public ListView ListView { get { return listView; } }
+
+        public Menu ()
 		{
 			InitializeComponent ();
 		}

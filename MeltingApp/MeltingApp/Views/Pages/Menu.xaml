@@ -4,9 +4,26 @@
              xmlns:local="clr-namespace:MeltingApp.Views.Pages"
              x:Class="MeltingApp.Views.Pages.Menu"
              Title="Melting App">
-    <ContentPage.Content>
-        <StackLayout>
-            <ListView ItemsSource="{x:Static local:Menu.FakeMenu}"/>
-        </StackLayout>
-    </ContentPage.Content>
+    <StackLayout>
+        <ListView x:Name="listView">
+            <ListView.ItemsSource>
+                <x:Array Type="{x:Type MenuP}">
+                    <local:MenuP Title="Profile" TargetType="{x:Type local:ProfilePage}" />
+                </x:Array>
+            </ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="5,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1" Text="HOLA" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
 </ContentPage>

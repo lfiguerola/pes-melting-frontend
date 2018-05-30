@@ -2,9 +2,17 @@
 <MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:pages="clr-namespace:MeltingApp.Views.Pages"
-            x:Class="MeltingApp.Views.Pages.RootPage">
+                  xmlns:local="http://xamarin.com/schemas/2014/forms"
+                  x:Class="MeltingApp.Views.Pages.RootPage">
     <!--Side menu-->
     <MasterDetailPage.Master>
-        <pages:Menu/>
+        <pages:Menu x:Name="Menu"/>
     </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <pages:ProfilePage></pages:ProfilePage>
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
 </MasterDetailPage>

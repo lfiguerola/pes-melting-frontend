@@ -31,14 +31,7 @@ namespace MeltingApp.ViewModels
         private int _userAssistsInt;
         private Comment _comment;
         private IEnumerable<Comment> _allComments;
-        private Help _help;
-        private About _about;
-        private HelpElment helpElment;
-             
-        private HelpElment _helpElment;
-        private ObservableCollection<HelpElment> _listElments;
-        private HelpElement _helpElementObject;
-        private ObservableCollection<HelpElement> _helpElements;
+   
 
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToEditProfilePageCommand { get; set; }
@@ -92,6 +85,7 @@ namespace MeltingApp.ViewModels
             Comment = new Comment();
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
+           // StaticInfo = new StaticInfo();
             Init();
         }
 
@@ -207,9 +201,7 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });
-            StaticInfo = new StaticInfo();
-
-            HelpElements = new ObservableCollection<HelpElement>();
+          
         }
 
         void HandleInfoEventCommand()
@@ -343,33 +335,6 @@ namespace MeltingApp.ViewModels
                 _allEvents = value;
                 OnPropertyChanged(nameof(AllEvents));
             }
-        }
-
-        public HelpElement HelpElementObject
-        {
-
-            get {
-
-               
-                return _helpElementObject; }
-            set {
-                _helpElementObject = value;
-                OnPropertyChanged(nameof(HelpElementObject));
-            } }
-
-        public ObservableCollection<HelpElement> HelpElements
-        {
-            
-            get {
-               
-                return _helpElements; }
-            set {
-               
-                _helpElements = value;
-   
-                OnPropertyChanged(nameof(HelpElements));
-            }
-
         }
 
         public Event Event

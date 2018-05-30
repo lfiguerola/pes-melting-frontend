@@ -153,11 +153,8 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateEventCommand()
         {
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
-
             Event.date = Time + " " + Date.ToLongDateString();
-            
+            var events_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
             var resultEvent = await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
@@ -165,13 +162,14 @@ namespace MeltingApp.ViewModels
                 {
                     _navigationService.SetRootPage<MainPage>();
                 }
-            }, meltingUriParser);
+            });
             
             if (resultEvent != null)
             {
                 _dataBaseService.UpdateWithChildren<Event>(resultEvent);
                 
             }
+            var events_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
         }
     }
 }

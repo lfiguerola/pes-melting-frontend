@@ -2,28 +2,34 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MeltingApp.Views.Pages"
+             xmlns:meltingApp="clr-namespace:MeltingApp;assembly=MeltingApp"
+             xmlns:viewModels="clr-namespace:MeltingApp.ViewModels;assembly=MeltingApp"
              x:Class="MeltingApp.Views.Pages.Menu"
              Title="Melting App">
-    <StackLayout>
-        <ListView x:Name="listView">
-            <ListView.ItemsSource>
-                <x:Array Type="{x:Type MenuP}">
-                    <local:MenuP Title="Profile" TargetType="{x:Type local:ProfilePage}" />
-                </x:Array>
-            </ListView.ItemsSource>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid Padding="5,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="1" Text="HOLA" />
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="listView">
+                <ListView.ItemsSource>
+                    <x:Array Type="{x:Type viewModels:MainPageViewModel}">
+                        <viewModels:MainPageViewModel Title="Profile"/>
+                        <viewModels:MainPageViewModel Title="Help" />
+                        <viewModels:MainPageViewModel Title="About"/>
+                    </x:Array>
+                </ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Text="{Binding Title}" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

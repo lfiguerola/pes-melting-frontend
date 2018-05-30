@@ -8,11 +8,4 @@
     <MasterDetailPage.Master>
         <pages:Menu x:Name="Menu"/>
     </MasterDetailPage.Master>
-    <MasterDetailPage.Detail>
-        <NavigationPage>
-            <x:Arguments>
-                <pages:ProfilePage></pages:ProfilePage>
-            </x:Arguments>
-        </NavigationPage>
-    </MasterDetailPage.Detail>
 </MasterDetailPage>

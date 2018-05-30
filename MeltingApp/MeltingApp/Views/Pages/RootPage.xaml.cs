@@ -1,6 +1,6 @@
-﻿using System;
+﻿using System.Dynamic;
 using MeltingApp.Interfaces;
-using MeltingApp.Services;
+using MeltingApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,6 +13,7 @@ namespace MeltingApp.Views.Pages
         public RootPage()
         {
             InitializeComponent();
+            BindingContext = new MainPageViewModel();
             //TODO: Move logic to ViewModel
             navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
 
@@ -36,10 +37,32 @@ namespace MeltingApp.Views.Pages
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MenuPageItem;
+            var item = e.SelectedItem as MainPageViewModel;
             if (item != null)
             {
-                Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType)); ;
+                string itemTitle = item.Title;
+                var vm = (MainPageViewModel)BindingContext;
+                if (itemTitle == "Profile")
+                {
+                    if (vm.ViewProfileCommand.CanExecute(null))
+                    {
+                        vm.ViewProfileCommand.Execute(null);
+                    }
+                }
+                else if(itemTitle =="Help")
+                {
+                    if (vm.NavigateToHelpPageCommand.CanExecute(null))
+                    {
+                        vm.NavigateToHelpPageCommand.Execute(null);
+                    }
+                }
+                else
+                {
+                    if (vm.NavigateToAboutPageCommand.CanExecute(null))
+                    {
+                        vm.NavigateToAboutPageCommand.Execute(null);
+                    }
+                }
                 Menu.ListView.SelectedItem = null;
                 IsPresented = false;
             }

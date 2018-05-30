@@ -31,7 +31,8 @@ namespace MeltingApp.ViewModels
         private int _userAssistsInt;
         private Comment _comment;
         private IEnumerable<Comment> _allComments;
-   
+  
+        public string Title { get; set; }
 
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToEditProfilePageCommand { get; set; }

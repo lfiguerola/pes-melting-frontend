@@ -223,9 +223,6 @@ namespace MeltingApp.ViewModels
 
         async void HandleNavigateToGetAllEventsCommand()
         {
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
-
             AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>, IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
             {
                 if (success)
@@ -236,17 +233,71 @@ namespace MeltingApp.ViewModels
                 {
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
-            }, meltingUriParser);
+            });
 
-            //guardem tots els events a la base de dades
+            saveEventsInDB(AllEvents); //guardem tots els events a la base de dades
+
+        }
+
+        /// <summary>
+        /// guardem tots els events a la base de dades, i les seves referencies als seus usuaris creadors, si
+        /// el creador no es troba a la base de dades, l'obtenim, l'afegim a la taula users i li posem la referencia a l'event
+        /// </summary>
+        /// <param name="AllEvents"></param>
+        void saveEventsInDB(IEnumerable<Event>AllEvents)
+        {
             var allevents_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
             for (int i = 0; i < AllEvents.Count(); i++)
             {
-                _dataBaseService.UpdateWithChildren<Event>(AllEvents.ElementAt(i));
+                //comprovar si el event ja esta a la bd
+                if (!allevents_before.Contains(AllEvents.ElementAt(i)))
+                {
+                    var iduseri = AllEvents.ElementAt(i).user_id;
+                    var allusers = _dataBaseService.GetCollection<User>(u => true);
+                    var userEvent = _dataBaseService.Get<User>(u => u.id == iduseri); //comprovo si esta a la bd
+                    if (userEvent != null) //si hi és
+                    {
+                        var eventToSave = AllEvents.ElementAt(i);
+                        eventToSave.Owner = userEvent;
+                        _dataBaseService.UpdateWithChildren<Event>(eventToSave);
+                    }
+                    else
+                    {
+                        //obtenim l'usuari a través del seu id i el guardem a la db
+                        getAndSaveProfileInDB(iduseri);
+                        var eventToSave = AllEvents.ElementAt(i);
+                        var userEvent2 = _dataBaseService.Get<User>(u => u.id == iduseri);
+                        if (userEvent2 != null)
+                        {
+                            eventToSave.Owner = userEvent2;
+                            _dataBaseService.UpdateWithChildren<Event>(eventToSave);
+                        }
+                    }
+                }
             }
+
             //_dataBaseService.UpdateCollectionWithChildren<IEnumerable<Event>>(AllEvents);
             var allevents_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
-            
+        }
+
+
+        async void getAndSaveProfileInDB(int iduser)
+        {
+            bool b = false;
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{iduser}");
+
+            User = await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    b = true;
+                }
+            }, meltingUriParser);
+            if (b)
+            {
+                _dataBaseService.UpdateWithChildren<User>(User);
+            }
         }
 
         private void HandleNavigateToCreateProfilePageCommand()
@@ -283,19 +334,26 @@ namespace MeltingApp.ViewModels
             if (b)
             {
                 await _navigationService.PushAsync<ProfilePage>(this);
-                var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
-                var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
-                //obtenim user i el guardem a la db
-                if (userConsultatDB != null)
-                {
-                    userConsultatDB.faculty_id = User.faculty_id;
-                    userConsultatDB.university_id = User.university_id;
-                    userConsultatDB.full_name = User.full_name;
-                    userConsultatDB.username = User.username;
-                }
-                _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
+                SaveProfileInDB(User);
             }
         }
+
+        void SaveProfileInDB(User User)
+        {
+            var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+            //obtenim user i el guardem a la db
+            if (userConsultatDB != null)
+            {
+                userConsultatDB.faculty_id = User.faculty_id;
+                userConsultatDB.university_id = User.university_id;
+                userConsultatDB.full_name = User.full_name;
+                userConsultatDB.username = User.username;
+            }
+            _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
+            var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+        }
+
 
         async void HandleSaveEditProfileCommand()
         {

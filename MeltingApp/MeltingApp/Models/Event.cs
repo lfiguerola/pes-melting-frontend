@@ -119,11 +119,11 @@ namespace MeltingApp.Models
             }
         }
 
-        //[ManyToOne(CascadeOperations = CascadeOperation.All)]
-        //public User Owner { get; set; }
+        [ManyToOne(CascadeOperations = CascadeOperation.All)]
+        public User Owner { get; set; }
 
-        //[ForeignKey(typeof(User))]
-        //public int OwnerDbId { get; set; } 
+        [ForeignKey(typeof(User))]
+        public int OwnerDbId { get; set; } 
         
     }
 }

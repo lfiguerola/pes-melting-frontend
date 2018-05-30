@@ -53,7 +53,7 @@ namespace MeltingApp.Resources
             public const string GetUserAssistance = "/users/5/events/5";
             public const string ShowFacultyInfo = "/users/3/profile/faculty";
             public const string ShowUniversityInfo = "/locations/2";
-            public const string CreateComment = "/users/5/events/5/comments";
+            public const string CreateComment = "/events/5/comments";
             public const string GetAllComments = "/events/5/comments";
             public const string CreateProfileUser = "/profile";
             public const string GetUniversities = "/locations/universities";

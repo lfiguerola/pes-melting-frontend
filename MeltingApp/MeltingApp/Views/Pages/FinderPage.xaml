@@ -20,8 +20,26 @@
                 <Picker x:Name="FilterPicker" SelectedIndex="{Binding SelectedFilterIndex }" ItemsSource="{Binding Filters}" WidthRequest="300" ></Picker>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Button x:Name="FinderButton" Text="Find" Command="{Binding NavigateToStaticInfoPage}"></Button>
+                <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
             </StackLayout>
+            <ScrollView>
+                <StackLayout HeightRequest="200">
+                    <ListView x:Name="listViewFinder">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                
+                                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Prueba 1"/>
+                                        </StackLayout>
+                                        <Label Text="Prueba 1"/>
+                                    </StackLayout>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

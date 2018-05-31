@@ -19,8 +19,6 @@
             <Label x:Name="UniversityLabel" Text="{Binding User.university}"></Label>
             <Label x:Name="BiographyTitleLabel" Text="BIOGRAPHY" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Label x:Name="BiographyLabel" Text="{Binding User.biography}"></Label>
-            <!--<Label x:Name="AvatarLabelTitle" Text="Avatar"></Label>
-            <Label x:Name="AvatarLabel" Text="{Binding User.avatarURL}"></Label>-->
             <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}"></Button>
             <Label Text="{Binding ResponseMessage}"></Label>
         </StackLayout>

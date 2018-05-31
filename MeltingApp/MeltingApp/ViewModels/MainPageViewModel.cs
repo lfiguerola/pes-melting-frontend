@@ -1,16 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.Serialization;
-using MeltingApp.Interfaces;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
-using Plugin.Media;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration;
 using Plugin.ExternalMaps;
 
 namespace MeltingApp.ViewModels
@@ -25,21 +19,19 @@ namespace MeltingApp.ViewModels
         private User _user;
         private Event _event;
         private Event _eventSelected;
-        private ImageSource _image1;
         private IEnumerable<Event> _allEvents;
         private Boolean _userAssists;
         private int _userAssistsInt;
         private Comment _comment;
         private IEnumerable<Comment> _allComments;
-   
+  
+        public string Title { get; set; }
 
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
         public Command NavigateToStaticInfoPage { get; set; }
-        public Command ShowEventCommand { get; set; }
-        public Command UploadImageCommand { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
         public Command InfoEventCommand { get; set; }
         public Command NavigateToViewEventPageCommand { get; set; }
@@ -67,7 +59,6 @@ namespace MeltingApp.ViewModels
             NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             InfoEventCommand = new Command(HandleInfoEventCommand);
-            UploadImageCommand = new Command(HandleUploadImageCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
             NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
@@ -85,8 +76,8 @@ namespace MeltingApp.ViewModels
             Comment = new Comment();
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
-           // StaticInfo = new StaticInfo();
-            Init();
+            //StaticInfo = new StaticInfo();
+            //Init();
         }
 
         async private void Init()
@@ -387,16 +378,6 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public ImageSource Image1
-        {
-            get { return _image1; }
-            set
-            {
-                _image1 = value;
-                OnPropertyChanged(nameof(Image1));
-            }
-        }
-
         public Boolean UserAssists
         {
             get { return _userAssists; }
@@ -439,7 +420,7 @@ namespace MeltingApp.ViewModels
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
+                    //DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
                 }
                 else
                 {
@@ -451,7 +432,7 @@ namespace MeltingApp.ViewModels
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
+                    //DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
                     _navigationService.PushAsync<StaticInfoPage>(this);
                 }
                 else
@@ -466,17 +447,6 @@ namespace MeltingApp.ViewModels
             /*rellenar*/
             _navigationService.PushAsync<FinderPage>(this);
         }
-
-        private async void HandleUploadImageCommand()
-        {
-            if (!CrossMedia.Current.IsPickPhotoSupported)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
-                return;
-            }
-            var file = await CrossMedia.Current.PickPhotoAsync();
-            if (file == null) return;
-            Image1 = ImageSource.FromStream(() => file.GetStream());
-        }
+        
     }
 }

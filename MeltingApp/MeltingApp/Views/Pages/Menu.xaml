@@ -2,11 +2,39 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MeltingApp.Views.Pages"
+             xmlns:meltingApp="clr-namespace:MeltingApp;assembly=MeltingApp"
+             xmlns:viewModels="clr-namespace:MeltingApp.ViewModels;assembly=MeltingApp"
              x:Class="MeltingApp.Views.Pages.Menu"
              Title="Melting App">
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{x:Static local:Menu.FakeMenu}"/>
+            <ListView x:Name="listView">
+                <ListView.ItemsSource>
+                    <x:Array Type="{x:Type viewModels:MainPageViewModel}">
+                        <viewModels:MainPageViewModel Title="Profile"/>
+                        <viewModels:MainPageViewModel Title="Static Info"/>
+                        <viewModels:MainPageViewModel Title="Create Event"/>
+                        <viewModels:MainPageViewModel Title="All Events"/>
+                        <viewModels:MainPageViewModel Title="View Event"/>
+                        <viewModels:MainPageViewModel Title="Search"/>
+                        <viewModels:MainPageViewModel Title="Help" />
+                        <viewModels:MainPageViewModel Title="About"/>
+                    </x:Array>
+                </ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Text="{Binding Title}" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

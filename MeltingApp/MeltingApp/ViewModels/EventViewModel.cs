@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Geocoding;
+using Geocoding.Google;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -11,6 +15,7 @@ namespace MeltingApp.ViewModels
 {
 	public class EventViewModel : ViewModelBase
 	{
+	    private IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyDK_llWYsPBgwEEYTlvQh81lBWhCZc_LgA" };
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
 	    private Event _event;
@@ -20,8 +25,19 @@ namespace MeltingApp.ViewModels
 	    private DateTime _date;
 	    private DateTime _minDate;
         private string _responseMessage;
+	    private IEnumerable<Address> _addresses;
         public Command CreateEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
+
+	    public IEnumerable<Address> Addresses
+	    {
+	        get { return _addresses; }
+	        set
+	        {
+	            _addresses = value;
+	            OnPropertyChanged(nameof(Addresses));
+	        }
+	    }
 
         public Event Event
 	    {
@@ -99,13 +115,8 @@ namespace MeltingApp.ViewModels
 
             //Init();
 
-            
 
             Event = new Event();
-            Event.latitude = "0";
-            Event.longitude = "0";
-            Event.address = "C/ Jordi Girona, 1";
-            Event.name = "Infern";
 
             MinDate = DateTime.Today;
         }
@@ -160,6 +171,18 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateEventCommand()
         {
+            try
+            {
+                Addresses = await geocoder.GeocodeAsync(Event.name);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            Event.latitude = Addresses.First().Coordinates.Latitude.ToString();
+            Event.longitude = Addresses.First().Coordinates.Longitude.ToString();
+            Event.address = Addresses.First().FormattedAddress;
             Event.date = Time + " " + Date.ToLongDateString();
             await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;

@@ -69,6 +69,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Geocoding.Core">
+      <HintPath>..\..\..\.nuget\packages\geocoding.core\4.0.1\lib\netstandard1.3\Geocoding.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Geocoding.Google">
+      <HintPath>..\..\..\.nuget\packages\geocoding.google\4.0.1\lib\netstandard1.3\Geocoding.Google.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android">
       <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v7.1\Mono.Android.dll</HintPath>
     </Reference>

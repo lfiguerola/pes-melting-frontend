@@ -87,7 +87,7 @@ namespace MeltingApp.ViewModels
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
            // StaticInfo = new StaticInfo();
-            Init();
+            //Init();
         }
 
         async private void Init()

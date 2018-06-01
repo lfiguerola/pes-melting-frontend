@@ -181,7 +181,9 @@ namespace MeltingApp.ViewModels
             }
 
             Event.latitude = Addresses.First().Coordinates.Latitude.ToString();
+            Event.latitude = Event.latitude.Replace(",", ".");
             Event.longitude = Addresses.First().Coordinates.Longitude.ToString();
+            Event.longitude = Event.longitude.Replace(",", ".");
             Event.address = Addresses.First().FormattedAddress;
             Event.date = Time + " " + Date.ToLongDateString();
             await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {

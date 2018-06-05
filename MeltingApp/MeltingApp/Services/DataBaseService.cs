@@ -32,6 +32,7 @@ namespace MeltingApp.Services
             SQLiteConnection.DropTable<Token>();
             SQLiteConnection.DropTable<User>();
             SQLiteConnection.CreateTable<Event>();
+            SQLiteConnection.CreateTable<Comment>();
             SQLiteConnection.Commit();
         }
 
@@ -44,6 +45,7 @@ namespace MeltingApp.Services
             SQLiteConnection.CreateTable<User>();
             SQLiteConnection.CreateTable<Token>();
             SQLiteConnection.CreateTable<Event>();
+            SQLiteConnection.CreateTable<Comment>();
             SQLiteConnection.Commit();
         }
 

@@ -25,7 +25,7 @@ namespace MeltingApp.ViewModels
         private int _userAssistsInt;
         private Comment _comment;
         private IEnumerable<Comment> _allComments;
-  
+        private ImageSource _image1;
         public string Title { get; set; }
 
         public Command NavigateToCreateEventPageCommand { get; set; }
@@ -35,10 +35,11 @@ namespace MeltingApp.ViewModels
         public Command NavigateToStaticInfoPage { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
         public Command InfoEventCommand { get; set; }
+        public Command ShowEventCommand { get; set; }
+        public Command UploadImageCommand { get; set; }
+        public Command NavigateToEventViewModelCommand { get; set; }
         public Command NavigateToViewEventPageCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
-        public Command CreateCommentCommand { get; set; }
-        public Command GetAllCommentsCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
         public Command OpenMapStaticFacultyCommand { get; set; }
         public Command OpenMapStaticUniversityCommand { get; set; }
@@ -61,21 +62,19 @@ namespace MeltingApp.ViewModels
             NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             InfoEventCommand = new Command(HandleInfoEventCommand);
+            NavigateToEventViewModelCommand = new Command(HandleNavigateToEventViewModelCommand);
+            UploadImageCommand = new Command(HandleUploadImageCommand);
+            
             NavigateToFinderPage = new Command(HandleFinderCommand);
-            NavigateToViewEventPageCommand = new Command(HandleNavigateToViewEventPageCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
             OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
             OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
 
             Event = new Event();
-            EventSelected = new Event();
             //TODO: eliminar aquest boto
             NavigateToCreateProfilePageCommand = new Command(HandleNavigateToCreateProfilePageCommand);
             User = new User();
-            CreateCommentCommand = new Command(HandleCreateCommentCommand);
-            GetAllCommentsCommand = new Command(HandleGetAllCommentsCommand);
-            Comment = new Comment();
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
             //StaticInfo = new StaticInfo();
@@ -98,7 +97,7 @@ namespace MeltingApp.ViewModels
             });
         }
 
-        async void HandleConfirmAssistanceCommand()
+         async void HandleConfirmAssistanceCommand()
         {
             if (!UserAssists)
             {
@@ -161,132 +160,11 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
             }
         }
+               
 
-        async void HandleGetAllCommentsCommand()
+        void HandleNavigateToEventViewModelCommand()
         {
-            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>,IEnumerable<Comment>>(ApiRoutes.Methods.GetAllComments, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    //_navigationService.PushAsync<ViewEvent>(this);
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            });
-        }
-
-        async void HandleCreateCommentCommand()
-        {
-            await _apiClientService.PostAsync<Comment,Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) =>
-            {
-                ResponseMessage = responseMessage;
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                if (isSuccess)
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comment created successfully");
-                    _navigationService.PopAsync();
-                    HandleNavigateToViewEventPageCommand();
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            });
-          
-        }
-
-        void HandleInfoEventCommand()
-        {
-            Event = EventSelected;
-            //var eventscreated = _dataBaseService.GetWithChildren<Event>(e => true);
-            //Event = AllEvents.ElementAt(id);
-            _navigationService.PushAsync<ViewEvent>(this);
-        }
-
-        async void HandleNavigateToViewEventPageCommand()
-        {
-            Event = await _apiClientService.GetAsync<Event,Event>(ApiRoutes.Methods.ShowEvent, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    HandleGetAllCommentsCommand();
-                    _navigationService.PushAsync<ViewEvent>(this);
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            });
-        }
-
-        async void HandleNavigateToGetAllEventsCommand()
-        {
-            AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>, IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    _navigationService.PushAsync<EventList>(this);
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            });
-
-            saveEventsInDB(AllEvents); //guardem tots els events a la base de dades
-
-        }
-
-        /// <summary>
-        /// guardem tots els events a la base de dades, i les seves referencies als seus usuaris creadors, si
-        /// el creador no es troba a la base de dades, l'obtenim, l'afegim a la taula users i li posem la referencia a l'event
-        /// </summary>
-        /// <param name="AllEvents"></param>
-        void saveEventsInDB(IEnumerable<Event>AllEvents)
-        {
-            var allevents_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
-            for (int i = 0; i < AllEvents.Count(); i++)
-            {
-                //comprovar si el event ja esta a la bd
-                var eventt = AllEvents.ElementAt(i);
-                bool b = false;
-                for (int j = 0; j < allevents_before.Count() && !b ; j++)
-                {
-                    if (allevents_before.ElementAt(j).id == eventt.id)
-                    {
-                        b = true;
-                    }
-                }
-                if (!b)
-                {
-                    //si levent no esta a la bd
-                    var eventToSave = AllEvents.ElementAt(i);
-                    _dataBaseService.UpdateWithChildren<Event>(eventToSave);
-                }
-                
-            }
-            var allevents_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
-        }
-        
-        async void getAndSaveProfileInDB(int iduser)
-        {
-            bool b = false;
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{iduser}");
-
-            User = await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    b = true;
-                }
-            }, meltingUriParser);
-            if (b)
-            {
-                _dataBaseService.UpdateWithChildren<User>(User);
-            }
+            EventViewModel evm = new EventViewModel();
         }
 
         private void HandleNavigateToCreateProfilePageCommand()
@@ -412,36 +290,6 @@ namespace MeltingApp.ViewModels
             {
                 _event = value;
                 OnPropertyChanged(nameof(Event));
-            }
-        }
-
-        public Event EventSelected
-        {
-            get { return _eventSelected; }
-            set
-            {
-                _eventSelected = value;
-                OnPropertyChanged(nameof(EventSelected));
-            }
-        }
-
-        public Comment Comment
-        {
-            get { return _comment; }
-            set
-            {
-                _comment = value;
-                OnPropertyChanged(nameof(Comment));
-            }
-        }
-
-        public IEnumerable<Comment> AllComments
-        {
-            get { return _allComments; }
-            set
-            {
-                _allComments = value;
-                OnPropertyChanged(nameof(AllComments));
             }
         }
 

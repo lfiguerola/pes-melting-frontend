@@ -67,19 +67,19 @@ namespace MeltingApp.ViewModels
 
         public struct FinderStructure
         {
-            public int resultId1;
-            public int resultId2;
-            public int resultId3;
-            public int karma;
-            public String resultName1;
-            public String resultName2;
-            public String resultName3;
-            public String resultName4;
-            public String resultName5;
-            public String resultName6;
-            public String resultName7;
-            public float latitude;
-            public float longitude;
+            public int resultId1 { get; set; }
+            public int resultId2 { get; set; }
+            public int resultId3 { get; set; }
+            public int karma { get; set; }
+            public String resultName1 { get; set; }
+            public String resultName2 { get; set; }
+            public String resultName3 { get; set; }
+            public String resultName4 { get; set; }
+            public String resultName5 { get; set; }
+            public String resultName6 { get; set; }
+            public String resultName7 { get; set; }
+            public float latitude { get; set; }
+            public float longitude { get; set; }
 
         }
         public FinderViewModel()
@@ -129,6 +129,7 @@ namespace MeltingApp.ViewModels
                     _finderStructure.longitude = _uniAux.longitude;
                     _allFinderStructures.Add(_finderStructure);
                 }
+                AllResults = _allFinderStructures;
             }
             else if (FilterToApply.Equals("Username"))
             {

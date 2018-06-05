@@ -23,17 +23,36 @@
                 <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
             </StackLayout>
             <ScrollView>
-                <StackLayout HeightRequest="200">
-                    <ListView ItemsSource="{Binding AllUniversities}" x:Name="listView">
+                <StackLayout HeightRequest="400">
+                    <ListView ItemsSource="{Binding AllResults}" x:Name="listView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
+                                    <StackLayout >
+                                        <StackLayout HeightRequest="80">
+                                            <Label Text="{Binding resultId1}"></Label>
+                                        </StackLayout>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Prueba"></Label>
+                                            <Label Text="{Binding resultName2}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding resultName1}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding resultName3}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding resultName4}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding latitude}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding longitude}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding resultId2}"></Label>
                                         </StackLayout>
                                     </StackLayout>
-                                </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

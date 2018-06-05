@@ -36,8 +36,7 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.AvatarProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.AvatarProfileUser}"},
             //
             { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), ApiRoutes.Endpoints.ConfirmAssitance },
-            //
-            { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), ApiRoutes.Endpoints.CreateComment},
+            { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.CreateComment}" },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.CreateProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.CreateProfileUser}"}
         };
 
@@ -53,12 +52,10 @@ namespace MeltingApp.Services
             //
             {new Tuple<Type, string>(typeof(int), ApiRoutes.Methods.GetUserAssistance), ApiRoutes.Endpoints.GetUserAssistance},
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowFacultyInfo), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.ShowFacultyInfo}"},
-            //comprovar endpoint
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowUniversityInfo), $"{ApiRoutes.Endpoints.ShowUniversityInfo}{ApiRoutes.Prefix.University_id}"},
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetProfileUser}"},
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), $"{ApiRoutes.Endpoints.GetAllEvents}"},
-            //
-            {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetAllComments), ApiRoutes.Endpoints.GetAllComments},
+            {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetEventComments), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.GetEventComments}"},
             {new Tuple<Type, string>(typeof(IEnumerable<University>), ApiRoutes.Methods.GetUniversities), ApiRoutes.Endpoints.GetUniversities},
             {new Tuple<Type, string>(typeof(IEnumerable<Faculty>), ApiRoutes.Methods.GetFaculties), $"{ApiRoutes.Endpoints.GetFacultiesfirstpath}{ApiRoutes.Prefix.Universities}{ApiRoutes.Endpoints.GetFacultiessecondpath}"}
         };

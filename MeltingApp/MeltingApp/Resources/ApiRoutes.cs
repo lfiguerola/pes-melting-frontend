@@ -27,7 +27,7 @@ namespace MeltingApp.Resources
             public const string ShowUniversityInfo = "ShowUniversityInfo";
             public const string GetAllEvents = "GetAllEvents";
             public const string CreateComment = "CreateComment";
-            public const string GetAllComments = "GetAllComments";
+            public const string GetEventComments = "GetEventComments";
             public const string CreateProfileUser = "CreateProfile";
             public const string GetUniversities = "GetUniversities";
             public const string GetFaculties = "GetFaculties";
@@ -38,6 +38,7 @@ namespace MeltingApp.Resources
             public static string Users = $"/users/{UriParameters.UserId}";
             public static string Universities = $"/universities/{UriParameters.UniversityId}";
             public static string University_id = $"/{UriParameters.OnlyUniversityId}";
+            public static string Event_id = $"/events/{UriParameters.EventId}";
         }
 
         public struct UriParameters
@@ -45,6 +46,7 @@ namespace MeltingApp.Resources
             public const string UserId = "[User_id]";
             public const string UniversityId = "[University_id]";
             public const string OnlyUniversityId = "[OnlyUniversity_id]";
+            public const string EventId = "[Event_id]";
         }
 
         /// <summary>
@@ -68,8 +70,8 @@ namespace MeltingApp.Resources
             public const string GetUserAssistance = "/users/5/events/5";
             public const string ShowFacultyInfo = "/profile/faculty";
             public const string ShowUniversityInfo = "/locations";
-            public const string CreateComment = "/users/5/events/2/comments";
-            public const string GetAllComments = "/users/5/events/2/comments";
+            public const string CreateComment = "/comments";
+            public const string GetEventComments = "/comments";
             public const string CreateProfileUser = "/profile";
             public const string GetUniversities = "/locations/universities";
             public const string GetFacultiesfirstpath = "/locations";

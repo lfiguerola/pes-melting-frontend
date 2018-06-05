@@ -7,7 +7,7 @@
             <Label Text="Welcome to Main Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-
+            <Button Text="Chat" Command="{Binding NavigateToChatMainPageCommand}"></Button>
             <Button Text="About" Command="{Binding NavigateToAboutPageCommand}"></Button>
             <Button Text="Help" Command="{Binding NavigateToHelpPageCommand}"></Button>
             <Button Text="Static Info" Command="{Binding NavigateToStaticInfoPage}"></Button>

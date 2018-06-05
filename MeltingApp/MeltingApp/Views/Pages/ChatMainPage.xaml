@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.ChatMainPage">
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+               
+            </Grid.RowDefinitions>
+
+            <Grid ColumnSpacing="2" Padding="5">
+                <Button Text="Activos"></Button>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="#bfccfe">
+                    <Frame.HasShadow>
+                        <OnPlatform x:TypeArguments="x:Boolean" iOS="false" Android="true"/>
+                    </Frame.HasShadow>
+                    <StackLayout>
+                        <Label TextColor="Black" Text=" Holi que tal" />
+                    </StackLayout>
+                </Frame>
+            </Grid>
+
+            <StackLayout Orientation="Horizontal" Grid.Row="1" Padding="10" BackgroundColor="#EFEFEF">
+                <Entry 
+			    HorizontalOptions="FillAndExpand" 
+				HeightRequest="25" 
+				Placeholder="Message" 
+				/>
+                <Button 
+				Text="Send"/>
+            </StackLayout>
+
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -46,6 +46,7 @@ namespace MeltingApp.ViewModels
         public Command NavigateToHelpPageCommand { get; set; }
         public Command NavigateToAboutPageCommand { get; set; }
 
+        public Command NavigateToChatMainPageCommand { get; set; }
         public MainPageViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
@@ -65,8 +66,10 @@ namespace MeltingApp.ViewModels
             OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
             OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
             OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
+            NavigateToChatMainPageCommand = new Command(HandleNavigateToChatMainPageCommand);
 
-            Event = new Event();
+
+        Event = new Event();
             EventSelected = new Event();
             //TODO: eliminar aquest boto
             NavigateToCreateProfilePageCommand = new Command(HandleNavigateToCreateProfilePageCommand);
@@ -414,6 +417,9 @@ namespace MeltingApp.ViewModels
             _navigationService.PushAsync<AboutPage>(this);
         }
 
+        void HandleNavigateToChatMainPageCommand() {
+            _navigationService.PushAsync<ChatMainPage>(this);
+        }
         async void HandleStaticInfoCommand()
         {
             FacultyStaticInfo = await _apiClientService.GetAsync<StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>

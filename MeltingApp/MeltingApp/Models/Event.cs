@@ -17,6 +17,8 @@ namespace MeltingApp.Models
         private string _address;
         private string _name;
         private string _date;
+
+        private int _userId;
         //private ?attendee[]  _attendees;
         //private ?comment[] _comments;
 
@@ -107,6 +109,15 @@ namespace MeltingApp.Models
             {
                 _date = value;
                 OnPropertyChanged(nameof(date));
+            }
+        }
+        public int user_id
+        {
+            get { return _userId; }
+            set
+            {
+                _userId = value;
+                OnPropertyChanged(nameof(user_id));
             }
         }
     }

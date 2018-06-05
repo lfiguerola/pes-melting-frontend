@@ -6,7 +6,6 @@ using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
-using Plugin.Media;
 using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
@@ -21,7 +20,6 @@ namespace MeltingApp.ViewModels
         private Faculty _faculty;
         private IEnumerable<Faculty> _faculties;
         private string _responseMessage;
-        private ImageSource _image1;
 
         private int countriesSelectedIndex;
         private string SelectedCountry;
@@ -32,7 +30,6 @@ namespace MeltingApp.ViewModels
         public Command SaveEditProfileCommand { get; set; }
         public Command CreateProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
-        public Command UploadImageCommand { get; set; }
         public Command ViewUniversitiesCommand { get; set; }
         public University MySelectedUniversity
         {
@@ -60,7 +57,6 @@ namespace MeltingApp.ViewModels
             }
 
         }
-        //public Command SetAvatarProfileCommand { get; set; }
 
         private List<string> countries = new List<string>
         {
@@ -376,16 +372,6 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public ImageSource Image1
-        {
-            get { return _image1; }
-            set
-            {
-                _image1 = value;
-                OnPropertyChanged(nameof(Image1));
-            }
-        }
-
         public int CountriesSelectedIndex
         {
             get
@@ -426,8 +412,6 @@ namespace MeltingApp.ViewModels
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
-            UploadImageCommand = new Command(HandleUploadImageCommand);
-            //SetAvatarProfileCommand = new Command(HandleSetAvatarProfileCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
             User = new User();
             //Omplim desplegable de universities
@@ -435,21 +419,6 @@ namespace MeltingApp.ViewModels
             
         }
         
-        //async void HandleSetAvatarProfileCommand()
-        //{
-        /* await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.AvatarProfileUser, (success, responseMessage) =>
-         {
-             if (success)
-             {
-                 _navigationService.PushAsync<ProfilePage>(this);
-             }
-             else
-             {
-                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-             }
-         });*/
-        //}
-
         async void HandleViewProfileCommand()
         {
             bool b = false;
@@ -527,18 +496,5 @@ namespace MeltingApp.ViewModels
             _navigationService.PushAsync<EditProfilePage>(this);
         }
 
-        private async void HandleUploadImageCommand()
-        {
-            if (!CrossMedia.Current.IsPickPhotoSupported)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
-                return;
-            }
-
-            var file = await CrossMedia.Current.PickPhotoAsync();
-            if (file == null) return;
-
-            Image1 = ImageSource.FromStream(() => file.GetStream());
-        }
     }
 }

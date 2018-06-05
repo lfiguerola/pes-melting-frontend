@@ -97,7 +97,7 @@ namespace MeltingApp.ViewModels
             CreateEventCommand = new Command(HandleCreateEventCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
 
-            Init();
+            //Init();
 
             
 

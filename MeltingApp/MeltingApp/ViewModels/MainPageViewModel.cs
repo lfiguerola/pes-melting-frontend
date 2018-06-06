@@ -27,7 +27,7 @@ namespace MeltingApp.ViewModels
         private ImageSource _image1;
         public string Title { get; set; }
 
-        public Command NavigateToCreateEventPageCommand { get; set; }
+       // public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToProfileViewModelCommand { get; set; }
         public Command NavigateToStaticInfoPage { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
@@ -127,7 +127,6 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             _dataBaseService = DependencyService.Get<IDataBaseService>();
-            NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
             NavigateToEventViewModelCommand = new Command(HandleNavigateToEventViewModelCommand);
             NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
             NavigateToProfileViewModelCommand = new Command(HandleNavigateToProfileViewModelCommand);
@@ -136,8 +135,7 @@ namespace MeltingApp.ViewModels
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
             OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
-            OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
-
+            
             Event = new Event();
             User = new User();
             FacultyStaticInfo = new StaticInfo();
@@ -235,15 +233,6 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        private async void HandleOpenMapEventCommand()
-        {
-            var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(Event.latitude), Double.Parse(Event.longitude));
-            if (!success)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
-            }
-        }
-
         private async void HandleOpenMapStaticFacultyCommand()
         {
             var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(FacultyStaticInfo.latitude.ToString()), Double.Parse(FacultyStaticInfo.longitude.ToString()));
@@ -262,11 +251,6 @@ namespace MeltingApp.ViewModels
         void HandleNavigateToProfileViewModelCommand()
         {
             ProfileViewModel pvm = new ProfileViewModel();
-        }
-
-        void HandleNavigateToCreateEventPageCommand()
-        {
-            _navigationService.PushAsync<CreateEvent>();
         }
 
         void HandleNavigateToCreateProfilePageCommand()

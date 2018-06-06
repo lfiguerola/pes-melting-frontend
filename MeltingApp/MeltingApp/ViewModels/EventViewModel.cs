@@ -5,6 +5,7 @@ using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
+using Plugin.ExternalMaps;
 using Xamarin.Forms;
 using Boolean = System.Boolean;
 
@@ -34,6 +35,9 @@ namespace MeltingApp.ViewModels
         public Command ConfirmAssistanceCommand { get; set; }
         public Command CreateCommentCommand { get; set; }
         public Command InfoEventCommand { get; set; }
+        public Command NavigateToCreateEventPageCommand { get; set; }
+        public Command OpenMapEventCommand { get; set; }
+
 
         public Event Event
 	    {
@@ -151,6 +155,8 @@ namespace MeltingApp.ViewModels
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             CreateCommentCommand = new Command(HandleCreateCommentCommand);
             InfoEventCommand = new Command(HandleInfoEventCommand);
+            NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
+            OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
 
             //Init();
             Comment = new Comment();
@@ -214,8 +220,7 @@ namespace MeltingApp.ViewModels
             }
             var allevents_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
         }
-
-
+        
         void HandleInfoEventCommand()
         {
             Event = EventSelected;
@@ -321,6 +326,11 @@ namespace MeltingApp.ViewModels
             var allcomments = _dataBaseService.GetCollection<Comment>(c => true);
         }
 
+        void HandleNavigateToCreateEventPageCommand()
+        {
+            _navigationService.PushAsync<CreateEvent>(this);
+        }
+
         async void HandleCreateEventCommand()
         {
             Event.date = Time + " " + Date.ToLongDateString();
@@ -330,7 +340,7 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
-                    _navigationService.SetRootPage<MainPage>();
+                    _navigationService.PopAsync();
                 }
             });
             
@@ -340,6 +350,15 @@ namespace MeltingApp.ViewModels
                 
             }
             var events_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+        }
+
+        private async void HandleOpenMapEventCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(Event.latitude), Double.Parse(Event.longitude));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
         }
     }
 }

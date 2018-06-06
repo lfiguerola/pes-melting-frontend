@@ -19,8 +19,7 @@ namespace MeltingApp.ViewModels
         private string _responseMessage;
         private User _user;
         private Event _event;
-        private Event _eventSelected;
-        private IEnumerable<Event> _allEvents;
+        private ImageSource _image1;
         private Boolean _userAssists;
         private int _userAssistsInt;
         private Comment _comment;
@@ -29,9 +28,7 @@ namespace MeltingApp.ViewModels
         public string Title { get; set; }
 
         public Command NavigateToCreateEventPageCommand { get; set; }
-        public Command NavigateToEditProfilePageCommand { get; set; }
-        public Command SaveEditProfileCommand { get; set; }
-        public Command ViewProfileCommand { get; set; }
+        public Command NavigateToProfileViewModelCommand { get; set; }
         public Command NavigateToStaticInfoPage { get; set; }
         public Command NavigateToGetAllEventsCommand { get; set; }
         public Command InfoEventCommand { get; set; }
@@ -48,23 +45,93 @@ namespace MeltingApp.ViewModels
         public Command NavigateToHelpPageCommand { get; set; }
         public Command NavigateToAboutPageCommand { get; set; }
 
+        public User User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                OnPropertyChanged(nameof(User));
+            }
+        }
+        public StaticInfo FacultyStaticInfo
+        {
+            get { return _staticInfo; }
+            set
+            {
+                _staticInfo = value;
+                OnPropertyChanged(nameof(FacultyStaticInfo));
+            }
+        }
+        public StaticInfo UniversityStaticInfo
+        {
+            get { return _staticInfoUni; }
+            set
+            {
+                _staticInfoUni = value;
+                OnPropertyChanged(nameof(UniversityStaticInfo));
+            }
+        }
+
+        public Event Event
+        {
+            get { return _event; }
+            set
+            {
+                _event = value;
+                OnPropertyChanged(nameof(Event));
+            }
+        }
+
+        public string ResponseMessage
+        {
+            get { return _responseMessage; }
+            set
+            {
+                _responseMessage = value;
+                OnPropertyChanged(nameof(ResponseMessage));
+            }
+        }
+
+        public ImageSource Image1
+        {
+            get { return _image1; }
+            set
+            {
+                _image1 = value;
+                OnPropertyChanged(nameof(Image1));
+            }
+        }
+
+        public Boolean UserAssists
+        {
+            get { return _userAssists; }
+            set
+            {
+                _userAssists = value;
+                OnPropertyChanged(nameof(UserAssists));
+            }
+        }
+        public int UserAssistsInt
+        {
+            get { return _userAssistsInt; }
+            set
+            {
+                _userAssistsInt = value;
+                OnPropertyChanged(nameof(UserAssistsInt));
+            }
+        }
+
         public MainPageViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             _dataBaseService = DependencyService.Get<IDataBaseService>();
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
-		    NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
-		    NavigateToGetAllEventsCommand = new Command(HandleNavigateToGetAllEventsCommand);
-            NavigateToHelpPageCommand = new Command(HandleNavigateToHelpCommand);
-            NavigateToAboutPageCommand = new Command(HandleNavigateToAboutCommand);
-            SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
-            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
-            ViewProfileCommand = new Command(HandleViewProfileCommand);
-            InfoEventCommand = new Command(HandleInfoEventCommand);
             NavigateToEventViewModelCommand = new Command(HandleNavigateToEventViewModelCommand);
+            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
+            NavigateToProfileViewModelCommand = new Command(HandleNavigateToProfileViewModelCommand);
             UploadImageCommand = new Command(HandleUploadImageCommand);
-            
             NavigateToFinderPage = new Command(HandleFinderCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
@@ -72,32 +139,57 @@ namespace MeltingApp.ViewModels
             OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
 
             Event = new Event();
-            //TODO: eliminar aquest boto
-            NavigateToCreateProfilePageCommand = new Command(HandleNavigateToCreateProfilePageCommand);
             User = new User();
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
-            //StaticInfo = new StaticInfo();
-            //Init();
+
+            SaveCurrentProfile();
         }
 
-        async private void Init()
+        async void SaveCurrentProfile()
         {
-            UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+            //si el perfil ja s'ha creat
+            bool b = false;
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            User = await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
-                if (isSuccess)
+                if (success)
                 {
-                    if (UserAssistsInt == 1) UserAssists = true;
-                    else UserAssists = false;
+                    b = true;
                 }
                 else
                 {
+                    //si el perfil no s'ha creat faig crida a la creació d'aquest
+                    //TODO: Treure aquest toast
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    HandleNavigateToCreateProfilePageCommand();
                 }
-            });
+            }, meltingUriParser);
+            if (b)
+            {
+                SaveProfileInDB(User);
+            }
         }
 
-         async void HandleConfirmAssistanceCommand()
+        void SaveProfileInDB(User User)
+        {
+            var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+            //obtenim user i el guardem a la db
+            if (userConsultatDB != null)
+            {
+                userConsultatDB.faculty_id = User.faculty_id;
+                userConsultatDB.university_id = User.university_id;
+                userConsultatDB.full_name = User.full_name;
+                userConsultatDB.username = User.username;
+            }
+            _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
+            var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+        }
+
+        async void HandleConfirmAssistanceCommand()
         {
             if (!UserAssists)
             {
@@ -167,9 +259,9 @@ namespace MeltingApp.ViewModels
             EventViewModel evm = new EventViewModel();
         }
 
-        private void HandleNavigateToCreateProfilePageCommand()
+        void HandleNavigateToProfileViewModelCommand()
         {
-            _navigationService.PushAsync<CreateProfilePage>();
+            ProfileViewModel pvm = new ProfileViewModel();
         }
 
         void HandleNavigateToCreateEventPageCommand()
@@ -177,155 +269,9 @@ namespace MeltingApp.ViewModels
             _navigationService.PushAsync<CreateEvent>();
         }
 
-        async void HandleViewProfileCommand()
+        void HandleNavigateToCreateProfilePageCommand()
         {
-            //si el perfil ja s'ha creat
-            bool b = false;
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
-
-            User = await _apiClientService.GetAsync<User,User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    b = true;
-                }
-                else
-                {
-                    //si el perfil no s'ha creat faig crida a la creació d'aquest
-                    //TODO: Treure aquest toast
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                    HandleNavigateToCreateProfilePageCommand();
-                }
-            }, meltingUriParser);
-            if (b)
-            {
-                await _navigationService.PushAsync<ProfilePage>(this);
-                SaveProfileInDB(User);
-            }
-        }
-
-        void SaveProfileInDB(User User)
-        {
-            var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
-            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
-            //obtenim user i el guardem a la db
-            if (userConsultatDB != null)
-            {
-                userConsultatDB.faculty_id = User.faculty_id;
-                userConsultatDB.university_id = User.university_id;
-                userConsultatDB.full_name = User.full_name;
-                userConsultatDB.username = User.username;
-            }
-            _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
-            var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
-        }
-
-
-        async void HandleSaveEditProfileCommand()
-        {
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
-
-            await _apiClientService.PutAsync<User,User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
-                    _navigationService.PopAsync();
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            }, meltingUriParser);
-        }
-
-        public User User
-        {
-            get { return _user; }
-            set
-            {
-                _user = value;
-                OnPropertyChanged(nameof(User));
-            }
-        }
-
-
-        public StaticInfo FacultyStaticInfo
-        {
-            get { return _staticInfo; }
-            set
-            {
-                _staticInfo = value;
-                OnPropertyChanged(nameof(FacultyStaticInfo));
-            }
-        }
-
-        
-        public StaticInfo UniversityStaticInfo
-        {
-            get { return _staticInfoUni; }
-            set
-            {
-                _staticInfoUni = value;
-                OnPropertyChanged(nameof(UniversityStaticInfo));
-            }
-        }
-
-        public IEnumerable<Event> AllEvents
-        {
-            get { return _allEvents; }
-            set
-            {
-                _allEvents = value;
-                OnPropertyChanged(nameof(AllEvents));
-            }
-        }
-
-        public Event Event
-        {
-            get { return _event; }
-            set
-            {
-                _event = value;
-                OnPropertyChanged(nameof(Event));
-            }
-        }
-
-        public string ResponseMessage
-        {
-            get { return _responseMessage; }
-            set
-            {
-                _responseMessage = value;
-                OnPropertyChanged(nameof(ResponseMessage));
-            }
-        }
-
-        public Boolean UserAssists
-        {
-            get { return _userAssists; }
-            set
-            {
-                _userAssists = value;
-                OnPropertyChanged(nameof(UserAssists));
-            }
-        }
-        public int UserAssistsInt
-        {
-            get { return _userAssistsInt; }
-            set
-            {
-                _userAssistsInt = value;
-                OnPropertyChanged(nameof(UserAssistsInt));
-            }
-        }
-
-
-        void HandleNavigateToEditProfilePageCommand()
-        {
-            _navigationService.PushAsync<EditProfilePage>(this);
+            _navigationService.PushAsync<CreateProfilePage>();
         }
 
         void HandleNavigateToHelpCommand()

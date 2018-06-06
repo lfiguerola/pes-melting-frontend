@@ -15,7 +15,7 @@
             <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
             <Button Text="Get All Events" Command="{Binding NavigateToEventViewModelCommand}"></Button>
             <Button Text="View Event" Command="{Binding NavigateToViewEventPageCommand}"></Button>
-            <Button x:Name="ViewButton" Text="View Profile" Command="{Binding ViewProfileCommand}"></Button>
+            <Button x:Name="ViewButton" Text="View Profile" Command="{Binding NavigateToProfileViewModelCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

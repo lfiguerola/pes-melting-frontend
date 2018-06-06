@@ -387,6 +387,7 @@ namespace MeltingApp.ViewModels
                     // trigger some action to take such as updating other labels or fields
                     OnPropertyChanged(nameof(CountriesSelectedIndex));
                     SelectedCountry = Countries[countriesSelectedIndex];
+                    User = new User();                   
                     User.country_code = SelectedCountry;
                 }
             }
@@ -415,14 +416,30 @@ namespace MeltingApp.ViewModels
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
+            UploadImageCommand = new Command(HandleUploadImageCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
             User = new User();
             //Omplim desplegable de universities
             HandleViewUniversitiesCommand();
-
-             var savedUser = _dataBaseService.Get<User>(u => true);            
+            HandleViewProfileCommand();
         }
-        
+
+
+        async void getFaculties(int location_id_uni)
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UniversityId, $"{location_id_uni}");
+
+            Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>, IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            }, meltingUriParser);
+        }
+
         async void HandleViewProfileCommand()
         {
             //si el perfil ja s'ha creat
@@ -438,28 +455,34 @@ namespace MeltingApp.ViewModels
                 }
                 else
                 {
-                    //si el perfil no s'ha creat faig crida a la creació d'aquest
-                    //TODO: Treure aquest toast
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                   
+                        //si el perfil no s'ha creat faig crida a la creació d'aquest
+                        //TODO: Treure aquest toast
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                        //HandleNavigateToCreateProfilePageCommand();
                 }
             }, meltingUriParser);
-
             if (b)
             {
                 await _navigationService.PushAsync<ProfilePage>(this);
-                var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
-                var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
-                //obtenim user i el guardem a la db
-                if (userConsultatDB != null)
-                {
-                    userConsultatDB.faculty_id = User.faculty_id;
-                    userConsultatDB.university_id = User.university_id;
-                    userConsultatDB.full_name = User.full_name;
-                    userConsultatDB.username = User.username;
-                }
-                _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
+                SaveProfileInDB(User);
             }
+
+        }
+
+        void SaveProfileInDB(User User)
+        {
+            var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+            //obtenim user i el guardem a la db
+            if (userConsultatDB != null)
+            {
+                userConsultatDB.faculty_id = User.faculty_id;
+                userConsultatDB.university_id = User.university_id;
+                userConsultatDB.full_name = User.full_name;
+                userConsultatDB.username = User.username;
+            }
+            _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
+            var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
         }
 
         async void HandleViewUniversitiesCommand()
@@ -481,22 +504,33 @@ namespace MeltingApp.ViewModels
 
         async void HandleSaveEditProfileCommand()
         {
-            await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser,
-                (success, responseMessage) =>
-                {
-                    if (success)
-                    {
-                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
-                        _navigationService.PopAsync();
-                    }
-                    else
-                    {
-                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                    }
-                }
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
 
-            });
+            await _apiClientService.PutAsync<User, User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
+             {
+                 if (success)
+                 {
+                     DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
+                     _navigationService.PopAsync();
+                 }
+                 else
+                 {
+                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                 }
+             }, meltingUriParser);
         }
+
+        private void HandleNavigateToCreateProfilePageCommand()
+        {
+            _navigationService.PushAsync<CreateProfilePage>();
+        }
+        
+        void HandleNavigateToEditProfilePageCommand()
+        {
+            _navigationService.PushAsync<EditProfilePage>(this);
+        }
+        
 
         async void HandleCreateProfileCommand()
         {
@@ -525,10 +559,18 @@ namespace MeltingApp.ViewModels
             
         }
         
-        void HandleNavigateToEditProfilePageCommand()
+        private async void HandleUploadImageCommand()
         {
-            _navigationService.PushAsync<EditProfilePage>(this);
-        }
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
+                return;
+            }
 
+            var file = await CrossMedia.Current.PickPhotoAsync();
+            if (file == null) return;
+
+            Image1 = ImageSource.FromStream(() => file.GetStream());
+        }
     }
 }

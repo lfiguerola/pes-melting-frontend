@@ -26,6 +26,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button x:Name="ViewButton" Text="Add Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -114,6 +114,7 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(UserAssistsInt));
 	        }
 	    }
+
         public Comment Comment
         {
             get { return _comment; }
@@ -191,8 +192,7 @@ namespace MeltingApp.ViewModels
         }
 
         /// <summary>
-        /// guardem tots els events a la base de dades, i les seves referencies als seus usuaris creadors, si
-        /// el creador no es troba a la base de dades, l'obtenim, l'afegim a la taula users i li posem la referencia a l'event
+        /// guardem tots els events a la base de dades
         /// </summary>
         /// <param name="AllEvents"></param>
         void saveEventsInDB(IEnumerable<Event> AllEvents)
@@ -231,38 +231,62 @@ namespace MeltingApp.ViewModels
         }
         async void HandleConfirmAssistanceCommand()
 	    {
-	        UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+            await _apiClientService.PostAsync<Event, Event>(Event, ApiRoutes.Methods.ConfirmAssistance, (isSuccess, responseMessage) =>
 	        {
 	            if (isSuccess)
 	            {
-	                if (UserAssistsInt == 1) UserAssists = true;
-	                else UserAssists = false;
-	            }
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 	            }
-	        });
-	        if (UserAssists)
-	        {
-	            await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
-	                (isSuccess, responseMessage) =>
-	                {
-
-	                });
-	        }
-	        else
-	        {
-	            await _apiClientService.DeleteAsync<Event,Event>(ApiRoutes.Methods.UnconfirmAssistance,
-	                (isSuccess, responseMessage) =>
-	                {
-
-	                });
-	        }
+	        }, meltingUriParser);
+	       
 	    }
+        
+        //async void HandleConfirmAssistanceCommand()
+        //{
+        //    if (!UserAssists)
+        //    {
+        //        await _apiClientService.PostAsync<Event, Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+        //            (isSuccess, responseMessage) =>
+        //            {
+        //                if (isSuccess)
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Confirmed");
+        //                    UserAssists = true;
+        //                }
+        //                else
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+        //                }
+        //            });
+        //    }
+        //    else
+        //    {
+        //        await _apiClientService.DeleteAsync<Event, Event>(ApiRoutes.Methods.UnconfirmAssistance,
+        //            (isSuccess, responseMessage) =>
+        //            {
+        //                if (isSuccess)
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Unconfirmed");
+        //                    UserAssists = false;
+        //                }
+        //                else
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+        //                }
+        //            });
+        //    }
+
+        //}
         async private void Init()
 	    {
-	        UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUsersAssistance, (isSuccess, responseMessage) =>
 	        {
 	            if (isSuccess)
 	            {

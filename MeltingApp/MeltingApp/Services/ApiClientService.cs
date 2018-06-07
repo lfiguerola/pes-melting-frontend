@@ -34,8 +34,7 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.LoginUser), ApiRoutes.Endpoints.LoginUser },
             {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.CreateEvent), $"{ApiRoutes.Endpoints.CreateEvent}" },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.AvatarProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.AvatarProfileUser}"},
-            //
-            { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), ApiRoutes.Endpoints.ConfirmAssitance },
+            { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.ConfirmAssitance}"},
             { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.CreateComment}" },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.CreateProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.CreateProfileUser}"}
         };
@@ -47,10 +46,8 @@ namespace MeltingApp.Services
 
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
         {
-            //
-            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent},
-            //
-            {new Tuple<Type, string>(typeof(int), ApiRoutes.Methods.GetUserAssistance), ApiRoutes.Endpoints.GetUserAssistance},
+            //{new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent},
+            {new Tuple<Type, string>(typeof(int), ApiRoutes.Methods.GetUsersAssistance),  $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.GetUsersAssistance}"},
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowFacultyInfo), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.ShowFacultyInfo}"},
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowUniversityInfo), $"{ApiRoutes.Endpoints.ShowUniversityInfo}{ApiRoutes.Prefix.University_id}"},
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetProfileUser}"},
@@ -62,8 +59,7 @@ namespace MeltingApp.Services
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
-            //
-            {new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), ApiRoutes.Endpoints.UnconfirmAssistance },
+            { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.UnconfirmAssistance}"  }
         };
 
         public async Task<TResult> PostAsync<TRequest, TResult>(TRequest entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)

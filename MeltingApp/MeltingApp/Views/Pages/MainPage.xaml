@@ -10,7 +10,7 @@
 
             <Button Text="About" Command="{Binding NavigateToAboutPageCommand}"></Button>
             <Button Text="Help" Command="{Binding NavigateToHelpPageCommand}"></Button>
-            <Button Text="Static Info" Command="{Binding NavigateToStaticInfoPage}"></Button>
+            <Button Text="Static Info" Command="{Binding NavigateToStaticInfoViewModelCommand}"></Button>
             <Button Text="Finder" Command="{Binding NavigateToFinderPage}"></Button>
             <Button Text="Get All Events" Command="{Binding NavigateToEventViewModelCommand}"></Button>
             <Button Text="View Event" Command="{Binding NavigateToViewEventPageCommand}"></Button>

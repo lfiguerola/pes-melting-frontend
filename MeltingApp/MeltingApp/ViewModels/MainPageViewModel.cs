@@ -14,8 +14,6 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private IDataBaseService _dataBaseService;
-        private StaticInfo _staticInfo;
-        private StaticInfo _staticInfoUni;
         private string _responseMessage;
         private User _user;
         private Event _event;
@@ -27,21 +25,12 @@ namespace MeltingApp.ViewModels
         private ImageSource _image1;
         public string Title { get; set; }
 
-       // public Command NavigateToCreateEventPageCommand { get; set; }
         public Command NavigateToProfileViewModelCommand { get; set; }
-        public Command NavigateToStaticInfoPage { get; set; }
-        public Command NavigateToGetAllEventsCommand { get; set; }
-        public Command InfoEventCommand { get; set; }
-        public Command ShowEventCommand { get; set; }
         public Command UploadImageCommand { get; set; }
         public Command NavigateToEventViewModelCommand { get; set; }
-        public Command NavigateToViewEventPageCommand { get; set; }
+        public Command NavigateToStaticInfoViewModelCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
-        public Command OpenMapStaticFacultyCommand { get; set; }
-        public Command OpenMapStaticUniversityCommand { get; set; }
-        public Command OpenMapEventCommand { get; set; }
-        public Command NavigateToCreateProfilePageCommand { get; set; }
         public Command NavigateToHelpPageCommand { get; set; }
         public Command NavigateToAboutPageCommand { get; set; }
 
@@ -54,25 +43,6 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(User));
             }
         }
-        public StaticInfo FacultyStaticInfo
-        {
-            get { return _staticInfo; }
-            set
-            {
-                _staticInfo = value;
-                OnPropertyChanged(nameof(FacultyStaticInfo));
-            }
-        }
-        public StaticInfo UniversityStaticInfo
-        {
-            get { return _staticInfoUni; }
-            set
-            {
-                _staticInfoUni = value;
-                OnPropertyChanged(nameof(UniversityStaticInfo));
-            }
-        }
-
         public Event Event
         {
             get { return _event; }
@@ -128,22 +98,22 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             _dataBaseService = DependencyService.Get<IDataBaseService>();
             NavigateToEventViewModelCommand = new Command(HandleNavigateToEventViewModelCommand);
-            NavigateToStaticInfoPage = new Command(HandleStaticInfoCommand);
             NavigateToProfileViewModelCommand = new Command(HandleNavigateToProfileViewModelCommand);
+            NavigateToStaticInfoViewModelCommand = new Command(HandleNavigateToStaticInfoViewModel);
             UploadImageCommand = new Command(HandleUploadImageCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
+
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
-            OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
-            OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
             
             Event = new Event();
             User = new User();
-            FacultyStaticInfo = new StaticInfo();
-            UniversityStaticInfo = new StaticInfo();
 
             SaveCurrentProfile();
         }
 
+        /// <summary>
+        /// Enregistra a la base de dades l'usuari que esta loggejat per poder consultar informacio sobre ell a posteriori
+        /// </summary>
         async void SaveCurrentProfile()
         {
             //si el perfil ja s'ha creat
@@ -224,25 +194,6 @@ namespace MeltingApp.ViewModels
 
         }
 
-        private async void HandleOpenMapStaticUniversityCommand()
-        {
-            var success = await CrossExternalMaps.Current.NavigateTo("University", Double.Parse(UniversityStaticInfo.latitude.ToString()), Double.Parse(UniversityStaticInfo.longitude.ToString()));
-            if (!success)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
-            }
-        }
-
-        private async void HandleOpenMapStaticFacultyCommand()
-        {
-            var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(FacultyStaticInfo.latitude.ToString()), Double.Parse(FacultyStaticInfo.longitude.ToString()));
-            if (!success)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
-            }
-        }
-               
-
         void HandleNavigateToEventViewModelCommand()
         {
             EventViewModel evm = new EventViewModel();
@@ -253,9 +204,9 @@ namespace MeltingApp.ViewModels
             ProfileViewModel pvm = new ProfileViewModel();
         }
 
-        void HandleNavigateToCreateProfilePageCommand()
+        void HandleNavigateToStaticInfoViewModel()
         {
-            _navigationService.PushAsync<CreateProfilePage>();
+            StaticInfoViewModel sivm = new StaticInfoViewModel();
         }
 
         void HandleNavigateToHelpCommand()
@@ -303,8 +254,11 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             },meltingUriParser2);
+        void HandleNavigateToCreateProfilePageCommand()
+        {
+            _navigationService.PushAsync<CreateProfilePage>();
         }
-
+        
         void HandleFinderCommand()
         {
             /*rellenar*/

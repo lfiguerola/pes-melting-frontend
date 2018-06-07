@@ -15,7 +15,18 @@ namespace MeltingApp.Views.Pages
 		public ChatMainPage ()
 		{
 			InitializeComponent ();
-         BindingContext = new MainPageViewModel();
+            BindingContext = new ChatMainPageViewModel();
         }
-	}
+
+        void MyListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            MessagesListView.SelectedItem = null;
+        }
+
+        void MyListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            MessagesListView.SelectedItem = null;
+
+        }
+    }
 }

@@ -32,12 +32,6 @@ namespace MeltingApp.ViewModels
         public Command ViewUniversitiesCommand { get; set; }
         
 
-        //////////////////
-        public Command NavigateToEditProfilePageCommand { get; set; }
-        public Command SaveEditProfileCommand { get; set; }
-        public Command ViewProfileCommand { get; set; }
-
-
         public User User
         {
             get { return _user; }
@@ -74,12 +68,6 @@ namespace MeltingApp.ViewModels
             NavigateToLoginPageCommand = new Command(HandleNavigateToLoginPage);
             User = new User();
 
-
-            //////////////////////////
-            
-            NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
-            SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
-            ViewProfileCommand = new Command(HandleViewProfileCommand);
         }
 
         async void HandleRegisterUserCommand()
@@ -173,44 +161,6 @@ namespace MeltingApp.ViewModels
         {
             _navigationService.SetRootPage<RegisterPage>(this);
         }
-
-
-        /////////////////////
-        async void HandleViewProfileCommand()
-        {
-            int idu = User.id;
-            await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    _navigationService.PushAsync<ProfilePage>();
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            });
-        }
-
-        async void HandleSaveEditProfileCommand()
-        {
-            await _apiClientService.PutAsync<User, User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    _navigationService.PushAsync<ProfilePage>(this);
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            });
-        }
-
-        void HandleNavigateToEditProfilePageCommand()
-        {
-            _navigationService.SetRootPage<EditProfilePage>(this);
-        }
-
+    
     }
 }

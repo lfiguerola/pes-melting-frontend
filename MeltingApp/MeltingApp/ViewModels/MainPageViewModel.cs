@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
-using Plugin.ExternalMaps;
 
 namespace MeltingApp.ViewModels
 {
@@ -17,19 +14,12 @@ namespace MeltingApp.ViewModels
         private string _responseMessage;
         private User _user;
         private Event _event;
-        private ImageSource _image1;
-        private Boolean _userAssists;
-        private int _userAssistsInt;
-        private Comment _comment;
-        private IEnumerable<Comment> _allComments;
-        private ImageSource _image1;
-        public string Title { get; set; }
 
+        private ImageSource _image1;
         public Command NavigateToProfileViewModelCommand { get; set; }
         public Command UploadImageCommand { get; set; }
         public Command NavigateToEventViewModelCommand { get; set; }
         public Command NavigateToStaticInfoViewModelCommand { get; set; }
-        public Command ConfirmAssistanceCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
         public Command NavigateToHelpPageCommand { get; set; }
         public Command NavigateToAboutPageCommand { get; set; }
@@ -73,25 +63,6 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public Boolean UserAssists
-        {
-            get { return _userAssists; }
-            set
-            {
-                _userAssists = value;
-                OnPropertyChanged(nameof(UserAssists));
-            }
-        }
-        public int UserAssistsInt
-        {
-            get { return _userAssistsInt; }
-            set
-            {
-                _userAssistsInt = value;
-                OnPropertyChanged(nameof(UserAssistsInt));
-            }
-        }
-
         public MainPageViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
@@ -100,10 +71,9 @@ namespace MeltingApp.ViewModels
             NavigateToEventViewModelCommand = new Command(HandleNavigateToEventViewModelCommand);
             NavigateToProfileViewModelCommand = new Command(HandleNavigateToProfileViewModelCommand);
             NavigateToStaticInfoViewModelCommand = new Command(HandleNavigateToStaticInfoViewModel);
+
             UploadImageCommand = new Command(HandleUploadImageCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
-
-            ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             
             Event = new Event();
             User = new User();
@@ -155,43 +125,6 @@ namespace MeltingApp.ViewModels
             }
             _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
             var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
-        }
-
-        async void HandleConfirmAssistanceCommand()
-        {
-            if (!UserAssists)
-            {
-                await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
-                    (isSuccess, responseMessage) =>
-                    {
-                        if (isSuccess)
-                        {
-                            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Confirmed");
-                            UserAssists = true;
-                        }
-                        else
-                        {
-                            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                        }
-                    });
-            }
-            else
-            {
-                await _apiClientService.DeleteAsync<Event,Event>(ApiRoutes.Methods.UnconfirmAssistance,
-                    (isSuccess, responseMessage) =>
-                    {
-                        if (isSuccess)
-                        {
-                            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Unconfirmed");
-                            UserAssists = false;
-                        }
-                        else
-                        {
-                            DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                        }
-                    });
-            }
-
         }
 
         void HandleNavigateToEventViewModelCommand()

@@ -7,7 +7,6 @@ using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using SQLite;
 using SQLiteNetExtensions.Extensions;
-using SQLite.Net;
 using Xamarin.Forms;
 
 namespace MeltingApp.Services
@@ -255,7 +254,7 @@ namespace MeltingApp.Services
             {
                 if (predicate == null)
                     return SQLiteConnection.Table<T>().Where(t => true).Skip(skip).Take(take).ToList();
-                    return SQLiteConnection.Table<T>().Where(predicate).Skip(skip).Take(take).ToList();
+                return SQLiteConnection.Table<T>().Where(predicate).Skip(skip).Take(take).ToList();
             }
         }
 

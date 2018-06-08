@@ -120,8 +120,6 @@ namespace MeltingApp.ViewModels
                 if(!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(ResponseMessage);
                 else b = true;                   
             });
-            User.Token = token;
-            _authService.SetCurrentLoggedUser(User);
             if (token != null)
             {
                 UserRegisterInApp(token);
@@ -131,7 +129,7 @@ namespace MeltingApp.ViewModels
             
             
         }
-        
+            
         async void HandleCodeConfirmationCommand()
         {
             await _apiClientService.PostAsync<User, User>(User, ApiRoutes.Methods.ActivateUser, async (isSucessActivation, responseMessage) => {
@@ -154,7 +152,6 @@ namespace MeltingApp.ViewModels
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             });
         }
-        
         void HandleNavigateToLoginPage()
         {
             _navigationService.SetRootPage<LoginPage>(this);

@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using MeltingApp.Annotations;
 using SQLite;
-using SQLite.Net.Attributes;
 
 namespace MeltingApp.Models
 {

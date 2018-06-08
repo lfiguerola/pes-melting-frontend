@@ -15,14 +15,15 @@ namespace MeltingApp.ViewModels
         private User _user;
         private Event _event;
 
-        private ImageSource _image1;
         public Command NavigateToProfileViewModelCommand { get; set; }
         public Command UploadImageCommand { get; set; }
         public Command NavigateToEventViewModelCommand { get; set; }
         public Command NavigateToStaticInfoViewModelCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
-        public Command NavigateToHelpPageCommand { get; set; }
+        public Command NavigateToHelpPageCommand { get; set; }		
         public Command NavigateToAboutPageCommand { get; set; }
+
+        public string Title { get; set; }
 
         public User User
         {
@@ -71,6 +72,8 @@ namespace MeltingApp.ViewModels
             NavigateToEventViewModelCommand = new Command(HandleNavigateToEventViewModelCommand);
             NavigateToProfileViewModelCommand = new Command(HandleNavigateToProfileViewModelCommand);
             NavigateToStaticInfoViewModelCommand = new Command(HandleNavigateToStaticInfoViewModel);
+            NavigateToHelpPageCommand = new Command(HandleNavigateToHelpCommand);		
+            NavigateToAboutPageCommand = new Command(HandleNavigateToAboutCommand);
 
             UploadImageCommand = new Command(HandleUploadImageCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
@@ -79,6 +82,16 @@ namespace MeltingApp.ViewModels
             User = new User();
 
             SaveCurrentProfile();
+        }
+
+        void HandleNavigateToHelpCommand()		
+        {		
+            _navigationService.PushAsync<HelpPage>(this);		
+        }		
+ 
+        void HandleNavigateToAboutCommand()		
+        {		
+            _navigationService.PushAsync<AboutPage>(this);		
         }
 
         /// <summary>
@@ -142,51 +155,6 @@ namespace MeltingApp.ViewModels
             StaticInfoViewModel sivm = new StaticInfoViewModel();
         }
 
-        void HandleNavigateToHelpCommand()
-        {
-            
-            _navigationService.PushAsync<HelpPage>(this);
-        }
-
-        void HandleNavigateToAboutCommand()
-        {
-            _navigationService.PushAsync<AboutPage>(this);
-        }
-
-        async void HandleStaticInfoCommand()
-        {
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
-
-            FacultyStaticInfo = await _apiClientService.GetAsync<StaticInfo,StaticInfo>(ApiRoutes.Methods.ShowFacultyInfo, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    //DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            }, meltingUriParser);
-
-
-            var meltingUriParser2 = new MeltingUriParser();
-            var userSearched = _dataBaseService.GetWithChildren<User>(u => u.id == App.LoginRequest.LoggedUserIdBackend);
-            meltingUriParser2.AddParseRule(ApiRoutes.UriParameters.OnlyUniversityId, $"{userSearched.university_id}");
-
-            UniversityStaticInfo = await _apiClientService.GetAsync<StaticInfo,StaticInfo>(ApiRoutes.Methods.ShowUniversityInfo, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    //DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
-                    _navigationService.PushAsync<StaticInfoPage>(this);
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            },meltingUriParser2);
         void HandleNavigateToCreateProfilePageCommand()
         {
             _navigationService.PushAsync<CreateProfilePage>();
@@ -197,6 +165,17 @@ namespace MeltingApp.ViewModels
             /*rellenar*/
             _navigationService.PushAsync<FinderPage>(this);
         }
-        
+
+        private async void HandleUploadImageCommand()
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
+                return;
+            }
+            var file = await CrossMedia.Current.PickPhotoAsync();
+            if (file == null) return;
+            Image1 = ImageSource.FromStream(() => file.GetStream());
+        }
     }
 }

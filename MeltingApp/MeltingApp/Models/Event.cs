@@ -55,7 +55,7 @@ namespace MeltingApp.Models
                 OnPropertyChanged(nameof(title));
             }
         }
-                
+                   
         /// <summary>
         /// the event description
         /// </summary>

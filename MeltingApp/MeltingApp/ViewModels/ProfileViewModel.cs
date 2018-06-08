@@ -19,7 +19,6 @@ namespace MeltingApp.ViewModels
         private Faculty _faculty;
         private IEnumerable<Faculty> _faculties;
         private string _responseMessage;
-        private ImageSource _image1;
         private int countriesSelectedIndex;
         private string SelectedCountry;
         private University _mySelectedUniversity;
@@ -390,31 +389,15 @@ namespace MeltingApp.ViewModels
                 }
             }
         }
-
-        
-        async void getFaculties(int location_id_uni)
-        {
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UniversityId, $"{location_id_uni}");
-
-            Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>,IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties,(isSuccess, responseMessage) => {
-                ResponseMessage = responseMessage;
-                if (isSuccess)
-                {
-                    
-                }
-                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-            }, meltingUriParser);
-        }
-
+       
         public ProfileViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+            _dataBaseService = DependencyService.Get<IDataBaseService>();
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
-            UploadImageCommand = new Command(HandleUploadImageCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
             User = new User();
             //Omplim desplegable de universities
@@ -518,7 +501,7 @@ namespace MeltingApp.ViewModels
                  }
              }, meltingUriParser);
         }
-
+        
         private void HandleNavigateToCreateProfilePageCommand()
         {
             _navigationService.PushAsync<CreateProfilePage>();
@@ -557,18 +540,5 @@ namespace MeltingApp.ViewModels
             
         }
         
-        private async void HandleUploadImageCommand()
-        {
-            if (!CrossMedia.Current.IsPickPhotoSupported)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
-                return;
-            }
-
-            var file = await CrossMedia.Current.PickPhotoAsync();
-            if (file == null) return;
-
-            Image1 = ImageSource.FromStream(() => file.GetStream());
-        }
     }
 }

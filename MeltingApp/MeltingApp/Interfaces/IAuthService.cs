@@ -11,7 +11,5 @@ namespace MeltingApp.Interfaces
         void SetCurrentLoggedUser(User user);
         void RefreshToken(Token token);
 
-        Token GetCurrentToken();
-        void UpdateCurrentToken(Token token);
     }
 }

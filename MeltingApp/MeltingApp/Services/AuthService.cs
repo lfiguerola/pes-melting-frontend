@@ -54,20 +54,5 @@ namespace MeltingApp.Services
 
             var allusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
         }
-        public Token GetCurrentToken()
-        {
-            App.LoginRequest.IsLogged = user.Token != null;
-            var dbUser = _dataBaseService.Get<User>(u => u.email == user.email);
-            if (dbUser != null)
-            {
-                dbUser.Token = user.Token;
-            }
-            else
-            {
-                dbUser = user;
-            }
-
-            App.LoginRequest.LoggedUserId = _dataBaseService.Update(dbUser);
-        }
-    
+    }
 }

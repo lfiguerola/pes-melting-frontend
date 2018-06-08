@@ -16,14 +16,13 @@ namespace MeltingApp.ViewModels
         private Event _event;
 
         public Command NavigateToProfileViewModelCommand { get; set; }
-        public Command UploadImageCommand { get; set; }
         public Command NavigateToEventViewModelCommand { get; set; }
         public Command NavigateToStaticInfoViewModelCommand { get; set; }
         public Command NavigateToFinderPage { get; set; }
         public Command NavigateToHelpPageCommand { get; set; }		
         public Command NavigateToAboutPageCommand { get; set; }
 
-        public string Title { get; set; }
+        //public string Title { get; set; }
 
         public User User
         {
@@ -54,16 +53,6 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public ImageSource Image1
-        {
-            get { return _image1; }
-            set
-            {
-                _image1 = value;
-                OnPropertyChanged(nameof(Image1));
-            }
-        }
-
         public MainPageViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
@@ -74,8 +63,6 @@ namespace MeltingApp.ViewModels
             NavigateToStaticInfoViewModelCommand = new Command(HandleNavigateToStaticInfoViewModel);
             NavigateToHelpPageCommand = new Command(HandleNavigateToHelpCommand);		
             NavigateToAboutPageCommand = new Command(HandleNavigateToAboutCommand);
-
-            UploadImageCommand = new Command(HandleUploadImageCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
             
             Event = new Event();
@@ -166,16 +153,5 @@ namespace MeltingApp.ViewModels
             _navigationService.PushAsync<FinderPage>(this);
         }
 
-        private async void HandleUploadImageCommand()
-        {
-            if (!CrossMedia.Current.IsPickPhotoSupported)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Picking a photo is not supported");
-                return;
-            }
-            var file = await CrossMedia.Current.PickPhotoAsync();
-            if (file == null) return;
-            Image1 = ImageSource.FromStream(() => file.GetStream());
-        }
     }
 }

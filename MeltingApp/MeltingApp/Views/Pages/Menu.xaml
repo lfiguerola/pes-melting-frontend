@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:MeltingApp.ViewModels;assembly=MeltingApp"
              x:Class="MeltingApp.Views.Pages.Menu"
              Title="Melting App">
-    <ContentPage.Content>
+    <!--<ContentPage.Content>
         <StackLayout>
             <ListView x:Name="listView">
                 <ListView.ItemsSource>
@@ -36,5 +36,5 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
-    </ContentPage.Content>
+    </ContentPage.Content>-->
 </ContentPage>

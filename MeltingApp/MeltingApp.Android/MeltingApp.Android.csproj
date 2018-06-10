@@ -48,6 +48,9 @@
     <PackageReference Include="FluentValidation">
       <Version>7.5.2</Version>
     </PackageReference>
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.4.118</Version>
+    </PackageReference>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt">
       <Version>5.2.2</Version>
     </PackageReference>
@@ -62,6 +65,7 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="25.4.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidFileLocatorService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="OperatingSystemMethods.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

@@ -9,9 +9,9 @@ namespace MeltingApp.Views.Pages
 	{
 		public CreateEvent ()
 		{
-		    BindingContext = new EventViewModel();
+		    //BindingContext = new EventViewModel();
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasBackButton(this, true);
         }
 	}
 }

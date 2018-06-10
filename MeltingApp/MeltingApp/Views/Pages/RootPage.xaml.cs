@@ -13,7 +13,7 @@ namespace MeltingApp.Views.Pages
         public RootPage()
         {
             InitializeComponent();
-            BindingContext = new MainPageViewModel();
+            BindingContext = new MenuBarViewModel();
             //TODO: Move logic to ViewModel
             navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
 
@@ -37,46 +37,39 @@ namespace MeltingApp.Views.Pages
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MainPageViewModel;
+            var item = e.SelectedItem as MenuBarViewModel;
             if (item != null)
             {
                 string itemTitle = item.Title;
-                var vm = (MainPageViewModel)BindingContext;
-                if (itemTitle == "Profile")
+                var vm = (MenuBarViewModel)BindingContext;
+                if (itemTitle == "My profile")
                 {
-                    if (vm.ViewProfileCommand.CanExecute(null))
+                    if (vm.NavigateToProfileViewModelCommand.CanExecute(null))
                     {
-                        vm.ViewProfileCommand.Execute(null);
+                        vm.NavigateToProfileViewModelCommand.Execute(null);
                     }
                 }
-                else if (itemTitle == "Static Info")
+                else if (itemTitle == "My university")
                 {
-                    if (vm.NavigateToStaticInfoPage.CanExecute(null))
+                    if (vm.NavigateToStaticInfoViewModelCommand.CanExecute(null))
                     {
-                        vm.NavigateToStaticInfoPage.Execute(null);
+                        vm.NavigateToStaticInfoViewModelCommand.Execute(null);
                     }
                 }
-                else if (itemTitle == "Create Event")
+                else if (itemTitle == "Events")
                 {
-                    if (vm.NavigateToCreateEventPageCommand.CanExecute(null))
+                    if (vm.NavigateToEventViewModelCommand.CanExecute(null))
                     {
-                        vm.NavigateToCreateEventPageCommand.Execute(null);
+                        vm.NavigateToEventViewModelCommand.Execute(null);
                     }
                 }
-                else if (itemTitle == "All Events")
-                {
-                    if (vm.NavigateToGetAllEventsCommand.CanExecute(null))
-                    {
-                        vm.NavigateToGetAllEventsCommand.Execute(null);
-                    }
-                }
-                else if (itemTitle == "View Event")
-                {
-                    if (vm.NavigateToViewEventPageCommand.CanExecute(null))
-                    {
-                        vm.NavigateToViewEventPageCommand.Execute(null);
-                    }
-                }
+                //else if (itemTitle == "View Event")
+                //{
+                //    if (vm.NavigateToViewEventPageCommand.CanExecute(null))
+                //    {
+                //        vm.NavigateToViewEventPageCommand.Execute(null);
+                //    }
+                //}
                 else if (itemTitle == "Search")
                 {
                     if (vm.NavigateToFinderPage.CanExecute(null))

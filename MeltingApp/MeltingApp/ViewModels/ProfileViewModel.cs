@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -14,18 +12,17 @@ namespace MeltingApp.ViewModels
     {
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private IDataBaseService _dataBaseService;
         private User _user;
         private University _university;
         private ObservableCollection<University> _universities;
         private Faculty _faculty;
         private IEnumerable<Faculty> _faculties;
         private string _responseMessage;
-
         private int countriesSelectedIndex;
         private string SelectedCountry;
         private University _mySelectedUniversity;
         private Faculty _mySelectedFaculty;
-
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
         public Command CreateProfileCommand { get; set; }
@@ -387,28 +384,17 @@ namespace MeltingApp.ViewModels
                     // trigger some action to take such as updating other labels or fields
                     OnPropertyChanged(nameof(CountriesSelectedIndex));
                     SelectedCountry = Countries[countriesSelectedIndex];
+                    User = new User();                   
                     User.country_code = SelectedCountry;
                 }
             }
         }
-
-        
-        async void getFaculties(int location_id_uni)
-        {
-            Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties,(isSuccess, responseMessage) => {
-                ResponseMessage = responseMessage;
-                if (isSuccess)
-                {
-                    
-                }
-                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-            });
-        }
-
+       
         public ProfileViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+            _dataBaseService = DependencyService.Get<IDataBaseService>();
             NavigateToEditProfilePageCommand = new Command(HandleNavigateToEditProfilePageCommand);
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
@@ -416,13 +402,33 @@ namespace MeltingApp.ViewModels
             User = new User();
             //Omplim desplegable de universities
             HandleViewUniversitiesCommand();
-            
+            HandleViewProfileCommand();
         }
-        
+
+
+        async void getFaculties(int location_id_uni)
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UniversityId, $"{location_id_uni}");
+
+            Faculties = await _apiClientService.GetAsync<IEnumerable<Faculty>, IEnumerable<Faculty>>(ApiRoutes.Methods.GetFaculties, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            }, meltingUriParser);
+        }
+
         async void HandleViewProfileCommand()
         {
+            //si el perfil ja s'ha creat
             bool b = false;
-            User = await _apiClientService.GetAsync<User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            User = await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
             {
                 if (success)
                 {
@@ -430,22 +436,39 @@ namespace MeltingApp.ViewModels
                 }
                 else
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                    //llavors s'ha de crear el perfil
-                    HandleCreateProfileCommand();
-
+                        //si el perfil no s'ha creat faig crida a la creació d'aquest
+                        //TODO: Treure aquest toast
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                        //HandleNavigateToCreateProfilePageCommand();
                 }
-            });
-
+            }, meltingUriParser);
             if (b)
             {
                 await _navigationService.PushAsync<ProfilePage>(this);
+                SaveProfileInDB(User);
             }
+
+        }
+
+        void SaveProfileInDB(User User)
+        {
+            var aallusers = _dataBaseService.GetCollectionWithChildren<User>(u => true);
+            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+            //obtenim user i el guardem a la db
+            if (userConsultatDB != null)
+            {
+                userConsultatDB.faculty_id = User.faculty_id;
+                userConsultatDB.university_id = User.university_id;
+                userConsultatDB.full_name = User.full_name;
+                userConsultatDB.username = User.username;
+            }
+            _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
+            var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
         }
 
         async void HandleViewUniversitiesCommand()
         {
-            var universities = await _apiClientService.GetAsync<IEnumerable<University>>(ApiRoutes.Methods.GetUniversities,(success, responseMessage) =>
+            var universities = await _apiClientService.GetAsync<IEnumerable<University>, IEnumerable<University>>(ApiRoutes.Methods.GetUniversities,(success, responseMessage) =>
                 {
                     if (success)
                     {
@@ -457,44 +480,65 @@ namespace MeltingApp.ViewModels
                     }
                 });
             Universities = new ObservableCollection<University>(universities);
+            
         }
 
         async void HandleSaveEditProfileCommand()
         {
-            await _apiClientService.PutAsync<User>(User, ApiRoutes.Methods.EditProfileUser,
-                (success, responseMessage) =>
-                {
-                    if (success)
-                    {
-                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
-                        _navigationService.PopAsync();
-                    }
-                    else
-                    {
-                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                    }
-                });
-        }
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
 
-        async void HandleCreateProfileCommand()
+            await _apiClientService.PutAsync<User, User>(User, ApiRoutes.Methods.EditProfileUser, (success, responseMessage) =>
+             {
+                 if (success)
+                 {
+                     DependencyService.Get<IOperatingSystemMethods>().ShowToast("Profile modified successfully");
+                     _navigationService.PopAsync();
+                 }
+                 else
+                 {
+                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                 }
+             }, meltingUriParser);
+        }
+        
+        private void HandleNavigateToCreateProfilePageCommand()
         {
-            await _apiClientService.PostAsync<User>(User, ApiRoutes.Methods.CreateProfileUser, (isSuccess, responseMessage) => {
-                ResponseMessage = responseMessage;
-                if (isSuccess)
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("User created correctly");
-                    _navigationService.PopAsync();
-                    HandleViewProfileCommand();
-                }
-                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-            });
-            
+            _navigationService.PushAsync<CreateProfilePage>();
         }
         
         void HandleNavigateToEditProfilePageCommand()
         {
             _navigationService.PushAsync<EditProfilePage>(this);
         }
+        
 
+        async void HandleCreateProfileCommand()
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+            bool b = false;
+
+            await _apiClientService.PostAsync<User,User>(User, ApiRoutes.Methods.CreateProfileUser, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+                    b = true;
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("User created correctly");
+                    _navigationService.PopAsync();
+                    
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            }, meltingUriParser);
+
+            if (b)
+            {
+                //afegim usuari amb les seves coses a la bd
+                //HandleViewProfileCommand();
+                
+            }
+            
+        }
+        
     }
 }

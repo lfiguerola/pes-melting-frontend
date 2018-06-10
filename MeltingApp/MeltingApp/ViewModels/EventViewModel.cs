@@ -361,10 +361,17 @@ namespace MeltingApp.ViewModels
             var events_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
             var resultEvent = await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Event created successfully");
                     _navigationService.PopAsync();
+                    _navigationService.PopAsync();
+                    GetAllEvents();
+
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });
             

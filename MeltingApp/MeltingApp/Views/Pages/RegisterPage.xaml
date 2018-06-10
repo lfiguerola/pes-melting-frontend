@@ -2,30 +2,51 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
-             x:Class="MeltingApp.Views.Pages.RegisterPage">
+             x:Class="MeltingApp.Views.Pages.RegisterPage"
+             BackgroundImage="background.png">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Register" HorizontalOptions="CenterAndExpand" />
-            <Label x:Name="EmailLabel" Text="Email:"></Label>
-            <Entry x:Name="EmailEntry" Text="{Binding User.email}">
-                <Entry.Behaviors>
-                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
-                </Entry.Behaviors>                
-            </Entry>
-            <Label x:Name="PasswordLabel" Text="Password:"></Label>
-            <Entry x:Name="PasswordEntry" Text="{Binding User.password}" IsPassword="True">
-                <Entry.Behaviors>
-                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
-                </Entry.Behaviors>                
-            </Entry>
-            <Label x:Name="UsernameLabel" Text="Username:"></Label>
-            <Entry x:Name="UsernameEntry" Text="{Binding User.username}">
-                <Entry.Behaviors>
-                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
-                </Entry.Behaviors>
-            </Entry>
-            <Button Text="Register" Command="{Binding RegisterUserCommand}"></Button>
-            <Label Text="{Binding ResponseMessage}"></Label>
-        </StackLayout>
-    </ContentPage.Content>
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1" Margin="20,0,20,0">
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <Image Source="logoLogin.png" HeightRequest="100" VerticalOptions="EndAndExpand"/>
+                <Label Grid.Row="1" Text="Register Page" VerticalOptions="Center" TextColor="#C8B7B7FF"></Label>
+                <Entry Grid.Row="2" Placeholder="Email" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.email}">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Grid.Row="3" Placeholder="Password" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.password}" IsPassword="True">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Grid.Row="4" Placeholder="Username" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.username}" IsPassword="True">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                <Button Text="Register" BackgroundColor="#CCCCCC" TextColor="Black" HeightRequest="50" VerticalOptions="Start" Grid.Row="5" Command="{Binding RegisterUserCommand}"/>
+                <Label Text="{Binding ResponseMessage}"></Label>
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>    
 </ContentPage>

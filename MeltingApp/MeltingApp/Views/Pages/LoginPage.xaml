@@ -2,30 +2,52 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
-             x:Class="MeltingApp.Views.Pages.LoginPage">
+             x:Class="MeltingApp.Views.Pages.LoginPage"
+             BackgroundImage="background.png">
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to login!"
-                   VerticalOptions="CenterAndExpand" 
-                   HorizontalOptions="CenterAndExpand" />
+        <Grid>
 
-            <Label x:Name="EmailLabel" Text="Email"></Label>
-            
-            <Entry x:Name="EmailEntry" Text="{Binding User.email}">
-                <Entry.Behaviors>
-                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
-                </Entry.Behaviors>
-            </Entry>
-           
-            <Label x:Name="PasswordLabel" Text="Password"></Label>
-            <Entry x:Name="PasswordEntry" Text="{Binding User.password}" IsPassword="True">
-                <Entry.Behaviors>
-                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
-                </Entry.Behaviors>
-            </Entry>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
 
-            <Button Text="Login" Command="{Binding LoginUserCommand}"></Button>
-            <Button Text="Register" Command="{Binding NavigateToRegisterPageCommand}"></Button>
-        </StackLayout>
+            <Grid Grid.Row="1" Margin="20,0,20,0">
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <Image Source="logoLogin.png" HeightRequest="100" VerticalOptions="EndAndExpand"/>
+                <Entry Grid.Row="1" Placeholder="Email" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.email}">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Grid.Row="2" Placeholder="Password" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.password}" IsPassword="True">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                <Button Text="LogIn" BackgroundColor="#CCCCCC" TextColor="Black" HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Command="{Binding LoginUserCommand}"/>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="5">
+
+                    <Button Text="Sign up for New Account" TextColor="Black" Command="{Binding NavigateToRegisterPageCommand}"/>
+
+                </StackLayout>
+            </Grid>
+        </Grid>
+
     </ContentPage.Content>
+    
 </ContentPage>

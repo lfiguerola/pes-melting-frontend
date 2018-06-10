@@ -22,7 +22,7 @@ namespace MeltingApp.ViewModels
         private StaticInfo _staticInfoUni;
 
         public Command OpenMapStaticFacultyCommand { get; set; }
-        public Command OpenMapStaticUniversityCommand { get; set; }
+       // public Command OpenMapStaticUniversityCommand { get; set; }
         public string ResponseMessage
         {
             get { return _responseMessage; }
@@ -59,7 +59,7 @@ namespace MeltingApp.ViewModels
             _dataBaseService = DependencyService.Get<IDataBaseService>();
 
             OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
-            OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
+            //OpenMapStaticUniversityCommand = new Command(HandleOpenMapStaticUniversityCommand);
 
             FacultyStaticInfo = new StaticInfo();
             UniversityStaticInfo = new StaticInfo();
@@ -76,7 +76,7 @@ namespace MeltingApp.ViewModels
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Faculty StaticInfo requested");
+                    
                 }
                 else
                 {
@@ -93,7 +93,6 @@ namespace MeltingApp.ViewModels
             {
                 if (success)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("University StaticInfo requested");
                     _navigationService.PushAsync<StaticInfoPage>(this);
                 }
                 else
@@ -103,14 +102,14 @@ namespace MeltingApp.ViewModels
             }, meltingUriParser2);
         }
 
-        private async void HandleOpenMapStaticUniversityCommand()
-        {
-            var success = await CrossExternalMaps.Current.NavigateTo("University", Double.Parse(UniversityStaticInfo.latitude.ToString()), Double.Parse(UniversityStaticInfo.longitude.ToString()));
-            if (!success)
-            {
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
-            }
-        }
+        //private async void HandleOpenMapStaticUniversityCommand()
+        //{
+        //    var success = await CrossExternalMaps.Current.NavigateTo("University", Double.Parse(UniversityStaticInfo.latitude.ToString()), Double.Parse(UniversityStaticInfo.longitude.ToString()));
+        //    if (!success)
+        //    {
+        //        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+        //    }
+        //}
 
         private async void HandleOpenMapStaticFacultyCommand()
         {

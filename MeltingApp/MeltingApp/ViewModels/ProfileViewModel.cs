@@ -534,7 +534,7 @@ namespace MeltingApp.ViewModels
             if (b)
             {
                 //afegim usuari amb les seves coses a la bd
-                HandleViewProfileCommand();
+                //HandleViewProfileCommand();
                 
             }
             

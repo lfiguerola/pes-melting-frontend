@@ -86,7 +86,7 @@
                 <Label FontSize="14" Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
                 <Label x:Name="UniUrlLabel" Text="{Binding UniversityStaticInfo.url}"></Label>
             </StackLayout>
-            <Button Text="View in Maps" Command="{Binding OpenMapStaticUniversityCommand}"></Button>
+            <!--<Button Text="View in Maps" Command="{Binding OpenMapStaticUniversityCommand}"></Button>-->
 
             </StackLayout>
         </StackLayout>

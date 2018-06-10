@@ -13,7 +13,7 @@ namespace MeltingApp.Views.Pages
         public RootPage()
         {
             InitializeComponent();
-            ///////BindingContext = new MainPageViewModel();
+            BindingContext = new MenuBarViewModel();
             //TODO: Move logic to ViewModel
             navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
 
@@ -30,77 +30,70 @@ namespace MeltingApp.Views.Pages
             Detail = navigationPage;
             navigationService.NavigationPage = navigationPage;
             navigationService.MasterDetailPage = this;
-            //Menu = new Menu();
-            //Master = Menu;
-            //Menu.ListView.ItemSelected += OnItemSelected;
+            Menu = new Menu();
+            Master = Menu;
+            Menu.ListView.ItemSelected += OnItemSelected;
         }
 
-        //void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        //{
-        //    var item = e.SelectedItem as MainPageViewModel;
-        //    if (item != null)
-        //    {
-        //        string itemTitle = item.Title;
-        //        var vm = (MainPageViewModel)BindingContext;
-        //        if (itemTitle == "Profile")
-        //        {
-        //            if (vm.ViewProfileCommand.CanExecute(null))
-        //            {
-        //                vm.ViewProfileCommand.Execute(null);
-        //            }
-        //        }
-        //        else if (itemTitle == "Static Info")
-        //        {
-        //            if (vm.NavigateToStaticInfoPage.CanExecute(null))
-        //            {
-        //                vm.NavigateToStaticInfoPage.Execute(null);
-        //            }
-        //        }
-        //        else if (itemTitle == "Create Event")
-        //        {
-        //            if (vm.NavigateToCreateEventPageCommand.CanExecute(null))
-        //            {
-        //                vm.NavigateToCreateEventPageCommand.Execute(null);
-        //            }
-        //        }
-        //        else if (itemTitle == "All Events")
-        //        {
-        //            if (vm.NavigateToGetAllEventsCommand.CanExecute(null))
-        //            {
-        //                vm.NavigateToGetAllEventsCommand.Execute(null);
-        //            }
-        //        }
-        //        else if (itemTitle == "View Event")
-        //        {
-        //            if (vm.NavigateToViewEventPageCommand.CanExecute(null))
-        //            {
-        //                vm.NavigateToViewEventPageCommand.Execute(null);
-        //            }
-        //        }
-        //        else if (itemTitle == "Search")
-        //        {
-        //            if (vm.NavigateToFinderPage.CanExecute(null))
-        //            {
-        //                vm.NavigateToFinderPage.Execute(null);
-        //            }
-        //        }
-        //        else if(itemTitle == "Help")
-        //        {
-        //            if (vm.NavigateToHelpPageCommand.CanExecute(null))
-        //            {
-        //                vm.NavigateToHelpPageCommand.Execute(null);
-        //            }
-        //        }
-        //        else if(itemTitle == "About")
-        //        {
-        //            if (vm.NavigateToAboutPageCommand.CanExecute(null))
-        //            {
-        //                vm.NavigateToAboutPageCommand.Execute(null);
-        //            }
-        //        }
-        //        Menu.ListView.SelectedItem = null;
-        //        IsPresented = false;
-        //    }
-        //}
+        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            var item = e.SelectedItem as MenuBarViewModel;
+            if (item != null)
+            {
+                string itemTitle = item.Title;
+                var vm = (MenuBarViewModel)BindingContext;
+                if (itemTitle == "My profile")
+                {
+                    if (vm.NavigateToProfileViewModelCommand.CanExecute(null))
+                    {
+                        vm.NavigateToProfileViewModelCommand.Execute(null);
+                    }
+                }
+                else if (itemTitle == "My university")
+                {
+                    if (vm.NavigateToStaticInfoViewModelCommand.CanExecute(null))
+                    {
+                        vm.NavigateToStaticInfoViewModelCommand.Execute(null);
+                    }
+                }
+                else if (itemTitle == "Events")
+                {
+                    if (vm.NavigateToEventViewModelCommand.CanExecute(null))
+                    {
+                        vm.NavigateToEventViewModelCommand.Execute(null);
+                    }
+                }
+                //else if (itemTitle == "View Event")
+                //{
+                //    if (vm.NavigateToViewEventPageCommand.CanExecute(null))
+                //    {
+                //        vm.NavigateToViewEventPageCommand.Execute(null);
+                //    }
+                //}
+                else if (itemTitle == "Search")
+                {
+                    if (vm.NavigateToFinderPage.CanExecute(null))
+                    {
+                        vm.NavigateToFinderPage.Execute(null);
+                    }
+                }
+                else if(itemTitle == "Help")
+                {
+                    if (vm.NavigateToHelpPageCommand.CanExecute(null))
+                    {
+                        vm.NavigateToHelpPageCommand.Execute(null);
+                    }
+                }
+                else if(itemTitle == "About")
+                {
+                    if (vm.NavigateToAboutPageCommand.CanExecute(null))
+                    {
+                        vm.NavigateToAboutPageCommand.Execute(null);
+                    }
+                }
+                Menu.ListView.SelectedItem = null;
+                IsPresented = false;
+            }
+        }
     }
 }

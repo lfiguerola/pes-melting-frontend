@@ -15,16 +15,7 @@ namespace MeltingApp.ViewModels
         private User _user;
         private Event _event;
 
-        public Command NavigateToProfileViewModelCommand { get; set; }
-        public Command NavigateToEventViewModelCommand { get; set; }
-        public Command NavigateToStaticInfoViewModelCommand { get; set; }
-        public Command NavigateToFinderPage { get; set; }
-        public Command NavigateToHelpPageCommand { get; set; }		
-        public Command NavigateToAboutPageCommand { get; set; }
-
-        //public string Title { get; set; }
-
-        public User User
+         public User User
         {
             get { return _user; }
             set
@@ -58,27 +49,10 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             _dataBaseService = DependencyService.Get<IDataBaseService>();
-            NavigateToEventViewModelCommand = new Command(HandleNavigateToEventViewModelCommand);
-            NavigateToProfileViewModelCommand = new Command(HandleNavigateToProfileViewModelCommand);
-            NavigateToStaticInfoViewModelCommand = new Command(HandleNavigateToStaticInfoViewModel);
-            NavigateToHelpPageCommand = new Command(HandleNavigateToHelpCommand);		
-            NavigateToAboutPageCommand = new Command(HandleNavigateToAboutCommand);
-            NavigateToFinderPage = new Command(HandleFinderCommand);
-            
             Event = new Event();
             User = new User();
 
             SaveCurrentProfile();
-        }
-
-        void HandleNavigateToHelpCommand()		
-        {		
-            _navigationService.PushAsync<HelpPage>(this);		
-        }		
- 
-        void HandleNavigateToAboutCommand()		
-        {		
-            _navigationService.PushAsync<AboutPage>(this);		
         }
 
         /// <summary>
@@ -127,30 +101,9 @@ namespace MeltingApp.ViewModels
             var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
         }
 
-        void HandleNavigateToEventViewModelCommand()
-        {
-            EventViewModel evm = new EventViewModel();
-        }
-
-        void HandleNavigateToProfileViewModelCommand()
-        {
-            ProfileViewModel pvm = new ProfileViewModel();
-        }
-
-        void HandleNavigateToStaticInfoViewModel()
-        {
-            StaticInfoViewModel sivm = new StaticInfoViewModel();
-        }
-
         void HandleNavigateToCreateProfilePageCommand()
         {
             _navigationService.PushAsync<CreateProfilePage>();
-        }
-        
-        void HandleFinderCommand()
-        {
-            /*rellenar*/
-            _navigationService.PushAsync<FinderPage>(this);
         }
 
     }

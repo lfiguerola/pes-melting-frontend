@@ -10,7 +10,7 @@ namespace MeltingApp.Views.Pages
 		public StaticInfoPage()
 		{
 			InitializeComponent ();
-            NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasBackButton(this, true);
         }
     }
 }

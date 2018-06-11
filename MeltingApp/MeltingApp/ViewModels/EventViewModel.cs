@@ -29,19 +29,11 @@ namespace MeltingApp.ViewModels
 	    private DateTime _minDate;
         private string _responseMessage;
 	    private IEnumerable<Address> _addresses;
-<<<<<<< HEAD
-
-=======
->>>>>>> 576be0ca0d6397b0fc1112edea1d89a6666e5d39
         private Comment _comment;
         private int eventidaux;
         private IEnumerable<Comment> _allComments;
         private IEnumerable<Event> _allEvents;
         private bool first_time = true;
-<<<<<<< HEAD
-
-=======
->>>>>>> 576be0ca0d6397b0fc1112edea1d89a6666e5d39
         public Command CreateEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
         public Command CreateCommentCommand { get; set; }

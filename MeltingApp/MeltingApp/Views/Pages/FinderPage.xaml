@@ -17,19 +17,47 @@
 
             <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
                 <Label FontSize="14" Text="Filter:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Picker x:Name="picker" Title="Select a filter">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Faculty</x:String>
-                            <x:String>University</x:String>
-                            <x:String>Event</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+                <Picker x:Name="FilterPicker" SelectedIndex="{Binding SelectedFilterIndex }" ItemsSource="{Binding Filters}" WidthRequest="300" ></Picker>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Button x:Name="FinderButton" Text="Find" HorizontalOptions="Center"></Button>
+                <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
             </StackLayout>
+            <ScrollView>
+                <StackLayout HeightRequest="400">
+                    <ListView ItemsSource="{Binding AllResults}" x:Name="listView">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout >
+                                    <StackLayout HeightRequest="80">
+                                        <Label Text="{Binding resultId1}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding resultName2}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding resultName1}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding resultName3}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding resultName4}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding latitude}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding longitude}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding resultId2}"></Label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

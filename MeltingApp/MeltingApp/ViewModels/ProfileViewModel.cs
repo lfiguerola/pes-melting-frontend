@@ -553,13 +553,24 @@ namespace MeltingApp.ViewModels
                 if (isSuccess)
                 {
                     b = true;
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("User deleted correctly");
+                    _navigationService.SetRootPage<LoginPage>();
+
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             }, meltingUriParser);
 
             if (b)
             {
-                _dataBaseService.Delete(User);
+                var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+                var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+                var tokenbuscat = _dataBaseService.Get<Token>(t => t.dbId.Equals(userConsultatDB.Token.dbId));
+                if (tokenbuscat != null)
+                {
+                    _dataBaseService.Delete<Token>(tokenbuscat, true);
+                    _dataBaseService.Delete(User);
+                }
+                alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
             }
         }
 

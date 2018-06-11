@@ -24,10 +24,8 @@
                                 <ViewCell>
                                     <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="{Binding user_id}"></Label>
-                                            <!--<Label Text="{Binding username}"></Label>-->
+                                            <Label Text="{Binding username}"></Label>
                                             <Label Text="{Binding content}"/>
-                                            <Label Text="{Binding created_at}"></Label>
                                             <Button x:Name="DeleteButton" Text="Delete" Command="{Binding Path=BindingContext.InfoCommentCommand, Source = {x:Reference listView}}"
                                                     CommandParameter="{Binding comment_id}" IsVisible="{Binding IsButtonVisible}"></Button>
                                         </StackLayout>

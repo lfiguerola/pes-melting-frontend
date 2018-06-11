@@ -6,12 +6,23 @@ namespace MeltingApp.Models
 {
     public class Comment : EntityBase
     {
+        private int _commentId;
         private string _content;
         private string _updatedAt;
         private string _createdAt;
         private int _eventId;
         private int _userId;
 
+
+        public int comment_id
+        {
+            get { return _commentId;}
+            set
+            {
+                _commentId = value;
+                OnPropertyChanged(nameof(comment_id));
+            }
+        }
         public string content
         {
             get { return _content; }

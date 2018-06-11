@@ -7,6 +7,7 @@ using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
+using Plugin.ExternalMaps;
 using Xamarin.Forms;
 using Boolean = System.Boolean;
 
@@ -18,16 +19,28 @@ namespace MeltingApp.ViewModels
 	    private IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyDK_llWYsPBgwEEYTlvQh81lBWhCZc_LgA" };
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
-	    private Event _event;
-	    private Boolean _userAssists;
+        private IDataBaseService _dataBaseService;
+        private Event _event;
+        private Event _eventSelected;
+        private Boolean _userAssists;
 	    private int _userAssistsInt;
 	    private TimeSpan _time;
 	    private DateTime _date;
 	    private DateTime _minDate;
         private string _responseMessage;
 	    private IEnumerable<Address> _addresses;
+        private Comment _comment;
+        private int eventidaux;
+        private IEnumerable<Comment> _allComments;
+        private IEnumerable<Event> _allEvents;
+        private bool first_time = true;
         public Command CreateEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
+        public Command CreateCommentCommand { get; set; }
+        public Command InfoEventCommand { get; set; }
+        public Command NavigateToCreateEventPageCommand { get; set; }
+        public Command OpenMapEventCommand { get; set; }
+
 
 	    public IEnumerable<Address> Addresses
 	    {
@@ -48,6 +61,17 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(Event));
 	        }
 	    }
+
+        public Event EventSelected
+        {
+            get { return _eventSelected; }
+            set
+            {
+                _eventSelected = value;
+                OnPropertyChanged(nameof(EventSelected));
+            }
+        }
+
         public TimeSpan Time
 	    {
 	        get { return _time; }
@@ -104,56 +128,178 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+        public Comment Comment
+        {
+            get { return _comment; }
+            set
+            {
+                _comment = value;
+                OnPropertyChanged(nameof(Comment));
+            }
+        }
+
+        public IEnumerable<Comment> AllComments
+        {
+            get { return _allComments; }
+            set
+            {
+                _allComments = value;
+                OnPropertyChanged(nameof(AllComments));
+            }
+        }
+
+        public IEnumerable<Event> AllEvents
+        {
+            get { return _allEvents; }
+            set
+            {
+                _allEvents = value;
+                OnPropertyChanged(nameof(AllEvents));
+            }
+        }
+
 
         public EventViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
+            _dataBaseService = DependencyService.Get<IDataBaseService>();
 
             CreateEventCommand = new Command(HandleCreateEventCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
+            CreateCommentCommand = new Command(HandleCreateCommentCommand);
+            InfoEventCommand = new Command(HandleInfoEventCommand);
+            NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
+            OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
 
             //Init();
-
-
+            Comment = new Comment();
             Event = new Event();
-
+            EventSelected = new Event();
+            Event.latitude = "0";
+            Event.longitude = "0";
+            Event.address = "C/ Jordi Girona, 1";
+            Event.name = "Infern";
             MinDate = DateTime.Today;
+
+            // GetAllComments();
+            GetAllEvents();
         }
-	    async void HandleConfirmAssistanceCommand()
+
+        async void GetAllEvents()
+        {
+            AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>, IEnumerable<Event>>(ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    _navigationService.PushAsync<EventList>(this);
+                    
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+
+            saveEventsInDB(AllEvents); //guardem tots els events a la base de dades
+        }
+
+        /// <summary>
+        /// guardem tots els events a la base de dades
+        /// </summary>
+        /// <param name="AllEvents"></param>
+        void saveEventsInDB(IEnumerable<Event> AllEvents)
+        {
+            var allevents_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+            for (int i = 0; i < AllEvents.Count(); i++)
+            {
+                //comprovar si el event ja esta a la bd
+                var eventt = AllEvents.ElementAt(i);
+                bool b = false;
+                for (int j = 0; j < allevents_before.Count() && !b; j++)
+                {
+                    if (allevents_before.ElementAt(j).id == eventt.id)
+                    {
+                        b = true;
+                    }
+                }
+                if (!b)
+                {
+                    //si levent no esta a la bd
+                    var eventToSave = AllEvents.ElementAt(i);
+                    _dataBaseService.UpdateWithChildren<Event>(eventToSave);
+                }
+
+            }
+            var allevents_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+        }
+        
+        void HandleInfoEventCommand()
+        {
+            Event = EventSelected;
+            eventidaux = Event.id;
+            //consultem tots els comentaris de l'event
+            GetAllComments();
+            _navigationService.PushAsync<ViewEvent>(this);
+        }
+        async void HandleConfirmAssistanceCommand()
 	    {
-	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+            await _apiClientService.PostAsync<Event, Event>(Event, ApiRoutes.Methods.ConfirmAssistance, (isSuccess, responseMessage) =>
 	        {
 	            if (isSuccess)
 	            {
-	                if (UserAssistsInt == 1) UserAssists = true;
-	                else UserAssists = false;
-	            }
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 	            }
-	        });
-	        if (UserAssists)
-	        {
-	            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
-	                (isSuccess, responseMessage) =>
-	                {
-
-	                });
-	        }
-	        else
-	        {
-	            await _apiClientService.DeleteAsync<Event>(ApiRoutes.Methods.UnconfirmAssistance,
-	                (isSuccess, responseMessage) =>
-	                {
-
-	                });
-	        }
+	        }, meltingUriParser);
+	       
 	    }
+        
+        //async void HandleConfirmAssistanceCommand()
+        //{
+        //    if (!UserAssists)
+        //    {
+        //        await _apiClientService.PostAsync<Event, Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+        //            (isSuccess, responseMessage) =>
+        //            {
+        //                if (isSuccess)
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Confirmed");
+        //                    UserAssists = true;
+        //                }
+        //                else
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+        //                }
+        //            });
+        //    }
+        //    else
+        //    {
+        //        await _apiClientService.DeleteAsync<Event, Event>(ApiRoutes.Methods.UnconfirmAssistance,
+        //            (isSuccess, responseMessage) =>
+        //            {
+        //                if (isSuccess)
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Unconfirmed");
+        //                    UserAssists = false;
+        //                }
+        //                else
+        //                {
+        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+        //                }
+        //            });
+        //    }
+
+        //}
         async private void Init()
 	    {
-	        UserAssistsInt = await _apiClientService.GetAsync<int>(ApiRoutes.Methods.GetUserAssistance, (isSuccess, responseMessage) =>
+	        UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUsersAssistance, (isSuccess, responseMessage) =>
 	        {
 	            if (isSuccess)
 	            {
@@ -167,7 +313,60 @@ namespace MeltingApp.ViewModels
             });
         }
 
-	    
+        async void GetAllComments()
+        {
+            int idde = Event.id;
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>, IEnumerable<Comment>>(ApiRoutes.Methods.GetEventComments, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            }, meltingUriParser);
+        }
+
+        async void HandleCreateCommentCommand()
+        {
+            bool b = false;
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+            await _apiClientService.PostAsync<Comment, Comment>(Comment, ApiRoutes.Methods.CreateComment, (isSuccess, responseMessage) =>
+            {
+                ResponseMessage = responseMessage;
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                if (isSuccess)
+                {
+                    b = true;
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comment created successfully");
+                    _navigationService.PopAsync();
+                    HandleInfoEventCommand();
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            }, meltingUriParser);
+
+            if (b)
+            {
+                _dataBaseService.UpdateWithChildren<Comment>(Comment);
+            }
+
+            var allcomments = _dataBaseService.GetCollection<Comment>(c => true);
+        }
+
+        void HandleNavigateToCreateEventPageCommand()
+        {
+            _navigationService.PushAsync<CreateEvent>(this);
+        }
 
         async void HandleCreateEventCommand()
         {
@@ -186,14 +385,38 @@ namespace MeltingApp.ViewModels
             Event.longitude = Event.longitude.Replace(",", ".");
             Event.address = Addresses.First().FormattedAddress;
             Event.date = Time + " " + Date.ToLongDateString();
-            await _apiClientService.PostAsync<Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
+            var events_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+            var resultEvent = await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
-                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 if (isSuccess)
                 {
-                    _navigationService.SetRootPage<MainPage>();
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Event created successfully");
+                    _navigationService.PopAsync();
+                    _navigationService.PopAsync();
+                    GetAllEvents();
+
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             });
+            
+            if (resultEvent != null)
+            {
+                _dataBaseService.UpdateWithChildren<Event>(resultEvent);
+                
+            }
+            var events_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+        }
+
+        private async void HandleOpenMapEventCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(Event.latitude), Double.Parse(Event.longitude));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
         }
     }
 }

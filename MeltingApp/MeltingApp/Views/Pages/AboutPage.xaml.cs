@@ -15,7 +15,7 @@ namespace MeltingApp.Views.Pages
 		public AboutPage ()
 		{
 			InitializeComponent ();
-            NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasBackButton(this, true);
             BindingContext = new MainPageViewModel();
         }
 	}

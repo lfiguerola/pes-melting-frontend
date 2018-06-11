@@ -6,6 +6,7 @@ namespace MeltingApp.Models
 {
     public class SearchQuery
     {
-        public string query { get; set; }
+        public string query;
+        
     }
 }

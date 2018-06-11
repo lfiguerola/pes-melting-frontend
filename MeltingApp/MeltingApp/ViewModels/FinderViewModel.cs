@@ -24,12 +24,14 @@ namespace MeltingApp.ViewModels
         private string _nameToFilter;
         private int _selectedFilter = -1;
         private IEnumerable<University> _allUniversities;
+        private IEnumerable<University> _searchAllUniversities;
         private IEnumerable<Faculty> _allFaculties;
         private IEnumerable<User> _allUsernames;
         private IEnumerable<Event> _allEvents;
         private List<FinderStructure> _allFinderStructures;
         private FinderStructure _finderStructure;
         University _uniAux;
+        private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
 
@@ -81,8 +83,17 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
             _event = new Event();
-            filter = new SearchQuery();
 
+            SearchQuery = new SearchQuery();            
+        }
+
+
+        async void SearchInUniversities()
+        {
+            SearchQuery.query = "upc"; //BORRAAR, es per provar la crida, aqui ha d'anar lo que escrigui l'usuari a buscar
+            SearchAllUniversities = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<University>>(SearchQuery, ApiRoutes.Methods.SearchUniversities, (isSuccess, responseMessage) => {
+                if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);                
+            });
         }
 
         async void HandleApplyFinder()
@@ -94,13 +105,13 @@ namespace MeltingApp.ViewModels
             else if (FilterToApply.Equals("Universities"))
             {
                 //obtenim totes les universitats
-                AllUniversities = await _apiClientService.GetAsync<filter , IEnumerable<University>>(ApiRoutes.Methods.SearchUniversities, (success, responseMessage) =>
+                /*AllUniversities = await _apiClientService.GetAsync<filter , IEnumerable<University>>(ApiRoutes.Methods.SearchUniversities, (success, responseMessage) =>
                 {
                     if (success)
                     { DependencyService.Get<IOperatingSystemMethods>().ShowToast("Carreguem Universitats "); }
                     else
                     { DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage); }
-                });
+                });*/
 
                 //obtenim iterador i declarem les variables
                 IEnumerator i = AllUniversities.GetEnumerator();
@@ -147,6 +158,17 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllUniversities));
             }
         }
+
+        public IEnumerable<University> SearchAllUniversities
+        {
+            get { return _searchAllUniversities; }
+            set
+            {
+                _searchAllUniversities = value;
+                OnPropertyChanged(nameof(SearchAllUniversities));
+            }
+        }
+
         public IEnumerable<User> AllUsernames
         {
             get { return _allUsernames; }
@@ -192,5 +214,16 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllResults));
             }
         }
+
+        public SearchQuery SearchQuery
+        {
+            get { return _searchquery; }
+            set
+            {
+                _searchquery = value;
+                OnPropertyChanged(nameof(SearchQuery));
+            }
+        }
+
     }
 }

@@ -31,6 +31,7 @@ namespace MeltingApp.Resources
             public const string CreateProfileUser = "CreateProfile";
             public const string GetUniversities = "GetUniversities";
             public const string GetFaculties = "GetFaculties";
+            public const string SearchUniversities = "SearchUniversities";
         }
 
         public struct Prefix
@@ -76,6 +77,7 @@ namespace MeltingApp.Resources
             public const string GetUniversities = "/locations/universities";
             public const string GetFacultiesfirstpath = "/locations";
             public const string GetFacultiessecondpath = "/faculties";
+            public const string SearchUniversities = "/search/universities";
 
         }
 

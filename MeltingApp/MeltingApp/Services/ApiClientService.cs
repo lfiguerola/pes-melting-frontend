@@ -54,14 +54,16 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), $"{ApiRoutes.Endpoints.GetAllEvents}"},
             {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetEventComments), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.GetEventComments}"},
             {new Tuple<Type, string>(typeof(IEnumerable<University>), ApiRoutes.Methods.GetUniversities), ApiRoutes.Endpoints.GetUniversities},
-            {new Tuple<Type, string>(typeof(IEnumerable<Faculty>), ApiRoutes.Methods.GetFaculties), $"{ApiRoutes.Endpoints.GetFacultiesfirstpath}{ApiRoutes.Prefix.Universities}{ApiRoutes.Endpoints.GetFacultiessecondpath}"}
+            {new Tuple<Type, string>(typeof(IEnumerable<Faculty>), ApiRoutes.Methods.GetFaculties), $"{ApiRoutes.Endpoints.GetFacultiesfirstpath}{ApiRoutes.Prefix.Universities}{ApiRoutes.Endpoints.GetFacultiessecondpath}"},
+            {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchUniversities), ApiRoutes.Endpoints.SearchUniversities}
+                       
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
             { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.UnconfirmAssistance}"  }
         };
-
+             
         public async Task<TResult> PostAsync<TRequest, TResult>(TRequest entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)
         {
             var json = JsonConvert.SerializeObject(entity);
@@ -108,6 +110,54 @@ namespace MeltingApp.Services
             catch (Exception)
             {
                 throw new ApiClientException(postResult);
+            }
+        }
+
+        public async Task<TResult> GetSearchAsync<TRequest, TResult>(SearchQuery entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)
+        {
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+
+            if (App.LoginRequest.IsLogged)
+            {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", _authService.GetCurrentLoggedUser()?.Token?.jwt);
+            }
+
+            ApiResponseMessage responseMessage = null;
+            string getResult = null;
+            try
+            {
+                var methodUri = GetGetUri<TRequest>(methodName);
+                if (meltingUriParser != null)
+                {
+                    methodUri = meltingUriParser.ParseUri(methodUri);
+                }
+                var result = await HttpClient.GetAsync(new Uri(methodUri).AbsolutePath + "?query="+ entity.query);
+                getResult = await result.Content.ReadAsStringAsync();
+                TResult deserializedObject = default(TResult);
+
+                try
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(getResult, jsonSerializerSettings);
+                }
+                catch (JsonSerializationException)
+                {
+                    responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(getResult);
+                }
+
+                if (result.IsSuccessStatusCode)
+                {
+                    successResultCallback?.Invoke(true, responseMessage?.message);
+                }
+                else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
+
+                return deserializedObject;
+            }
+            catch (Exception)
+            {
+                throw new ApiClientException(getResult);
             }
         }
 

@@ -23,12 +23,14 @@ namespace MeltingApp.ViewModels
         private string _nameToFilter;
         private int _selectedFilter = -1;
         private IEnumerable<University> _allUniversities;
+        private IEnumerable<University> _searchAllUniversities;
         private IEnumerable<Faculty> _allFaculties;
         private IEnumerable<User> _allUsernames;
         private IEnumerable<Event> _allEvents;
         private List<FinderStructure> _allFinderStructures;
         private FinderStructure _finderStructure;
         University _uniAux;
+        private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
         public string filter
@@ -89,10 +91,21 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
             _event = new Event();
-
+            SearchQuery = new SearchQuery();
+            
+            //BORRAR, NOMES ES PER PROVAR LA CRIDA
+            SearchInUniversities();
         }
 
-        async void HandleApplyFinder()
+        async void SearchInUniversities()
+        {
+            SearchQuery.query = "upc"; //BORRAAR, es per provar la crida, aqui ha d'anar lo que escrigui l'usuari a buscar
+            SearchAllUniversities = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<University>>(SearchQuery, ApiRoutes.Methods.SearchUniversities, (isSuccess, responseMessage) => {
+                if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);                
+            });
+        }
+
+            async void HandleApplyFinder()
         {
             if (FilterToApply is null)
             {
@@ -154,6 +167,17 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllUniversities));
             }
         }
+
+        public IEnumerable<University> SearchAllUniversities
+        {
+            get { return _searchAllUniversities; }
+            set
+            {
+                _searchAllUniversities = value;
+                OnPropertyChanged(nameof(SearchAllUniversities));
+            }
+        }
+
         public IEnumerable<User> AllUsernames
         {
             get { return _allUsernames; }
@@ -199,5 +223,16 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllResults));
             }
         }
+
+        public SearchQuery SearchQuery
+        {
+            get { return _searchquery; }
+            set
+            {
+                _searchquery = value;
+                OnPropertyChanged(nameof(SearchQuery));
+            }
+        }
+
     }
 }

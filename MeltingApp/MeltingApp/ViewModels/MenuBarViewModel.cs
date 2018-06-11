@@ -79,7 +79,7 @@ namespace MeltingApp.ViewModels
         void HandleFinderCommand()
         {
             /*rellenar*/
-            _navigationService.PushAsync<FinderPage>(this);
+            _navigationService.PushAsync<FinderPage>();
         }
     }
 }

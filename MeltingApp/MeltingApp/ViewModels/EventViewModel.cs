@@ -173,10 +173,7 @@ namespace MeltingApp.ViewModels
             OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
 
             //Init();
-<<<<<<< HEAD
 
-=======
->>>>>>> 576be0ca0d6397b0fc1112edea1d89a6666e5d39
             Comment = new Comment();
             Event = new Event();
             EventSelected = new Event();

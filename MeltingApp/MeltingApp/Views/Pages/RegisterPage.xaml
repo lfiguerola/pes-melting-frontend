@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
              x:Class="MeltingApp.Views.Pages.RegisterPage"
-             BackgroundImage="background.png">
+             BackgroundImage="background.png"
+             Title= "Register">
     <ContentPage.Content>
         <Grid>
 

@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MeltingApp.ViewModels.CreateProfilePage">
+             x:Class="MeltingApp.ViewModels.CreateProfilePage"
+             Title= "Create Profile">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Hi, this is your first time here, please enter the fields bellow!" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize ="Large" FontAttributes="Bold"/>

@@ -1,36 +1,26 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using MeltingApp.Annotations;
+using SQLite;
 
 namespace MeltingApp.Models
 {
     public class EntityBase : INotifyPropertyChanged
     {
-        private int _id;
-        private string _token;
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int id
-        {
-            get { return _id; }
-            set
-            {
-                _id = value;
-                OnPropertyChanged(nameof(id));
-            }
-        }
+        /// <summary>
+        /// local database id
+        /// </summary>
+        [PrimaryKey, AutoIncrement]
+        public int dbId { get; set; }
 
-        //aixo ho he de fer millor
-        public string token
-        {
-            get { return _token; }
-            set
-            {
-                _token = value;
-                OnPropertyChanged(nameof(token));
-            }
-        }
-
+        /// <summary>
+        /// id from backend
+        /// </summary>
+        public int id { get; set; }
+        
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

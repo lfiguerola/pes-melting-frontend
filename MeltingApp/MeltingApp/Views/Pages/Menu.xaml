@@ -10,15 +10,14 @@
         <StackLayout>
             <ListView x:Name="listView">
                 <ListView.ItemsSource>
-                    <x:Array Type="{x:Type viewModels:MainPageViewModel}">
-                        <viewModels:MainPageViewModel Title="Profile"/>
-                        <viewModels:MainPageViewModel Title="Static Info"/>
-                        <viewModels:MainPageViewModel Title="Create Event"/>
-                        <viewModels:MainPageViewModel Title="All Events"/>
-                        <viewModels:MainPageViewModel Title="View Event"/>
-                        <viewModels:MainPageViewModel Title="Search"/>
-                        <viewModels:MainPageViewModel Title="Help" />
-                        <viewModels:MainPageViewModel Title="About"/>
+                    <x:Array Type="{x:Type viewModels:MenuBarViewModel}">
+                        <viewModels:MenuBarViewModel Title="My profile"/>
+                        <viewModels:MenuBarViewModel Title="My university"/>
+                        <viewModels:MenuBarViewModel Title="Events"/>
+                        <viewModels:MenuBarViewModel Title="View Event"/>
+                        <viewModels:MenuBarViewModel Title="Search"/>
+                        <viewModels:MenuBarViewModel Title="Help" />
+                        <viewModels:MenuBarViewModel Title="About"/>
                     </x:Array>
                 </ListView.ItemsSource>
                 <ListView.ItemTemplate>

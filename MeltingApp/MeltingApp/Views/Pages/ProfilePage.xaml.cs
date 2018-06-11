@@ -10,8 +10,7 @@ namespace MeltingApp.Views.Pages
 		public ProfilePage ()
 		{
 			InitializeComponent ();
-		    NavigationPage.SetHasNavigationBar(this, false);
-		    BindingContext = new ProfileViewModel();
+            NavigationPage.SetHasBackButton(this, true);
 		}
 	}
 }

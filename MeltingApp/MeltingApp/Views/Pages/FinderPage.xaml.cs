@@ -16,7 +16,7 @@ namespace MeltingApp.Views.Pages
 		public FinderPage ()
 		{
 			InitializeComponent ();
-            NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasBackButton(this, true);
             BindingContext = new FinderViewModel();
         }
 	}

@@ -19,18 +19,34 @@ namespace MeltingApp.Resources
             public const string GetProfileUser = "GetProfile";
             public const string EditProfileUser = "EditProfile";
             public const string AvatarProfileUser = "AvatarProfile";
-            public const string ShowEvent = "ShowEvent";
+            //public const string ShowEvent = "ShowEvent";
             public const string ConfirmAssistance = "ConfirmAssitance";
             public const string UnconfirmAssistance = "UnconfirmAssistance";
-            public const string GetUserAssistance = "GetUserAssistance";
+            public const string GetUsersAssistance = "GetUserAssistance";
             public const string ShowFacultyInfo = "ShowFacultyInfo";
             public const string ShowUniversityInfo = "ShowUniversityInfo";
             public const string GetAllEvents = "GetAllEvents";
             public const string CreateComment = "CreateComment";
-            public const string GetAllComments = "GetAllComments";
+            public const string GetEventComments = "GetEventComments";
             public const string CreateProfileUser = "CreateProfile";
             public const string GetUniversities = "GetUniversities";
             public const string GetFaculties = "GetFaculties";
+        }
+
+        public struct Prefix
+        {
+            public static string Users = $"/users/{UriParameters.UserId}";
+            public static string Universities = $"/universities/{UriParameters.UniversityId}";
+            public static string University_id = $"/{UriParameters.OnlyUniversityId}";
+            public static string Event_id = $"/events/{UriParameters.EventId}";
+        }
+
+        public struct UriParameters
+        {
+            public const string UserId = "[User_id]";
+            public const string UniversityId = "[University_id]";
+            public const string OnlyUniversityId = "[OnlyUniversity_id]";
+            public const string EventId = "[Event_id]";
         }
 
         /// <summary>
@@ -47,17 +63,19 @@ namespace MeltingApp.Resources
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
             public const string GetAllEvents = "/events";
-            public const string ShowEvent = "/events/5";
-            public const string ConfirmAssitance = "/events/5/votes";
-            public const string UnconfirmAssistance = "/events/5/votes/self";
-            public const string GetUserAssistance = "/events/5/votes/self";
-            public const string ShowFacultyInfo = "/users/3/profile/faculty";
-            public const string ShowUniversityInfo = "/locations/2";
-            public const string CreateComment = "/events/5/comments";
-            public const string GetAllComments = "/events/5/comments";
+            //public const string ShowEvent = "/events/5";
+            public const string GetUserEvents = "/users/5/events";
+            public const string ConfirmAssitance = "/votes";
+            public const string UnconfirmAssistance = "/votes/self";
+            public const string GetUsersAssistance = "/attendees";
+            public const string ShowFacultyInfo = "/profile/faculty";
+            public const string ShowUniversityInfo = "/locations";
+            public const string CreateComment = "/comments";
+            public const string GetEventComments = "/comments";
             public const string CreateProfileUser = "/profile";
             public const string GetUniversities = "/locations/universities";
-            public const string GetFaculties = "/locations/universities/";
+            public const string GetFacultiesfirstpath = "/locations";
+            public const string GetFacultiessecondpath = "/faculties";
 
         }
 

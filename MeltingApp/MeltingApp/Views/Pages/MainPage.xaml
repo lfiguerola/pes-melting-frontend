@@ -8,14 +8,6 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
 
-            <Button Text="About" Command="{Binding NavigateToAboutPageCommand}"></Button>
-            <Button Text="Help" Command="{Binding NavigateToHelpPageCommand}"></Button>
-            <Button Text="Static Info" Command="{Binding NavigateToStaticInfoPage}"></Button>
-            <Button Text="Finder" Command="{Binding NavigateToFinderPage}"></Button>
-            <Button Text="Create Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
-            <Button Text="Get All Events" Command="{Binding NavigateToGetAllEventsCommand}"></Button>
-            <Button Text="View Event" Command="{Binding NavigateToViewEventPageCommand}"></Button>
-            <Button x:Name="ViewButton" Text="View Profile" Command="{Binding ViewProfileCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -10,17 +10,24 @@ namespace MeltingApp
 {
 	public partial class App : Application
 	{
-
+        public static readonly LoginRequest LoginRequest = new LoginRequest();
 		public App ()
 		{
 			InitializeComponent();
             AddStaticResources();
             RegisterServices();
             RegisterPages();
+		    InitializeDB();
             MainPage = new RootPage();
-        }        
+        }
 
-        protected override void OnStart ()
+	    private void InitializeDB()
+	    {
+	        var dataBaseService = DependencyService.Get<IDataBaseService>();
+            dataBaseService.InitializeTables();
+	    }
+
+	    protected override void OnStart ()
 		{
 			// Handle when your app starts
 		}
@@ -39,6 +46,8 @@ namespace MeltingApp
         {
             DependencyService.Register<INavigationService, NavigationService>();
             DependencyService.Register<IApiClientService, ApiClientService>();
+            DependencyService.Register<IDataBaseService, DataBaseService>();
+            DependencyService.Register<IAuthService, AuthService>();
         }
 
         private void AddStaticResources()
@@ -65,5 +74,7 @@ namespace MeltingApp
             navigationService.RegisterPage<HelpPage>();
             navigationService.RegisterPage<AboutPage>();
         }
+
+        
     }
 }

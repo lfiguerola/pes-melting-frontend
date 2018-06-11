@@ -101,7 +101,7 @@ namespace MeltingApp.ViewModels
             else if (FilterToApply.Equals("Universities"))
             {
                 //obtenim totes les universitats
-                AllUniversities = await _apiClientService.GetAsync<IEnumerable<University>>(ApiRoutes.Methods.GetUniversities, (success, responseMessage) =>
+                AllUniversities = await _apiClientService.GetAsync<IEnumerable<University>, IEnumerable<University>>(ApiRoutes.Methods.GetUniversities, (success, responseMessage) =>
                 {
                     if (success)
                     { DependencyService.Get<IOperatingSystemMethods>().ShowToast("Carreguem Universitats"); }

@@ -331,6 +331,18 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             }, meltingUriParser);
+
+            for (int i = 0; i < AllComments.Count(); ++i)
+            {
+                if (AllComments.ElementAt(i).user_id == App.LoginRequest.LoggedUserIdBackend)
+                {
+                    AllComments.ElementAt(i).IsButtonVisible = true;
+                }
+                else
+                {
+                    AllComments.ElementAt(i).IsButtonVisible = false;
+                }
+            }
         }
 
         async void HandleCreateCommentCommand()

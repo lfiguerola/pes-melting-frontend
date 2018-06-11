@@ -13,6 +13,7 @@ namespace MeltingApp.Models
         private int _eventId;
         private int _userId;
 
+        private bool _isButtonVisible;
 
         public int comment_id
         {
@@ -70,6 +71,16 @@ namespace MeltingApp.Models
             {
                 _eventId = value;
                 OnPropertyChanged(nameof(event_id));
+            }
+        }
+
+        public bool IsButtonVisible
+        {
+            get { return _isButtonVisible; }
+            set
+            {
+                _isButtonVisible = value;
+                OnPropertyChanged(nameof(IsButtonVisible));
             }
         }
     }

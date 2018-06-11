@@ -17,7 +17,7 @@
             <Entry Text="{Binding Comment.content}"></Entry>
             <Button Text="Create comment" Command="{Binding CreateCommentCommand}"></Button>
             <ScrollView>
-                <StackLayout HeightRequest="150">
+                <StackLayout HeightRequest="200">
                     <ListView ItemsSource="{Binding AllComments}" SelectedItem="{Binding CommentSelected, Mode=TwoWay}" x:Name="listView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -26,8 +26,8 @@
                                         <StackLayout Orientation="Horizontal">
                                             <Label Text="{Binding user_id}"></Label>
                                             <Label Text="{Binding content}"/>
-                                            <Button Text="Delete" Command="{Binding Path=BindingContext.InfoCommentCommand, Source = {x:Reference listView}}"
-                                                    CommandParameter="{Binding comment_id}"></Button>
+                                            <Button x:Name="DeleteButton" Text="Delete" Command="{Binding Path=BindingContext.InfoCommentCommand, Source = {x:Reference listView}}"
+                                                    CommandParameter="{Binding comment_id}" IsVisible="{Binding IsButtonVisible}"></Button>
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell>

@@ -16,7 +16,7 @@
             <Label x:Name="TimeLabel" Text="When will the event be?"></Label>
             <TimePicker x:Name="EventTimePicker" Time="{Binding Time}"></TimePicker> <!-- have to create the binding -->
             <Label x:Name="LocationLabel" Text="Where will the event be?"></Label>
-            <Entry x:Name="LocationEntry" Text="Binding with EventLocation"></Entry> <!-- have to create the binding and find how to express a location -->
+            <Entry x:Name="LocationEntry" Text="{Binding Event.name}"></Entry> <!-- have to create the binding and find how to express a location -->
 
             <Button Text="Create Event" Command="{Binding CreateEventCommand}"></Button>
             <Label Text="{Binding ResponseMessage}"></Label>

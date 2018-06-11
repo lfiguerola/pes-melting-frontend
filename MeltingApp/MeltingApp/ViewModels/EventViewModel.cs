@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Geocoding;
+using Geocoding.Google;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -14,6 +16,7 @@ namespace MeltingApp.ViewModels
 {
 	public class EventViewModel : ViewModelBase
 	{
+	    private IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyDK_llWYsPBgwEEYTlvQh81lBWhCZc_LgA" };
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private IDataBaseService _dataBaseService;
@@ -25,6 +28,7 @@ namespace MeltingApp.ViewModels
 	    private DateTime _date;
 	    private DateTime _minDate;
         private string _responseMessage;
+	    private IEnumerable<Address> _addresses;
         private Comment _comment;
         private int eventidaux;
         private IEnumerable<Comment> _allComments;
@@ -32,7 +36,6 @@ namespace MeltingApp.ViewModels
         private bool first_time = true;
 	    private Comment _commentSelected;
 	    private int commentidaux;
-
         public Command CreateEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
         public Command CreateCommentCommand { get; set; }
@@ -41,6 +44,16 @@ namespace MeltingApp.ViewModels
         public Command OpenMapEventCommand { get; set; }
         public Command InfoCommentCommand { get; set; }
 
+
+	    public IEnumerable<Address> Addresses
+	    {
+	        get { return _addresses; }
+	        set
+	        {
+	            _addresses = value;
+	            OnPropertyChanged(nameof(Addresses));
+	        }
+	    }
 
         public Event Event
 	    {
@@ -173,6 +186,7 @@ namespace MeltingApp.ViewModels
             InfoCommentCommand = new Command(HandleInfoCommentCommand);
 
             //Init();
+
             Comment = new Comment();
             Event = new Event();
             EventSelected = new Event();
@@ -383,6 +397,20 @@ namespace MeltingApp.ViewModels
 
         async void HandleCreateEventCommand()
         {
+            try
+            {
+                Addresses = await geocoder.GeocodeAsync(Event.name);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            Event.latitude = Addresses.First().Coordinates.Latitude.ToString();
+            Event.latitude = Event.latitude.Replace(",", ".");
+            Event.longitude = Addresses.First().Coordinates.Longitude.ToString();
+            Event.longitude = Event.longitude.Replace(",", ".");
+            Event.address = Addresses.First().FormattedAddress;
             Event.date = Time + " " + Date.ToLongDateString();
             var events_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
             var resultEvent = await _apiClientService.PostAsync<Event,Event>(Event, ApiRoutes.Methods.CreateEvent, (isSuccess, responseMessage) => {

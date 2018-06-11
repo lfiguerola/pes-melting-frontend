@@ -12,7 +12,7 @@
 
             <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
                 <Label FontSize="14" Text="Text to find:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Entry x:Name="FilterEntry" Text="{Binding FinderViewModel.filter }" WidthRequest="300" ></Entry>
+                <Entry x:Name="FilterEntry" Text="{Binding filter }" WidthRequest="300" ></Entry>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">

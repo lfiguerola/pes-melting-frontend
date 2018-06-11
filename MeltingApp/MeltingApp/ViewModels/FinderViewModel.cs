@@ -16,6 +16,7 @@ namespace MeltingApp.ViewModels
     {
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
+        private SearchQuery filter;
         private StaticInfo _staticInfo;
         private Event _event;
         private string _responseMessage;
@@ -31,15 +32,6 @@ namespace MeltingApp.ViewModels
         University _uniAux;
 
         public Command ApplyFinderButtonCommand { get; set; }
-        public string filter
-        {
-            get => _nameToFilter;
-            set
-            {
-                _nameToFilter = value;
-                OnPropertyChanged(nameof(filter));
-            }
-        }
 
         private List<string> filters = new List<string>
         {
@@ -89,6 +81,7 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
             _event = new Event();
+            filter = new SearchQuery();
 
         }
 
@@ -101,10 +94,10 @@ namespace MeltingApp.ViewModels
             else if (FilterToApply.Equals("Universities"))
             {
                 //obtenim totes les universitats
-                AllUniversities = await _apiClientService.GetAsync<IEnumerable<University>, IEnumerable<University>>(ApiRoutes.Methods.GetUniversities, (success, responseMessage) =>
+                AllUniversities = await _apiClientService.GetAsync<filter , IEnumerable<University>>(ApiRoutes.Methods.SearchUniversities, (success, responseMessage) =>
                 {
                     if (success)
-                    { DependencyService.Get<IOperatingSystemMethods>().ShowToast("Carreguem Universitats"); }
+                    { DependencyService.Get<IOperatingSystemMethods>().ShowToast("Carreguem Universitats "); }
                     else
                     { DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage); }
                 });

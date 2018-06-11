@@ -34,12 +34,15 @@ namespace MeltingApp.ViewModels
         private IEnumerable<Comment> _allComments;
         private IEnumerable<Event> _allEvents;
         private bool first_time = true;
+	    private Comment _commentSelected;
+	    private int commentidaux;
         public Command CreateEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
         public Command CreateCommentCommand { get; set; }
         public Command InfoEventCommand { get; set; }
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command OpenMapEventCommand { get; set; }
+        public Command InfoCommentCommand { get; set; }
 
 
 	    public IEnumerable<Address> Addresses
@@ -158,6 +161,15 @@ namespace MeltingApp.ViewModels
             }
         }
 
+	    public Comment CommentSelected
+	    {
+	        get { return _commentSelected; }
+	        set
+	        {
+	            _commentSelected = value;
+	            OnPropertyChanged(nameof(CommentSelected));
+	        }
+	    }
 
         public EventViewModel()
         {
@@ -171,12 +183,14 @@ namespace MeltingApp.ViewModels
             InfoEventCommand = new Command(HandleInfoEventCommand);
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
             OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
+            InfoCommentCommand = new Command(HandleInfoCommentCommand);
 
             //Init();
 
             Comment = new Comment();
             Event = new Event();
             EventSelected = new Event();
+            CommentSelected = new Comment();
             Event.latitude = "0";
             Event.longitude = "0";
             Event.address = "C/ Jordi Girona, 1";
@@ -331,6 +345,18 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 }
             }, meltingUriParser);
+
+            for (int i = 0; i < AllComments.Count(); ++i)
+            {
+                if (AllComments.ElementAt(i).user_id == App.LoginRequest.LoggedUserIdBackend)
+                {
+                    AllComments.ElementAt(i).IsButtonVisible = true;
+                }
+                else
+                {
+                    AllComments.ElementAt(i).IsButtonVisible = false;
+                }
+            }
         }
 
         async void HandleCreateCommentCommand()
@@ -418,6 +444,34 @@ namespace MeltingApp.ViewModels
             {
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
             }
+        }
+
+	    void HandleInfoCommentCommand()
+	    {
+	        Comment = CommentSelected;
+	        commentidaux = Comment.id;
+	        DeleteComment();
+	    }
+
+        async void DeleteComment()
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.CommentId, $"{commentidaux}");
+
+            await _apiClientService.DeleteAsync<Comment, Comment>(ApiRoutes.Methods.DeleteComment,
+                (isSuccess, responseMessage) =>
+                {
+                    if (isSuccess)
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comment deleted successfully");
+                        _navigationService.PopAsync();
+                        HandleInfoEventCommand();
+                    }
+                    else
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    }
+                }, meltingUriParser);
         }
     }
 }

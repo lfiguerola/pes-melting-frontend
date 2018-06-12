@@ -36,6 +36,7 @@ namespace MeltingApp.ViewModels
 	    private Comment _commentSelected;
 	    private int commentidaux;
 	    private IEnumerable<Address> _addresses;
+	    private bool _userOwnsEvent;
 
         public Command CreateEventCommand { get; set; }
 	    public Command ModifyEventCommand { get; set; }
@@ -55,6 +56,15 @@ namespace MeltingApp.ViewModels
 	        {
 	            _event = value;
 	            OnPropertyChanged(nameof(Event));
+	        }
+	    }
+	    public bool UserOwnsEvent
+        {
+	        get { return _userOwnsEvent; }
+	        set
+	        {
+	            _userOwnsEvent = value;
+	            OnPropertyChanged(nameof(UserOwnsEvent));
 	        }
 	    }
 
@@ -257,6 +267,14 @@ namespace MeltingApp.ViewModels
             eventidaux = Event.id;
             //consultem tots els comentaris de l'event
             GetAllComments();
+            if (Event.user_id == App.LoginRequest.LoggedUserIdBackend)
+            {
+                UserOwnsEvent = true;
+            }
+            else
+            {
+                UserOwnsEvent = false;
+            }
             _navigationService.PushAsync<ViewEvent>(this);
         }
         async void HandleConfirmAssistanceCommand()

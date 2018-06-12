@@ -265,17 +265,21 @@ namespace MeltingApp.ViewModels
         {
             Event = EventSelected;
             eventidaux = Event.id;
-            //consultem tots els comentaris de l'event
-            GetAllComments();
-            if (Event.user_id == App.LoginRequest.LoggedUserIdBackend)
+            if (eventidaux != 0)
             {
-                UserOwnsEvent = true;
+                //consultem tots els comentaris de l'event
+                GetAllComments();
+                if (Event.user_id == App.LoginRequest.LoggedUserIdBackend)
+                {
+                    UserOwnsEvent = true;
+                }
+                else
+                {
+                    UserOwnsEvent = false;
+                }
+                _navigationService.PushAsync<ViewEvent>(this);
+                EventSelected = new Event();
             }
-            else
-            {
-                UserOwnsEvent = false;
-            }
-            _navigationService.PushAsync<ViewEvent>(this);
         }
         async void HandleConfirmAssistanceCommand()
 	    {

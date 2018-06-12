@@ -39,6 +39,7 @@ namespace MeltingApp.Resources
             public const string DeleteAccount = "DeleteAccount";
             public const string ModifyEvent = "ModifyEvent";
             public const string ResetPass = "ResetPass";
+            public const string GetAllMyEvents = "GetAllMyEvents";
         }
 
         public struct Prefix
@@ -91,6 +92,7 @@ namespace MeltingApp.Resources
             public const string SearchUsers = "/search/profiles";
             public const string SearchEvents = "/search/events";
             public const string ResetPass = "/auth/reset";
+            public const string GetAllMyEvents = "/events";
         }
 
     }

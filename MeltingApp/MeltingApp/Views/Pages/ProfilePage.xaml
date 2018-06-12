@@ -20,6 +20,7 @@
             <Label x:Name="BiographyTitleLabel" Text="BIOGRAPHY" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Label x:Name="BiographyLabel" Text="{Binding User.biography}"></Label>
             <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}"></Button>
+            <Button x:Name="DeleteButton" Text="Delete Account" Command="{Binding DeleteAccountCommand}"></Button>
             <Label Text="{Binding ResponseMessage}"></Label>
         </StackLayout>
     </ContentPage.Content>

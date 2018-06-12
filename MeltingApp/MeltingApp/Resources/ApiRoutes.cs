@@ -31,6 +31,7 @@ namespace MeltingApp.Resources
             public const string CreateProfileUser = "CreateProfile";
             public const string GetUniversities = "GetUniversities";
             public const string GetFaculties = "GetFaculties";
+            public const string DeleteAccount = "DeleteAccount";
             public const string DeleteComment = "DeleteComment";
         }
 

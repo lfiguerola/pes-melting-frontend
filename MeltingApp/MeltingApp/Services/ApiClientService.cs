@@ -60,6 +60,7 @@ namespace MeltingApp.Services
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
             { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.UnconfirmAssistance}"  },
+            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.DeleteAccount), $"{ApiRoutes.Prefix.Users}" },
             { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.DeleteComment), $"{ApiRoutes.Prefix.Comment_id}"}
         };
 

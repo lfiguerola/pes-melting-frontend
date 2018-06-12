@@ -30,7 +30,8 @@ namespace MeltingApp.ViewModels
         public Command LoginUserCommand { get; set; }
         public Command CodeConfirmationCommand { get; set; }
         public Command ViewUniversitiesCommand { get; set; }
-        
+        public Command ResetPassCommand { get; set; }
+        public Command NavigateToResetPassPageCommand { get; set; }
 
         public User User
         {
@@ -66,6 +67,8 @@ namespace MeltingApp.ViewModels
             LoginUserCommand = new Command(HandleLoginUserCommand);
             NavigateToRegisterPageCommand = new Command(HandleNavigateToRegisterPage);
             NavigateToLoginPageCommand = new Command(HandleNavigateToLoginPage);
+            NavigateToResetPassPageCommand = new Command(HandleNavigateToResetPassPage);
+            ResetPassCommand = new Command(HandleResetPassCommand);
             User = new User();
 
         }
@@ -161,6 +164,25 @@ namespace MeltingApp.ViewModels
         {
             _navigationService.SetRootPage<RegisterPage>(this);
         }
-    
+
+        void HandleNavigateToResetPassPage()
+        {
+            _navigationService.SetRootPage<ResetPassPage>(this);
+        }
+
+        async void HandleResetPassCommand()
+        {
+            await _apiClientService.PostAsync<User, User>(User, ApiRoutes.Methods.ResetPass, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Password reseted successfully");
+                    _navigationService.SetRootPage<LoginPage>();
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            });
+        }
+
+
     }
 }

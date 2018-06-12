@@ -63,13 +63,6 @@ namespace MeltingApp.Views.Pages
                         vm.NavigateToEventViewModelCommand.Execute(null);
                     }
                 }
-                //else if (itemTitle == "View Event")
-                //{
-                //    if (vm.NavigateToViewEventPageCommand.CanExecute(null))
-                //    {
-                //        vm.NavigateToViewEventPageCommand.Execute(null);
-                //    }
-                //}
                 else if (itemTitle == "Search")
                 {
                     if (vm.NavigateToFinderPage.CanExecute(null))

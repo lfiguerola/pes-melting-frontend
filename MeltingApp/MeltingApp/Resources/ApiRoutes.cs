@@ -22,7 +22,7 @@ namespace MeltingApp.Resources
             //public const string ShowEvent = "ShowEvent";
             public const string ConfirmAssistance = "ConfirmAssitance";
             public const string UnconfirmAssistance = "UnconfirmAssistance";
-            public const string GetUsersAssistance = "GetUserAssistance";
+            public const string GetMyAssistance = "GetUserAssistance";
             public const string ShowFacultyInfo = "ShowFacultyInfo";
             public const string ShowUniversityInfo = "ShowUniversityInfo";
             public const string GetAllEvents = "GetAllEvents";
@@ -38,6 +38,8 @@ namespace MeltingApp.Resources
             public const string DeleteComment = "DeleteComment";
             public const string DeleteAccount = "DeleteAccount";
             public const string ModifyEvent = "ModifyEvent";
+            public const string ResetPass = "ResetPass";
+            public const string GetAllMyEvents = "GetAllMyEvents";
         }
 
         public struct Prefix
@@ -76,7 +78,7 @@ namespace MeltingApp.Resources
             public const string GetUserEvents = "/users/5/events";
             public const string ConfirmAssitance = "/votes";
             public const string UnconfirmAssistance = "/votes/self";
-            public const string GetUsersAssistance = "/attendees";
+            public const string GetMyAssistance = "/votes/self";
             public const string ShowFacultyInfo = "/profile/faculty";
             public const string ShowUniversityInfo = "/locations";
             public const string CreateComment = "/comments";
@@ -89,6 +91,8 @@ namespace MeltingApp.Resources
             public const string SearchFaculties = "/search/faculties";
             public const string SearchUsers = "/search/profiles";
             public const string SearchEvents = "/search/events";
+            public const string ResetPass = "/auth/reset";
+            public const string GetAllMyEvents = "/events";
         }
 
     }

@@ -48,6 +48,12 @@
     <PackageReference Include="FluentValidation">
       <Version>7.5.2</Version>
     </PackageReference>
+    <PackageReference Include="Geocoding.Core">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Geocoding.Google">
+      <Version>4.0.1</Version>
+    </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.4.118</Version>
     </PackageReference>

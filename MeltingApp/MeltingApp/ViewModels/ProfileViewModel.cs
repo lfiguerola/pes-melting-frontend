@@ -28,6 +28,7 @@ namespace MeltingApp.ViewModels
         public Command CreateProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
         public Command ViewUniversitiesCommand { get; set; }
+        public Command DeleteAccountCommand { get; set; }
         public University MySelectedUniversity
         {
             get => _mySelectedUniversity;
@@ -399,6 +400,7 @@ namespace MeltingApp.ViewModels
             SaveEditProfileCommand = new Command(HandleSaveEditProfileCommand);
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
+            DeleteAccountCommand = new Command(HandleDeleteAccountCommand);
             User = new User();
             //Omplim desplegable de universities
             HandleViewUniversitiesCommand();
@@ -539,6 +541,40 @@ namespace MeltingApp.ViewModels
             }
             
         }
-        
+
+        async void HandleDeleteAccountCommand()
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+            bool b = false;
+
+            var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+            var tokenbuscat = _dataBaseService.Get<Token>(t => t.dbId.Equals(userConsultatDB.Token.dbId));
+
+            await _apiClientService.DeleteAsync<User, User>(ApiRoutes.Methods.DeleteAccount, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+                    b = true;
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("User deleted correctly");
+                    _navigationService.SetRootPage<LoginPage>();
+
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            }, meltingUriParser);
+
+            if (b)
+            {
+                if (tokenbuscat != null)
+                {
+                    _dataBaseService.Delete<Token>(tokenbuscat, true);
+                    _dataBaseService.Delete(User);
+                }
+                alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+            }
+        }
+
+
     }
 }

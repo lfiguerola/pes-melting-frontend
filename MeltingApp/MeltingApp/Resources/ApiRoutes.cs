@@ -36,6 +36,8 @@ namespace MeltingApp.Resources
             public const string SearchUsers = "SearchUsers";
             public const string SearchEvents= "SearchEvents";
             public const string DeleteComment = "DeleteComment";
+            public const string DeleteAccount = "DeleteAccount";
+            public const string ModifyEvent = "ModifyEvent";
 
         }
 

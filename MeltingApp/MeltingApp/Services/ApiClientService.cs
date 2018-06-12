@@ -41,7 +41,8 @@ namespace MeltingApp.Services
 
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
-            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.EditProfileUser}"}
+            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.EditProfileUser}"},
+            { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ModifyEvent), $"{ApiRoutes.Prefix.Event_id}"}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
@@ -65,6 +66,7 @@ namespace MeltingApp.Services
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
             { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.UnconfirmAssistance}"  },
+            { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.DeleteAccount), $"{ApiRoutes.Prefix.Users}" },
             { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.DeleteComment), $"{ApiRoutes.Prefix.Comment_id}"}
         };
              

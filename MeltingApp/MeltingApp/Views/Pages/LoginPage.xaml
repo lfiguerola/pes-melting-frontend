@@ -25,6 +25,7 @@
             </Entry>
 
             <Button Text="Login" Command="{Binding LoginUserCommand}"></Button>
+            <Button Text="I forgot my password" Command="{Binding NavigateToResetPassPageCommand}"></Button>
             <Button Text="Register" Command="{Binding NavigateToRegisterPageCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>

@@ -12,7 +12,7 @@
 
             <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
                 <Label FontSize="14" Text="Text to find:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Entry x:Name="FilterEntry" Text="{Binding filter }" WidthRequest="300" ></Entry>
+                <Entry x:Name="FilterEntry" Text="{Binding NameWritedToSearch }" WidthRequest="300" ></Entry>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
@@ -23,36 +23,40 @@
                 <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
             </StackLayout>
             <ScrollView>
-                <StackLayout HeightRequest="400">
-                    <ListView ItemsSource="{Binding AllResults}" x:Name="listView">
+                <StackLayout >
+                    <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Path=AllResults}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout >
-                                    <StackLayout HeightRequest="80">
-                                        <Label Text="{Binding resultId1}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding resultName2}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding resultName1}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding resultName3}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding resultName4}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding latitude}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding longitude}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding resultId2}"></Label>
-                                    </StackLayout>
-                                </StackLayout>
+                                <ViewCell>
+                                    <ViewCell.View>
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=resultId1}"></Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=resultName2}"></Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=resultName1}"></Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=resultName3}"></Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=resultName4}"></Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=latitude}"></Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=longitude}"></Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Path=resultId2}"></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </ViewCell.View>
+                                </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

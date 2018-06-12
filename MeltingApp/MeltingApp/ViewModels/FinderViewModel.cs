@@ -16,7 +16,6 @@ namespace MeltingApp.ViewModels
     {
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
-        private SearchQuery filter;
         private StaticInfo _staticInfo;
         private Event _event;
         private string _responseMessage;
@@ -24,13 +23,16 @@ namespace MeltingApp.ViewModels
         private string _nameToFilter;
         private int _selectedFilter = -1;
         private IEnumerable<University> _allUniversities;
-        private IEnumerable<University> _searchAllUniversities;
         private IEnumerable<Faculty> _allFaculties;
         private IEnumerable<User> _allUsernames;
         private IEnumerable<Event> _allEvents;
         private List<FinderStructure> _allFinderStructures;
         private FinderStructure _finderStructure;
-        University _uniAux;
+        private University _uniAux;
+        private User _userAux;
+        private Faculty _facultyAux;
+        private Event _eventAux;
+
         private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
@@ -83,18 +85,10 @@ namespace MeltingApp.ViewModels
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
             _event = new Event();
-
-            SearchQuery = new SearchQuery();            
+            _nameToFilter = " ";
+            SearchQuery = new SearchQuery();
         }
 
-
-        async void SearchInUniversities()
-        {
-            SearchQuery.query = "upc"; //BORRAAR, es per provar la crida, aqui ha d'anar lo que escrigui l'usuari a buscar
-            SearchAllUniversities = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<University>>(SearchQuery, ApiRoutes.Methods.SearchUniversities, (isSuccess, responseMessage) => {
-                if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);                
-            });
-        }
 
         async void HandleApplyFinder()
         {
@@ -105,13 +99,11 @@ namespace MeltingApp.ViewModels
             else if (FilterToApply.Equals("Universities"))
             {
                 //obtenim totes les universitats
-                /*AllUniversities = await _apiClientService.GetAsync<filter , IEnumerable<University>>(ApiRoutes.Methods.SearchUniversities, (success, responseMessage) =>
-                {
-                    if (success)
-                    { DependencyService.Get<IOperatingSystemMethods>().ShowToast("Carreguem Universitats "); }
-                    else
-                    { DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage); }
-                });*/
+                SearchQuery.query = _nameToFilter;
+                AllUniversities = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<University>>(SearchQuery, ApiRoutes.Methods.SearchUniversities, (isSuccess, responseMessage) => {
+                    if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                });
+                //System.Threading.Thread.Sleep(2000);
 
                 //obtenim iterador i declarem les variables
                 IEnumerator i = AllUniversities.GetEnumerator();
@@ -137,16 +129,97 @@ namespace MeltingApp.ViewModels
             }
             else if (FilterToApply.Equals("Username"))
             {
-                AllUsernames = null;
+                //obtenim tots els users
+                SearchQuery.query = _nameToFilter;
+                AllUsernames = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<User>>(SearchQuery, ApiRoutes.Methods.SearchUsers, (isSuccess, responseMessage) => {
+                    if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                });
+
+                //obtenim iterador i declarem les variables
+                IEnumerator i = AllUsernames.GetEnumerator();
+                _allFinderStructures = new List<FinderStructure>();
+
+
+                //recorrem el IEnumerable i l'igualem al resultat
+                while (i.MoveNext())
+                {
+                    _userAux = (User)i.Current;
+                    _finderStructure = new FinderStructure();
+                    _finderStructure.resultId1 = _userAux.user_id;
+                    _finderStructure.resultId2 = _userAux.faculty_id;
+                    _finderStructure.resultId3 = _userAux.university_id;
+                    _finderStructure.resultName1 = _userAux.username;
+                    _finderStructure.resultName2 = _userAux.full_name;
+                    _finderStructure.resultName3 = _userAux.university;
+                    _finderStructure.resultName4 = _userAux.faculty;
+                    _finderStructure.resultName5 = _userAux.biography;
+                    _finderStructure.resultName6 = _userAux.country_code;
+                    _finderStructure.resultName7 = _userAux.avatarURL;
+                    _finderStructure.karma = _userAux.karma;
+
+                    _allFinderStructures.Add(_finderStructure);
+                }
+                AllResults = _allFinderStructures;
             }
             else if (FilterToApply.Equals("Faculties"))
             {
-                AllFaculties = null;
+                //obtenim totes les facultats
+                SearchQuery.query = _nameToFilter;
+                AllFaculties = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Faculty>>(SearchQuery, ApiRoutes.Methods.SearchFaculties, (isSuccess, responseMessage) => {
+                    if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                });
+
+                //obtenim iterador i declarem les variables
+                IEnumerator i = AllFaculties.GetEnumerator();
+                _allFinderStructures = new List<FinderStructure>();
+
+
+                //recorrem el IEnumerable i l'igualem al resultat
+                while (i.MoveNext())
+                {
+                    _facultyAux = (Faculty)i.Current;
+                    _finderStructure = new FinderStructure();
+                    _finderStructure.resultId1 = _facultyAux.location_id;
+                    _finderStructure.resultId2 = _facultyAux.id;
+                    _finderStructure.resultName1 = _facultyAux.alias;
+                    _finderStructure.resultName2 = _facultyAux.name;
+                    _finderStructure.resultName3 = _facultyAux.address;
+                    _finderStructure.resultName4 = _facultyAux.url;
+                    _finderStructure.latitude = _facultyAux.latitude;
+                    _finderStructure.longitude = _facultyAux.longitude;
+                    _allFinderStructures.Add(_finderStructure);
+                }
+                AllResults = _allFinderStructures;
             }
 
             else if (FilterToApply.Equals("Events"))
             {
-                AllEvents = null;
+                //obtenim tots els events
+                SearchQuery.query = _nameToFilter;
+                AllEvents = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (isSuccess, responseMessage) => {
+                    if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                });
+
+                //obtenim iterador i declarem les variables
+                IEnumerator i = AllEvents.GetEnumerator();
+                _allFinderStructures = new List<FinderStructure>();
+
+
+                //recorrem el IEnumerable i l'igualem al resultat
+                while (i.MoveNext())
+                {
+                    _eventAux = (Event)i.Current;
+                    _finderStructure = new FinderStructure();
+                    _finderStructure.resultId1 = _eventAux.id;
+                    _finderStructure.resultId2 = _eventAux.user_id;
+                    _finderStructure.resultName1 = _eventAux.title;
+                    _finderStructure.resultName2 = _eventAux.description;
+                    _finderStructure.resultName3 = _eventAux.address;
+                    _finderStructure.resultName4 = _eventAux.date;
+                    _finderStructure.resultName5 = _eventAux.name;
+                    _allFinderStructures.Add(_finderStructure);
+                }
+                AllResults = _allFinderStructures;
             }
         }
         public IEnumerable<University> AllUniversities
@@ -156,16 +229,6 @@ namespace MeltingApp.ViewModels
             {
                 _allUniversities = value;
                 OnPropertyChanged(nameof(AllUniversities));
-            }
-        }
-
-        public IEnumerable<University> SearchAllUniversities
-        {
-            get { return _searchAllUniversities; }
-            set
-            {
-                _searchAllUniversities = value;
-                OnPropertyChanged(nameof(SearchAllUniversities));
             }
         }
 
@@ -224,6 +287,14 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(SearchQuery));
             }
         }
-
+        public String NameWritedToSearch
+        {
+            get { return _nameToFilter; }
+            set
+            {
+                _nameToFilter = value;
+                OnPropertyChanged(nameof(NameWritedToSearch));
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace MeltingApp.Models
 {
-    class MyDataTemplateSelector : DataTemplateSelector
+    public class MyDataTemplateSelector : DataTemplateSelector
     {
         private readonly DataTemplate incomingDataTemplate;
         private readonly DataTemplate outgoingDataTemplate;

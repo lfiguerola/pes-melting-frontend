@@ -2,11 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeltingApp.Views.Pages.ChatMainPage"
-             xmlns:local="clr-namespace:MeltinApp; assembly=MeltingApp">
+             xmlns:local="clr-namespace:MeltingApp; assembly=MeltingApp"
+             xmlns:models ="clr-namespace:MeltingApp.Models; assembly=MeltingApp">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:MyDataTemplateSelector x:Key="MessageTemplateSelector"/>
+            <models:MyDataTemplateSelector x:Key="MessageTemplateSelector"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 

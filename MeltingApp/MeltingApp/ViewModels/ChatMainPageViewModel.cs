@@ -12,7 +12,8 @@ namespace MeltingApp.ViewModels
         string _outgoingText = string.Empty;
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
-  
+
+
         public string OutgoingText {
 
             get { return _outgoingText; }
@@ -54,11 +55,6 @@ namespace MeltingApp.ViewModels
             });
 
 
-
-
-
-
-
             void HandleSendCommand() {
 
                 //llamadas api
@@ -76,7 +72,7 @@ namespace MeltingApp.ViewModels
 
         }
 
-
+      
 
         public void InitializeMock()
         {

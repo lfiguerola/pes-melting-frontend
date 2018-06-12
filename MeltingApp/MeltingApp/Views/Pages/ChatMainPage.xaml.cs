@@ -17,6 +17,7 @@ namespace MeltingApp.Views.Pages
         {
             InitializeComponent();
             BindingContext = vm = new ChatMainPageViewModel();
+            vm.InitializeMock();
 
 
             vm.Messages.CollectionChanged += (sender, e) =>

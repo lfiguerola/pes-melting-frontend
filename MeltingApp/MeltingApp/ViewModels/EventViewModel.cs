@@ -436,6 +436,8 @@ namespace MeltingApp.ViewModels
 
         private async void HandleOpenMapEventCommand()
         {
+            Event.latitude = Event.latitude.Replace(".", ",");
+            Event.longitude = Event.longitude.Replace(".", ",");
             var success = await CrossExternalMaps.Current.NavigateTo("Location", Double.Parse(Event.latitude), Double.Parse(Event.longitude));
             if (!success)
             {

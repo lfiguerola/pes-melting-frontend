@@ -548,6 +548,10 @@ namespace MeltingApp.ViewModels
             meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
             bool b = false;
 
+            var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+            var tokenbuscat = _dataBaseService.Get<Token>(t => t.dbId.Equals(userConsultatDB.Token.dbId));
+
             await _apiClientService.DeleteAsync<User, User>(ApiRoutes.Methods.DeleteAccount, (isSuccess, responseMessage) => {
                 ResponseMessage = responseMessage;
                 if (isSuccess)
@@ -562,9 +566,6 @@ namespace MeltingApp.ViewModels
 
             if (b)
             {
-                var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
-                var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
-                var tokenbuscat = _dataBaseService.Get<Token>(t => t.dbId.Equals(userConsultatDB.Token.dbId));
                 if (tokenbuscat != null)
                 {
                     _dataBaseService.Delete<Token>(tokenbuscat, true);

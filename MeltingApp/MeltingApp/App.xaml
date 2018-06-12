@@ -15,6 +15,8 @@
             <Color x:Key="HeaderTextColor">#585858</Color>
             <Color x:Key="BodyTextColor">#C3C3C3</Color>
             <Color x:Key="ButtonBackgroundColor">#FF5C5CA1</Color>
+            <Color x:Key="LoginButtonBackgroundColor">#FFC8B7B7</Color>
+            
 
             <!--  font families  -->
             <OnPlatform x:Key="RegularFontFamily" x:TypeArguments="x:String">
@@ -78,7 +80,7 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
 
-            <Style x:Key="FollowButton" TargetType="Button">
+            <Style x:Key="AppButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="HeightRequest" Value="40" />
@@ -86,7 +88,42 @@
                 <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
             </Style>
-            
+
+            <Style x:Key="AppButton2" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
+                <Setter Property="TextColor" Value="#FFC8B7B7" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="BorderRadius" Value="20" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="BorderColor" Value="Black" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
+            </Style>
+
+            <Style x:Key="LoginButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource LoginButtonBackgroundColor}" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="WidthRequest" Value="150" />
+                <Setter Property="BorderRadius" Value="20" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="BorderColor" Value="#FF5C5CA1" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
+            </Style>
+
+            <Style x:Key="SignUpButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource LoginButtonBackgroundColor}" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="WidthRequest" Value="150" />
+                <Setter Property="BorderRadius" Value="20" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="BorderColor" Value="Black" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
+            </Style>
+
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource Primary}" />                
                 <Setter Property="BarTextColor" Value="White" />

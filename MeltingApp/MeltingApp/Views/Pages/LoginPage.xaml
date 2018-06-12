@@ -9,25 +9,23 @@
         <Grid>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1" Margin="20,0,20,0">
-
+            <StackLayout Grid.Row="1" Margin="20,10,20,0">
+                <Image Source="logoLogin2.png" HeightRequest="210" VerticalOptions="CenterAndExpand"/>
+                
+            </StackLayout>
+            <Grid Grid.Row="2" Margin="20,0">
+                
                 <Grid.RowDefinitions>
-
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="*"/>
-
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Image Source="test.png" HeightRequest="100" VerticalOptions="EndAndExpand"/>
                 <Entry Grid.Row="1" Placeholder="Email" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.email}">
                     <Entry.Behaviors>
                         <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
@@ -38,16 +36,36 @@
                         <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
                     </Entry.Behaviors>
                 </Entry>
-                <Button Text="LogIn" BackgroundColor="#CCCCCC" TextColor="Black" HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Command="{Binding LoginUserCommand}"/>
+            </Grid>
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="5">
+            <Grid Grid.Row="3" Margin="20,10,20,10" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                   
+                </Grid.ColumnDefinitions>
 
-                    <Button Text="Sign up for New Account" TextColor="Black" Command="{Binding NavigateToRegisterPageCommand}"/>
-
+                <StackLayout Grid.Column="1">
+                        <Button  Text="LogIn" 
+                                 HorizontalOptions="CenterAndExpand"                              
+                        Style="{StaticResource LoginButton}"
+                        Command="{Binding LoginUserCommand}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2">
+                    <Button Text="Sign up" 
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource SignUpButton}"
+                         Command="{Binding NavigateToRegisterPageCommand}"/>
                 </StackLayout>
             </Grid>
+
+            <Button Grid.Row="4" Text="Forgot your password?"
+                    Style="{StaticResource AppButton2}"
+                    Opacity="0.8"
+                    Margin="20,0"/>
         </Grid>
 
+       
     </ContentPage.Content>
     
 </ContentPage>

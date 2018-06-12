@@ -32,6 +32,7 @@ namespace MeltingApp.Resources
             public const string GetUniversities = "GetUniversities";
             public const string GetFaculties = "GetFaculties";
             public const string DeleteComment = "DeleteComment";
+            public const string ModifyEvent = "ModifyEvent";
         }
 
         public struct Prefix

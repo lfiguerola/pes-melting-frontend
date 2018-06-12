@@ -38,6 +38,8 @@ namespace MeltingApp.ViewModels
 	    private IEnumerable<Address> _addresses;
 
         public Command CreateEventCommand { get; set; }
+	    public Command ModifyEventCommand { get; set; }
+	    public Command NavigateToModifyEventCommand { get; set; }
         public Command ConfirmAssistanceCommand { get; set; }
         public Command CreateCommentCommand { get; set; }
         public Command InfoEventCommand { get; set; }
@@ -177,6 +179,8 @@ namespace MeltingApp.ViewModels
             _dataBaseService = DependencyService.Get<IDataBaseService>();
 
             CreateEventCommand = new Command(HandleCreateEventCommand);
+            ModifyEventCommand = new Command(HandleModifyEventCommand);
+            NavigateToModifyEventCommand = new Command(HandleNavigateToModifyEventCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
             CreateCommentCommand = new Command(HandleCreateCommentCommand);
             InfoEventCommand = new Command(HandleInfoEventCommand);
@@ -401,7 +405,7 @@ namespace MeltingApp.ViewModels
             }
             catch (Exception e)
             {
-
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Geocoder Error");
             }
             Event.latitude = Addresses.First().Coordinates.Latitude.ToString();
             Event.latitude = Event.latitude.Replace(",", ".");
@@ -469,6 +473,44 @@ namespace MeltingApp.ViewModels
                         DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                     }
                 }, meltingUriParser);
+        }
+
+	    void HandleNavigateToModifyEventCommand()
+	    {
+	        _navigationService.PushAsync<ModifyEvent>(this);
+        }
+
+        async void HandleModifyEventCommand()
+	    {
+	        try
+	        {
+	            Addresses = await geocoder.GeocodeAsync(Event.name);
+	        }
+	        catch (Exception e)
+	        {
+	            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Geocoder Error");
+            }
+	        Event.latitude = Addresses.First().Coordinates.Latitude.ToString();
+	        Event.latitude = Event.latitude.Replace(",", ".");
+	        Event.longitude = Addresses.First().Coordinates.Longitude.ToString();
+	        Event.longitude = Event.longitude.Replace(",", ".");
+	        Event.address = Addresses.First().FormattedAddress;
+	        Event.date = Time + " " + Date.ToLongDateString();
+            var meltingUriParser = new MeltingUriParser();
+	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+	        await _apiClientService.PutAsync<Event, Event>(Event, ApiRoutes.Methods.ModifyEvent, (success, responseMessage) =>
+	        {
+	            if (success)
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Event modified successfully");
+	                _navigationService.PopAsync();
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        }, meltingUriParser);
         }
     }
 }

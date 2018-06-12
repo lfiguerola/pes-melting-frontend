@@ -278,7 +278,6 @@ namespace MeltingApp.ViewModels
                     UserOwnsEvent = false;
                 }
                 _navigationService.PushAsync<ViewEvent>(this);
-                EventSelected = new Event();
             }
         }
         async void HandleConfirmAssistanceCommand()

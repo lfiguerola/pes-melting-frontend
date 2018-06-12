@@ -1,27 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MeltingApp.Views.Pages.ChatMainPage">
+             x:Class="MeltingApp.Views.Pages.ChatMainPage"
+             xmlns:local="clr-namespace:MeltinApp; assembly=MeltingApp">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:MyDataTemplateSelector x:Key="MessageTemplateSelector"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-  
 
     <Grid RowSpacing="0" ColumnSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackLayout Orientation="Vertical" Grid.Column="1" Padding="5" BackgroundColor="#EFEFEF">
-            <Button
-                Text=" Active"
-                
-                />
-        </StackLayout>
-
-
         <ListView 
 			x:Name="MessagesListView" 
-			ItemTemplate="{StaticResource MyDataTemplateSelector}" 
+			ItemTemplate="{StaticResource MessageTemplateSelector}" 
 			ItemsSource="{Binding Messages}" 
 			HasUnevenRows="True" 
 			ItemSelected="MyListView_OnItemSelected" 

@@ -9,13 +9,22 @@ using Xamarin.Forms.Xaml;
 
 namespace MeltingApp.Views.Pages
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ChatMainPage : ContentPage
-	{
-		public ChatMainPage ()
-		{
-			InitializeComponent ();
-            BindingContext = new ChatMainPageViewModel();
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class ChatMainPage : ContentPage
+    {
+        ChatMainPageViewModel vm;
+        public ChatMainPage()
+        {
+            InitializeComponent();
+            BindingContext = vm = new ChatMainPageViewModel();
+
+
+            vm.Messages.CollectionChanged += (sender, e) =>
+            {
+                var target = vm.Messages[vm.Messages.Count - 1];
+                MessagesListView.ScrollTo(target, ScrollToPosition.End, true);
+            };
+
         }
 
         void MyListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -28,5 +37,6 @@ namespace MeltingApp.Views.Pages
             MessagesListView.SelectedItem = null;
 
         }
+       
     }
 }

@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using MeltingApp.Helpers;
 using MeltingApp.Models;
+ class Message : ObservableObject
+{ 
 
-public class Message : EntityBase {
     private string _text;
     private bool _isIncoming;
-
-    public Message()
-    {
-    }
 
     public string Text
     {

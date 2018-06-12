@@ -38,6 +38,7 @@ namespace MeltingApp.ViewModels
 	    private IEnumerable<Address> _addresses;
 	    private bool _userOwnsEvent;
 	    private int _assitance;
+	    private IEnumerable<Event> _allMyEvents;
 
         public Command CreateEventCommand { get; set; }
 	    public Command ModifyEventCommand { get; set; }
@@ -48,6 +49,7 @@ namespace MeltingApp.ViewModels
         public Command NavigateToCreateEventPageCommand { get; set; }
         public Command OpenMapEventCommand { get; set; }
         public Command InfoCommentCommand { get; set; }
+        public Command NavigateToMyEventListPageCommand { get; set; }
 
 
         public Event Event
@@ -193,6 +195,16 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public IEnumerable<Event> AllMyEvents
+	    {
+	        get { return _allMyEvents; }
+	        set
+	        {
+	            _allMyEvents = value;
+	            OnPropertyChanged(nameof(AllMyEvents));
+	        }
+	    }
+
         public EventViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
@@ -208,8 +220,8 @@ namespace MeltingApp.ViewModels
             NavigateToCreateEventPageCommand = new Command(HandleNavigateToCreateEventPageCommand);
             OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
             InfoCommentCommand = new Command(HandleInfoCommentCommand);
+            NavigateToMyEventListPageCommand = new Command(HandleNavigateToMyEventListPageCommand);
 
-            //Init();
             Comment = new Comment();
             Event = new Event();
             EventSelected = new Event();
@@ -220,7 +232,6 @@ namespace MeltingApp.ViewModels
             Event.name = "Infern";
             MinDate = DateTime.Today;
 
-            // GetAllComments();
             GetAllEvents();
         }
 
@@ -542,6 +553,27 @@ namespace MeltingApp.ViewModels
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 	            }
 	        }, meltingUriParser);
+        }
+
+	    async void HandleNavigateToMyEventListPageCommand()
+	    {
+	        var meltingUriParser = new MeltingUriParser();
+	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            AllMyEvents = await _apiClientService.GetAsync<IEnumerable<Event>, IEnumerable<Event>>(ApiRoutes.Methods.GetAllMyEvents, (success, responseMessage) =>
+	        {
+	            if (success)
+	            {
+	                _navigationService.PushAsync<MyEventList>(this);
+
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	            }
+	        }, meltingUriParser);
+
+	        saveEventsInDB(AllMyEvents); //guardem tots els events a la base de dades
         }
     }
 }

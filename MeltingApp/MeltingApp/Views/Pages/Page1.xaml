@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MeltingApp.Views.Pages.ProfilePage"
+             x:Class="MeltingApp.Views.Pages.Page1"
              BackgroundColor="White">
-
     <ScrollView>
         <Grid RowSpacing="0">
             <Grid.RowDefinitions>
@@ -14,21 +13,20 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!-- header Background-->
-            <!--<BoxView BackgroundColor="Yellow" Grid.Row="0" />-->
-            <!--ens permet definir un rectangle -->
-            <Image Source="bcn.png" Aspect="AspectFill" HeightRequest="200" Opacity="0.5"/>
+            <!--<BoxView BackgroundColor="Yellow" Grid.Row="0" />--> <!--ens permet definir un rectangle -->
+            <Image Source="bcn.jpg" Aspect="AspectFill" HeightRequest="200" Opacity="0.5"/>
             <Image Source="CurvedMask2.png" Aspect="Fill" VerticalOptions="End"/>
 
             <!--profile name-->
             <!--<BoxView BackgroundColor="Blue" Grid.Row="1" 
                      HeightRequest="100"/>-->
             <StackLayout Grid.Row="1" Padding="0,50,0,0" >
-                <Label Text="{Binding User.full_name}" 
+                <Label Text="Perro Antonio" 
                         Style="{StaticResource ProfileNameLabel}"/>
-                <Label Text="{Binding User.username}" 
+                <Label Text="@PerroConManta" 
                         Style="{StaticResource ProfileTagLabel}"/>
             </StackLayout>
-
+            
             <!-- social stats, grid ja que farem columnes-->
             <!--<BoxView BackgroundColor="Red" Grid.Row="2" />-->
             <Grid Grid.Row="2" Margin="0,30" ColumnSpacing="0">
@@ -38,25 +36,25 @@
                 </Grid.ColumnDefinitions>
 
                 <StackLayout Grid.Column="0">
-                    <Label Text="{Binding User.faculty}" Style="{StaticResource StatsNumberLabel}" />
-                    <Label Text="{Binding User.university}" Style="{StaticResource StatsCaptionLabel}" />
+                    <Label Text="Facultat d'informàtica de Barcelona" Style="{StaticResource StatsNumberLabel}" />
+                    <Label Text="UPC" Style="{StaticResource StatsCaptionLabel}" />
                 </StackLayout>
 
                 <StackLayout Grid.Column="1">
-                    <Image Source="karma.png" HeightRequest="50" />
-                    <Label Text="{Binding User.karma}"  Style="{StaticResource StatsNumberLabel}" />
+                    <Image Source="logo-karma.png" HeightRequest="50" />
+                    <Label Text="45"  Style="{StaticResource StatsNumberLabel}" />
                 </StackLayout>
-
+                
                 <StackLayout Grid.Column="2">
-                    <Label Text="{Binding User.country_code}"  Style="{StaticResource StatsNumberLabel}"/>
+                    <Label Text="ES"  Style="{StaticResource StatsNumberLabel}"/>
                     <Label Text="Spain"  Style="{StaticResource StatsCaptionLabel}" />
                 </StackLayout>
-
+                
             </Grid>
 
             <!--profile description-->
             <!--<BoxView BackgroundColor="Green" Grid.Row="3" />-->
-            <Label Text="{Binding User.biography}"
+            <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sed nisl massa. Nam lorem massa, interdum sed diam non, efficitur rhoncus libero. Ut quis nisl semper, iaculis est vitae, ornare velit. Phasellus sagittis rutrum interdum. Phasellus id neque sapien. Quisque condimentum sem ac diam molestie scelerisque. Nullam sit amet porttitor ligula. Duis porta lorem nulla, id euismod tortor ultrices vel."
                    Grid.Row="3" 
                    Style="{StaticResource MainBodyLabel}"
                    Margin="10,0"/>
@@ -65,7 +63,6 @@
             <!--<BoxView BackgroundColor="SkyBlue" Grid.Row="4" />-->
             <Button Text="Edit Profile"
                     Style="{StaticResource FollowButton}"
-                    Command="{Binding NavigateToEditProfilePageCommand}"
                     Grid.Row="4" 
                     Margin="20,20"/>
 

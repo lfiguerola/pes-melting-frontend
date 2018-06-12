@@ -27,7 +27,7 @@
                     <RowDefinition Height="*"/>
 
                 </Grid.RowDefinitions>
-                <Image Source="logoLogin.png" HeightRequest="100" VerticalOptions="EndAndExpand"/>
+                <Image Source="test.png" HeightRequest="100" VerticalOptions="EndAndExpand"/>
                 <Entry Grid.Row="1" Placeholder="Email" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.email}">
                     <Entry.Behaviors>
                         <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>

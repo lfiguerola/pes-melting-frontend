@@ -17,7 +17,6 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private StaticInfo _staticInfo;
-        private Event _event;
         private string _responseMessage;
         private string FilterToApply;
         private string _nameToFilter;
@@ -28,15 +27,16 @@ namespace MeltingApp.ViewModels
         private IEnumerable<Event> _allEvents;
         private List<FinderStructure> _allFinderStructures;
         private FinderStructure _finderStructure;
+        private FinderStructure _structureSelected;
         private University _uniAux;
         private User _userAux;
         private Faculty _facultyAux;
         private Event _eventAux;
-
+        private Event _event;
         private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
-
+        public Command infoFinderStructureCommand { get; set; }
         private List<string> filters = new List<string>
         {
             "Faculties",
@@ -81,12 +81,13 @@ namespace MeltingApp.ViewModels
         public FinderViewModel()
         {
             ApplyFinderButtonCommand = new Command(HandleApplyFinder);
+            infoFinderStructureCommand = new Command(HandleInfoFinderStructureCommand);
             _navigationService = DependencyService.Get<INavigationService>();
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
-            _event = new Event();
             _nameToFilter = " ";
             SearchQuery = new SearchQuery();
+            Event = new Event();
         }
 
 
@@ -222,6 +223,41 @@ namespace MeltingApp.ViewModels
                 AllResults = _allFinderStructures;
             }
         }
+
+        void HandleInfoFinderStructureCommand()
+        {
+            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Ha escollit l'opció " + StructureSelected.resultName2 + " i es un " + FilterToApply);
+            if (FilterToApply.Equals("Events"))
+            {
+                IEnumerator i = AllEvents.GetEnumerator();
+                int comptador = 0;
+                while (i.MoveNext() && comptador != StructureSelected.resultId1)
+                {
+                    ++comptador;
+                    if (comptador == StructureSelected.resultId1) Event = (Event)i.Current;
+                }
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comptador " + comptador + " Numero: " + SelectedFilterIndex);
+                _navigationService.PushAsync<ViewEvent>(this);
+            }
+            else if (FilterToApply.Equals("Faculties")){
+
+            }
+            else if (FilterToApply.Equals("Universities")){
+
+            }
+            else if (FilterToApply.Equals("Username")){
+
+            }
+        }
+        public Event Event
+        {
+            get { return _event; }
+            set
+            {
+                _event = value;
+                OnPropertyChanged(nameof(Event));
+            }
+        }
         public IEnumerable<University> AllUniversities
         {
             get { return _allUniversities; }
@@ -231,7 +267,6 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllUniversities));
             }
         }
-
         public IEnumerable<User> AllUsernames
         {
             get { return _allUsernames; }
@@ -277,7 +312,6 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllResults));
             }
         }
-
         public SearchQuery SearchQuery
         {
             get { return _searchquery; }
@@ -294,6 +328,15 @@ namespace MeltingApp.ViewModels
             {
                 _nameToFilter = value;
                 OnPropertyChanged(nameof(NameWritedToSearch));
+            }
+        }
+        public FinderStructure StructureSelected
+        {
+            get { return _structureSelected; }
+            set
+            {
+                _structureSelected = value;
+                OnPropertyChanged(nameof(StructureSelected));
             }
         }
     }

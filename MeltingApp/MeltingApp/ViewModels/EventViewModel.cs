@@ -515,7 +515,7 @@ namespace MeltingApp.ViewModels
 	        Event.address = Addresses.First().FormattedAddress;
 	        Event.date = Time + " " + Date.ToLongDateString();
             var meltingUriParser = new MeltingUriParser();
-	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{App.LoginRequest.LoggedUserIdBackend}");
+	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
 
 	        await _apiClientService.PutAsync<Event, Event>(Event, ApiRoutes.Methods.ModifyEvent, (success, responseMessage) =>
 	        {

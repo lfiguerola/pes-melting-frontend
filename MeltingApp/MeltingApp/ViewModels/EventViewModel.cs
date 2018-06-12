@@ -37,6 +37,7 @@ namespace MeltingApp.ViewModels
 	    private int commentidaux;
 	    private IEnumerable<Address> _addresses;
 	    private bool _userOwnsEvent;
+	    private int _assitance;
 
         public Command CreateEventCommand { get; set; }
 	    public Command ModifyEventCommand { get; set; }
@@ -65,6 +66,16 @@ namespace MeltingApp.ViewModels
 	        {
 	            _userOwnsEvent = value;
 	            OnPropertyChanged(nameof(UserOwnsEvent));
+	        }
+	    }
+
+	    public int Assitance
+	    {
+	        get { return _assitance; }
+	        set
+	        {
+	            _assitance = value;
+	            OnPropertyChanged(nameof(Assitance));
 	        }
 	    }
 
@@ -277,75 +288,72 @@ namespace MeltingApp.ViewModels
             }
             _navigationService.PushAsync<ViewEvent>(this);
         }
-        async void HandleConfirmAssistanceCommand()
-	    {
+        async void ConfirmAssitance()
+        {
             var meltingUriParser = new MeltingUriParser();
             meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
 
-            await _apiClientService.PostAsync<Event, Event>(Event, ApiRoutes.Methods.ConfirmAssistance, (isSuccess, responseMessage) =>
-	        {
-	            if (isSuccess)
-	            {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-	            else
-	            {
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-	            }
-	        }, meltingUriParser);
-	       
-	    }
-        
-        //async void HandleConfirmAssistanceCommand()
-        //{
-        //    if (!UserAssists)
-        //    {
-        //        await _apiClientService.PostAsync<Event, Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
-        //            (isSuccess, responseMessage) =>
-        //            {
-        //                if (isSuccess)
-        //                {
-        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Confirmed");
-        //                    UserAssists = true;
-        //                }
-        //                else
-        //                {
-        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-        //                }
-        //            });
-        //    }
-        //    else
-        //    {
-        //        await _apiClientService.DeleteAsync<Event, Event>(ApiRoutes.Methods.UnconfirmAssistance,
-        //            (isSuccess, responseMessage) =>
-        //            {
-        //                if (isSuccess)
-        //                {
-        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Assistance Unconfirmed");
-        //                    UserAssists = false;
-        //                }
-        //                else
-        //                {
-        //                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-        //                }
-        //            });
-        //    }
+            await _apiClientService.PostAsync<Event, Event>(Event, ApiRoutes.Methods.ConfirmAssistance,
+                (isSuccess, responseMessage) =>
+                {
+                    if (isSuccess)
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast("We hope that you will have a great time");
+                    }
+                    else
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    }
+                }, meltingUriParser);
+        }
 
-        //}
-        async private void Init()
-	    {
-	        UserAssistsInt = await _apiClientService.GetAsync<int,int>(ApiRoutes.Methods.GetUsersAssistance, (isSuccess, responseMessage) =>
-	        {
-	            if (isSuccess)
-	            {
-	                if (UserAssistsInt == 1) UserAssists = true;
-	                else UserAssists = false;
-	            }
-	            else
-	            {
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-	            }
-            });
+        async void UnconfirmAssistance()
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+            await _apiClientService.DeleteAsync<Event, Event>(ApiRoutes.Methods.UnconfirmAssistance,
+                (isSuccess, responseMessage) =>
+                {
+                    if (isSuccess)
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    }
+                    else
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    }
+                }, meltingUriParser);
+        }
+        async void HandleConfirmAssistanceCommand()
+        {
+            bool b = false;
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+            await _apiClientService.GetAsync<VoteStructure, VoteStructure>(ApiRoutes.Methods.GetMyAssistance, (isSuccess, responseMessage) =>
+            {
+                b = true;
+                if (isSuccess)
+                {
+                    Assitance = 1;
+                }
+                else
+                {
+                    Assitance = 0;
+                }
+            }, meltingUriParser);
+            if (b)
+            {
+                if (Assitance == 0)
+                {
+                    ConfirmAssitance();
+                }
+                else
+                {
+                    UnconfirmAssistance();
+                }
+            }
         }
 
         async void GetAllComments()

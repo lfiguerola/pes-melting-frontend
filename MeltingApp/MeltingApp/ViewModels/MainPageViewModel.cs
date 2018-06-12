@@ -103,7 +103,7 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToCreateProfilePageCommand()
         {
-            _navigationService.PushAsync<CreateProfilePage>();
+            _navigationService.SetRootPage<CreateProfilePage>();
         }
 
     }

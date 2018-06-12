@@ -14,9 +14,9 @@ namespace MeltingApp.Views.Pages
 	public partial class FinderPage : ContentPage
 	{
 		public FinderPage ()
-		{
-			InitializeComponent ();
-            NavigationPage.SetHasBackButton(this, true);
+        {
+            InitializeComponent ();
+            NavigationPage.SetHasNavigationBar(this, true);
             BindingContext = new FinderViewModel();
         }
 	}

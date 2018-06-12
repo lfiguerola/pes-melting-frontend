@@ -31,9 +31,14 @@ namespace MeltingApp.Resources
             public const string CreateProfileUser = "CreateProfile";
             public const string GetUniversities = "GetUniversities";
             public const string GetFaculties = "GetFaculties";
-            public const string DeleteAccount = "DeleteAccount";
+            public const string SearchUniversities = "SearchUniversities";
+            public const string SearchFaculties = "SearchFaculties";
+            public const string SearchUsers = "SearchUsers";
+            public const string SearchEvents= "SearchEvents";
             public const string DeleteComment = "DeleteComment";
+            public const string DeleteAccount = "DeleteAccount";
             public const string ModifyEvent = "ModifyEvent";
+
         }
 
         public struct Prefix
@@ -81,7 +86,10 @@ namespace MeltingApp.Resources
             public const string GetUniversities = "/locations/universities";
             public const string GetFacultiesfirstpath = "/locations";
             public const string GetFacultiessecondpath = "/faculties";
-
+            public const string SearchUniversities = "/search/universities";
+            public const string SearchFaculties = "/search/faculties";
+            public const string SearchUsers = "/search/profiles";
+            public const string SearchEvents = "/search/events";
         }
 
     }

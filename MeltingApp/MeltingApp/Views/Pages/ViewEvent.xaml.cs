@@ -17,6 +17,6 @@ namespace MeltingApp.Views.Pages
 			InitializeComponent ();
             NavigationPage.SetHasBackButton(this, true);
 
-        }
+		}
 	}
 }

@@ -6,12 +6,24 @@ namespace MeltingApp.Models
 {
     public class Comment : EntityBase
     {
+        private int _commentId;
         private string _content;
         private string _updatedAt;
         private string _createdAt;
         private int _eventId;
         private int _userId;
+        private string _username;
+        private bool _isButtonVisible;
 
+        public int comment_id
+        {
+            get { return _commentId;}
+            set
+            {
+                _commentId = value;
+                OnPropertyChanged(nameof(comment_id));
+            }
+        }
         public string content
         {
             get { return _content; }
@@ -59,6 +71,26 @@ namespace MeltingApp.Models
             {
                 _eventId = value;
                 OnPropertyChanged(nameof(event_id));
+            }
+        }
+
+        public bool IsButtonVisible
+        {
+            get { return _isButtonVisible; }
+            set
+            {
+                _isButtonVisible = value;
+                OnPropertyChanged(nameof(IsButtonVisible));
+            }
+        }
+
+        public string username
+        {
+            get { return _username; }
+            set
+            {
+                _username = value;
+                OnPropertyChanged(nameof(username));
             }
         }
     }

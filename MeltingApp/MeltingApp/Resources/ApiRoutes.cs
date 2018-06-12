@@ -35,6 +35,7 @@ namespace MeltingApp.Resources
             public const string SearchFaculties = "SearchFaculties";
             public const string SearchUsers = "SearchUsers";
             public const string SearchEvents= "SearchEvents";
+            public const string DeleteComment = "DeleteComment";
         }
 
         public struct Prefix
@@ -43,6 +44,7 @@ namespace MeltingApp.Resources
             public static string Universities = $"/universities/{UriParameters.UniversityId}";
             public static string University_id = $"/{UriParameters.OnlyUniversityId}";
             public static string Event_id = $"/events/{UriParameters.EventId}";
+            public static string Comment_id = $"/comments/{UriParameters.CommentId}";
         }
 
         public struct UriParameters
@@ -51,6 +53,7 @@ namespace MeltingApp.Resources
             public const string UniversityId = "[University_id]";
             public const string OnlyUniversityId = "[OnlyUniversity_id]";
             public const string EventId = "[Event_id]";
+            public const string CommentId = "[Comment_id]";
         }
 
         /// <summary>

@@ -226,6 +226,10 @@ namespace MeltingApp.ViewModels
             Event = new Event();
             EventSelected = new Event();
             CommentSelected = new Comment();
+            Event.latitude = "0";
+            Event.longitude = "0";
+            Event.address = "C/ Jordi Girona, 1";
+            Event.name = "Infern";
             MinDate = DateTime.Today;
 
             GetAllEvents();

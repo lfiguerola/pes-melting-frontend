@@ -61,6 +61,7 @@
 
             <Button Grid.Row="4" Text="Forgot your password?"
                     Style="{StaticResource AppButton2}"
+                    Command="{Binding NavigateToResetPassPageCommand}"
                     Opacity="0.8"
                     Margin="20,0"/>
         </Grid>

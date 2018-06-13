@@ -107,6 +107,15 @@
                 <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
             </Style>
 
+            <Style x:Key="AppDeleteButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Red" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="BorderRadius" Value="20" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
+            </Style>
+
             <Style x:Key="LoginButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource LoginButtonBackgroundColor}" />
                 <Setter Property="TextColor" Value="Black" />

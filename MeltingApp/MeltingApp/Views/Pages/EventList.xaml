@@ -9,8 +9,7 @@
                 <Entry x:Name="FilterEntry" Text="{Binding NameWritedToSearch }" WidthRequest="300" ></Entry>
             </StackLayout>
             <Button x:Name="FinderButton" Text="Find" Command="{Binding SearchEventCommand}"></Button>
-            <ListView ItemsSource="{Binding AllEvents}" Header="All Events" Footer="No more events" 
-                      SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
+            <ListView ItemsSource="{Binding AllEvents}" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

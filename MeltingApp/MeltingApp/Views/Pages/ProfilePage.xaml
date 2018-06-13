@@ -23,11 +23,14 @@
             <!--profile name-->
             <!--<BoxView BackgroundColor="Blue" Grid.Row="1" 
                      HeightRequest="100"/>-->
-            <StackLayout Grid.Row="1" Padding="0,50,0,0" >
-                <Label Text="{Binding User.full_name}" 
+            <StackLayout Grid.Row="1" Padding="0,50,0,0" HorizontalOptions="Center" >
+                <Label Text="{Binding User.full_name}"
+                       HorizontalOptions="Center"
                         Style="{StaticResource ProfileNameLabel}"/>
                 <Label Text="{Binding User.username}" 
-                        Style="{StaticResource ProfileTagLabel}" FontAttributes="Italic" />
+                        Style="{StaticResource ProfileTagLabel}" 
+                       HorizontalOptions="Center"
+                       FontAttributes="Italic" />
             </StackLayout>
 
             <Grid Grid.Row="2" ColumnSpacing="0" HorizontalOptions="Center" Margin="0,20,0,0">
@@ -40,7 +43,7 @@
                     <Image Grid.Column="1" Source="location.png" WidthRequest="20" HeightRequest="20"/>
                 </StackLayout>
                 <StackLayout Grid.Column="2" HorizontalOptions="Center">
-                    <Label Text="{Binding User.country_code}"  Style="{StaticResource StatsNumberLabel}"/>
+                    <Label Text="{Binding User.country_code}" HorizontalOptions="Center" Style="{StaticResource StatsNumberLabel}"/>
                     <Label Text="Spain"  Style="{StaticResource StatsCaptionLabel}" />
                 </StackLayout>
             </Grid>
@@ -69,7 +72,7 @@
             <Label Text="{Binding User.biography}"
                    Grid.Row="4" 
                    Style="{StaticResource MainBodyLabel}"
-                   Margin="10,0"/>
+                   Margin="10,0,10,0"/>
 
             <!--follow button-->
             <!--<BoxView BackgroundColor="SkyBlue" Grid.Row="4" />-->

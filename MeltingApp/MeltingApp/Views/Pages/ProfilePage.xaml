@@ -81,6 +81,7 @@
             <Button Text="Edit Profile"
                     Style="{StaticResource AppButton}"
                     Command="{Binding NavigateToEditProfilePageCommand}"
+                    IsVisible="{Binding User.IsButtonVisible}"
                     Grid.Row="5" 
                     Margin="20,20,20,0"/>
 

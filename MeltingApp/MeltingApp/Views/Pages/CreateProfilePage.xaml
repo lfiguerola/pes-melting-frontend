@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.ViewModels.CreateProfilePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Hi, this is your first time here, please enter the fields bellow!" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize ="Large" FontAttributes="Bold"/>
+            <Label x:Name="NameTitleLabel" Text="Name:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Entry Text="{Binding User.full_name}"></Entry>
+            <Label x:Name="CountryLabelTitle" Text="Country:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Picker x:Name="CountryPicker" SelectedIndex="{Binding CountriesSelectedIndex }" ItemsSource="{Binding Countries}"></Picker>
+            <Label x:Name="UniversityLabelTitle" Text="University:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Picker ItemsSource="{Binding Universities}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding MySelectedUniversity}"></Picker>
+            <Label x:Name="FacultyLabelTitle" Text="Faculty:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Picker ItemsSource="{Binding Faculties}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding MySelectedFaculty, Mode=OneWayToSource}"></Picker>
+            <Label x:Name="BiographyTitleLabel" Text="Biography:" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
+            <Entry Text="{Binding User.biography}"></Entry>
+            <Button x:Name="CreateButton" Text="Create" Command="{Binding CreateProfileCommand}"></Button>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

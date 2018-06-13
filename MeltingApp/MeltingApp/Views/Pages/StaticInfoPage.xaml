@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
+             x:Class="MeltingApp.Views.Pages.StaticInfoPage">
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="0">
+            
+            <!--          FACULTY INFORMATION          -->
+        <StackLayout Spacing="0" Padding="0">
+            <Label Text="Faculty information" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige">
+                <Label FontSize="14" Text="Name:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="FacultyNameLabel" Text="{Binding FacultyStaticInfo.name}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Telephone:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="FacultyTelephoneLabel" Text="{Binding FacultyStaticInfo.telephone}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
+                <Label FontSize="14" Text="Latitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                    <Label x:Name="FacultyLatitudeLabel" Text="{Binding FacultyStaticInfo.latitude}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Longitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                    <Label x:Name="FacultyLongitudeLabel" Text="{Binding FacultyStaticInfo.longitude}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
+                <Label FontSize="14" Text="Address:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                    <Label x:Name="FacultyAdressLabel" Text="{Binding FacultyStaticInfo.address}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                    <Label x:Name="FacultyUrlLabel" Text="{Binding FacultyStaticInfo.url}"></Label>
+            </StackLayout>
+            <Button Text="View in Maps" Command="{Binding OpenMapStaticFacultyCommand}"></Button>
+
+        </StackLayout>
+        
+        <!--          UNIVERSITY INFORMATION          -->
+        <StackLayout Spacing="0" Padding="0">
+            <Label Text="University information" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Alias:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniAliasLabel" Text="{Binding UniversityStaticInfo.alias}" FontSize="14"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige">
+                <Label FontSize="14" Text="Name:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniNameLabel" Text="{Binding UniversityStaticInfo.name}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Telephone:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniTelephoneLabel" Text="{Binding UniversityStaticInfo.telephone}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
+                <Label FontSize="14" Text="Latitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniLatitudeLabel" Text="{Binding UniversityStaticInfo.latitude}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Longitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniLongitudeLabel" Text="{Binding UniversityStaticInfo.longitude}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
+                <Label FontSize="14" Text="Address:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniAdressLabel" Text="{Binding UniversityStaticInfo.address}"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label FontSize="14" Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Label x:Name="UniUrlLabel" Text="{Binding UniversityStaticInfo.url}"></Label>
+            </StackLayout>
+            <!--<Button Text="View in Maps" Command="{Binding OpenMapStaticUniversityCommand}"></Button>-->
+
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

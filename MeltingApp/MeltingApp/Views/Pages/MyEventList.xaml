@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.MyEventList">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding AllMyEvents}" Header="All My Events" Footer="No more events" 
+                      SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding title}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
+                                                                  CommandParameter="{Binding event_id}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="{Binding description}"/>
+                                    <Label Text="{Binding name}"/>
+                                    <Label Text="{Binding date}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button x:Name="ViewButton" Text="Add Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
+             x:Class="MeltingApp.Views.Pages.FinderPage">
+    <ContentPage.Content>
+        <StackLayout>
+        
+            <StackLayout Spacing="0" Padding="0">
+                <Label Text="Finder" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
+                <Label FontSize="14" Text="Text to find:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Entry x:Name="FilterEntry" Text="{Binding NameWritedToSearch }" WidthRequest="300" ></Entry>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
+                <Label FontSize="14" Text="Filter:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Picker x:Name="FilterPicker" SelectedIndex="{Binding SelectedFilterIndex }" ItemsSource="{Binding Filters}" WidthRequest="300" ></Picker>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
+            </StackLayout>
+            <ScrollView>
+                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <ListView ItemsSource="{Binding Path=AllResults}"
+                               SelectedItem="{Binding StructureSelected, Mode=TwoWay}"  x:Name="listView">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.View>
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label WidthRequest="20" Text="{Binding Path=resultId1}">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                                <Label WidthRequest="100"  HeightRequest="40" Text="{Binding Path=resultName2}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName1}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName3}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName4}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=latitude}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=longitude}"></Label>
+                                                <Label Text="{Binding Path=resultId2}"></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
+             x:Class="MeltingApp.Views.Pages.ResetPassPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Reset Password" HorizontalOptions="CenterAndExpand" />
+            <Label Text="Enter your email:"></Label>
+            <Entry Text="{Binding User.email}">
+                <Entry.Behaviors>
+                    <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                </Entry.Behaviors>
+            </Entry>
+            <Button Text="Reset Password" Command="{Binding ResetPassCommand}"></Button>
+            <Label Text="{Binding ResponseMessage}"></Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

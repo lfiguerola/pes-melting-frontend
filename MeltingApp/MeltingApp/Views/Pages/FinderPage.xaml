@@ -31,19 +31,23 @@
                                 <ViewCell>
                                     <ViewCell.View>
                                         <StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label WidthRequest="20" Text="{Binding Path=resultId1}">
+                                            <StackLayout HeightRequest="60" Orientation="Horizontal">
+                                                <!--<Label WidthRequest="20" Text="{Binding Path=resultId1}">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>-->
+                                                <Label WidthRequest="60" Text="{Binding Path=resultName2}">
                                                     <Label.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
                                                     </Label.GestureRecognizers>
                                                 </Label>
-                                                <Label WidthRequest="100"  HeightRequest="40" Text="{Binding Path=resultName2}"></Label>
                                                 <Label WidthRequest="100" Text="{Binding Path=resultName1}"></Label>
                                                 <Label WidthRequest="100" Text="{Binding Path=resultName3}"></Label>
                                                 <Label WidthRequest="100" Text="{Binding Path=resultName4}"></Label>
-                                                <Label WidthRequest="100" Text="{Binding Path=latitude}"></Label>
+                                                <!--<Label WidthRequest="100" Text="{Binding Path=latitude}"></Label>
                                                 <Label WidthRequest="100" Text="{Binding Path=longitude}"></Label>
-                                                <Label Text="{Binding Path=resultId2}"></Label>
+                                                <Label Text="{Binding Path=resultId2}"></Label>-->
                                             </StackLayout>
                                         </StackLayout>
                                     </ViewCell.View>

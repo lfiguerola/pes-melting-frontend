@@ -25,7 +25,7 @@ namespace MeltingApp.ViewModels
         private IEnumerable<University> _allUniversities;
         private IEnumerable<Faculty> _allFaculties;
         private IEnumerable<User> _allUsernames;
-        private IEnumerable<Event> _allEvents;
+        //private IEnumerable<Event> _allEvents;
         private List<FinderStructure> _allFinderStructures;
         private FinderStructure _finderStructure;
         private FinderStructure _structureSelected;
@@ -35,8 +35,8 @@ namespace MeltingApp.ViewModels
         private User _user;
         private Faculty _facultyAux;
         private Faculty _faculty;
-        private Event _eventAux;
-        private Event _event;
+        //private Event _eventAux;
+        //private Event _event;
         private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
@@ -46,7 +46,7 @@ namespace MeltingApp.ViewModels
         {
             "Faculties",
             "Username",
-            "Events",
+            //"Events",
             "Universities"
         };
 
@@ -93,9 +93,9 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>();
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
-            _nameToFilter = " ";
+            _nameToFilter = "";
             SearchQuery = new SearchQuery();
-            Event = new Event();
+            //Event = new Event();
         }
 
 
@@ -208,7 +208,7 @@ namespace MeltingApp.ViewModels
                 AllResults = _allFinderStructures;
             }
 
-            else if (FilterToApply.Equals("Events"))
+           /* else if (FilterToApply.Equals("Events"))
             {
                 //obtenim tots els events
                 SearchQuery.query = _nameToFilter;
@@ -238,14 +238,14 @@ namespace MeltingApp.ViewModels
                     ++absoluteCounter;
                 }
                 AllResults = _allFinderStructures;
-            }
+            }*/
         }
 
         void HandleInfoFinderStructureCommand()
         {
             int comptador = -1;
             IEnumerator i;
-            if (FilterToApply.Equals("Events"))
+            /*if (FilterToApply.Equals("Events"))
             {
                 i = AllEvents.GetEnumerator();
                 while (i.MoveNext() && comptador != StructureSelected.absoluteId)
@@ -254,8 +254,8 @@ namespace MeltingApp.ViewModels
                     if (comptador == StructureSelected.absoluteId) Event = (Event)i.Current;
                 }
                 _navigationService.PushAsync<ViewEvent>(this);
-            }
-            else if (FilterToApply.Equals("Faculties")){
+            }*/
+            /*else*/ if (FilterToApply.Equals("Faculties")){
                 i = AllFaculties.GetEnumerator();
                 while (i.MoveNext() && comptador != StructureSelected.absoluteId)
                 {
@@ -291,7 +291,7 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
             }
         }
-        public Event Event
+        /*public Event Event
         {
             get { return _event; }
             set
@@ -299,7 +299,7 @@ namespace MeltingApp.ViewModels
                 _event = value;
                 OnPropertyChanged(nameof(Event));
             }
-        }
+        }*/
         public User User
         {
             get { return _user; }
@@ -355,7 +355,7 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllFaculties));
             }
         }
-        public IEnumerable<Event> AllEvents
+       /* public IEnumerable<Event> AllEvents
         {
             get { return _allEvents; }
             set
@@ -363,7 +363,7 @@ namespace MeltingApp.ViewModels
                 _allEvents = value;
                 OnPropertyChanged(nameof(AllEvents));
             }
-        }
+        }*/
         public FinderStructure Structure
         {
             get { return _finderStructure; }

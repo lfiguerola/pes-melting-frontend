@@ -5,8 +5,12 @@
              Title= "Events">
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{Binding AllEvents}" Header="All Events" Footer="No more events" 
-                      SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
+            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
+                <Label FontSize="14" Text="Text to find:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
+                <Entry x:Name="FilterEntry" Text="{Binding NameWritedToSearch }" WidthRequest="300" ></Entry>
+            </StackLayout>
+            <Button x:Name="FinderButton" Text="Find" Command="{Binding SearchEventCommand}"></Button>
+            <ListView ItemsSource="{Binding AllEvents}" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

@@ -20,6 +20,7 @@
             <Label x:Name="BiographyTitleLabel" Text="BIOGRAPHY" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Label x:Name="BiographyLabel" Text="{Binding User.biography}"></Label>
             <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}" IsVisible="{Binding User.IsButtonVisible}"></Button>
+            <Button x:Name="ChangePassButton" Text="Change Password" Command="{Binding NavigateToChangePassCommand}" IsVisible="{Binding User.IsButtonVisible}"></Button>
             <Button x:Name="DeleteButton" Text="Delete Account" Command="{Binding DeleteAccountCommand}" IsVisible="{Binding User.IsButtonVisible}"></Button>
             <Label Text="{Binding ResponseMessage}"></Label>
         </StackLayout>

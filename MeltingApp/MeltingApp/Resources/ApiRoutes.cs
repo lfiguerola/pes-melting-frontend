@@ -20,7 +20,6 @@ namespace MeltingApp.Resources
             public const string GetProfileUser = "GetProfile";
             public const string EditProfileUser = "EditProfile";
             public const string AvatarProfileUser = "AvatarProfile";
-            //public const string ShowEvent = "ShowEvent";
             public const string ConfirmAssistance = "ConfirmAssitance";
             public const string UnconfirmAssistance = "UnconfirmAssistance";
             public const string GetMyAssistance = "GetUserAssistance";
@@ -42,6 +41,7 @@ namespace MeltingApp.Resources
             public const string ModifyEvent = "ModifyEvent";
             public const string ResetPass = "ResetPass";
             public const string GetAllMyEvents = "GetAllMyEvents";
+            public const string ChangePass = "ChangePass";
         }
 
         public struct Prefix
@@ -76,7 +76,6 @@ namespace MeltingApp.Resources
             public const string EditProfileUser = "/profile";
             public const string AvatarProfileUser = "/profile/avatar";
             public const string GetAllEvents = "/events";
-            //public const string ShowEvent = "/events/5";
             public const string GetUserEvents = "/users/5/events";
             public const string ConfirmAssitance = "/votes";
             public const string UnconfirmAssistance = "/votes/self";
@@ -96,6 +95,7 @@ namespace MeltingApp.Resources
             public const string SearchEvents = "/search/events";
             public const string ResetPass = "/auth/reset";
             public const string GetAllMyEvents = "/events";
+            public const string ChangePass = "/auth/password";
         }
 
     }

@@ -43,12 +43,12 @@ namespace MeltingApp.Services
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
         {
             { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.EditProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.EditProfileUser}"},
-            { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ModifyEvent), $"{ApiRoutes.Prefix.Event_id}"}
+            { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ModifyEvent), $"{ApiRoutes.Prefix.Event_id}"},
+            { new Tuple<Type, string>(typeof(ChangePass), ApiRoutes.Methods.ChangePass), ApiRoutes.Endpoints.ChangePass }
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlGetDictionary { get; set; } = new Dictionary<Tuple<Type, string>,string>
         {
-            //{new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ShowEvent), ApiRoutes.Endpoints.ShowEvent},
             {new Tuple<Type, string>(typeof(VoteStructure), ApiRoutes.Methods.GetMyAssistance),  $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.GetMyAssistance}"},
             {new Tuple<Type, string>(typeof(IEnumerable<User>), ApiRoutes.Methods.AttendeesList),  $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.AttendeesList}"},
             {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowFacultyInfo), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.ShowFacultyInfo}"},

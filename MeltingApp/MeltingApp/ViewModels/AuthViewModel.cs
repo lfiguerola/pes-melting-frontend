@@ -162,12 +162,12 @@ namespace MeltingApp.ViewModels
 
         void HandleNavigateToRegisterPage()
         {
-            _navigationService.SetRootPage<RegisterPage>(this);
+            _navigationService.PushAsync<RegisterPage>(this);
         }
 
         void HandleNavigateToResetPassPage()
         {
-            _navigationService.SetRootPage<ResetPassPage>(this);
+            _navigationService.PushAsync<ResetPassPage>(this);
         }
 
         async void HandleResetPassCommand()

@@ -42,6 +42,9 @@ namespace MeltingApp.ViewModels
 	    private IEnumerable<Event> _allMyEvents;
 	    private SearchQuery _searchquery;
 	    private string _nameToFilter;
+	    private IEnumerable<User> _attendeesList;
+	    private User _user;
+	    private User _userSelected;
 
         public Command CreateEventCommand { get; set; }
 	    public Command ModifyEventCommand { get; set; }
@@ -54,6 +57,8 @@ namespace MeltingApp.ViewModels
         public Command InfoCommentCommand { get; set; }
         public Command NavigateToMyEventListPageCommand { get; set; }
         public Command SearchEventCommand { get; set; }
+        public Command NavigateToAttendeesListCommand { get; set; }
+	    public Command ViewUserCommand { get; set; } 
 	    public Command DeleteEventCommand{ get; set; }
 
 
@@ -104,6 +109,34 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(Addresses));
 	        }
 	    }
+	    public IEnumerable<User> AttendeesList
+	    {
+	        get { return _attendeesList; }
+	        set
+	        {
+	            _attendeesList = value;
+	            OnPropertyChanged(nameof(AttendeesList));
+	        }
+	    }
+	    public User UserSelected
+	    {
+	        get { return _userSelected; }
+	        set
+	        {
+	            _userSelected = value;
+	            OnPropertyChanged(nameof(UserSelected));
+	        }
+	    }
+	    public User User
+	    {
+	        get { return _user; }
+	        set
+	        {
+	            _user = value;
+	            OnPropertyChanged(nameof(User));
+	        }
+	    }
+
         public TimeSpan Time
 	    {
 	        get { return _time; }
@@ -247,6 +280,8 @@ namespace MeltingApp.ViewModels
             InfoCommentCommand = new Command(HandleInfoCommentCommand);
             NavigateToMyEventListPageCommand = new Command(HandleNavigateToMyEventListPageCommand);
             SearchEventCommand = new Command(HandleSearchEventCommand);
+            NavigateToAttendeesListCommand = new Command(HandleNavigateToAttendeesListCommand);
+            ViewUserCommand = new Command(HandleViewUserCommand);
 
             Comment = new Comment();
             Event = new Event();
@@ -626,22 +661,50 @@ namespace MeltingApp.ViewModels
 	        saveEventsInDB(AllMyEvents); //guardem tots els events a la base de dades
         }
 
-	    async void HandleSearchEventCommand()
+	    async void HandleNavigateToAttendeesListCommand()
 	    {
-	        SearchQuery.query = _nameToFilter;
-	        AllEvents = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (success, responseMessage) =>
+	        var meltingUriParser = new MeltingUriParser();
+	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+	        AttendeesList = await _apiClientService.GetAsync<IEnumerable<User>, IEnumerable<User>>(ApiRoutes.Methods.AttendeesList, (success, responseMessage) =>
 	        {
 	            if (success)
 	            {
+	                _navigationService.PushAsync<AttendeesListPage>(this);
+
 
 	            }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-	        });
 
-	        saveEventsInDB(AllEvents);
+                }
+	        }, meltingUriParser);
+        }
+
+	    void HandleViewUserCommand()
+	    {
+	        User = UserSelected;
+	        User.IsButtonVisible = false;
+	        _navigationService.PushAsync<ProfilePage>(this);
+	    }
+
+        async void HandleSearchEventCommand()
+        {
+            SearchQuery.query = _nameToFilter;
+            AllEvents = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (success, responseMessage) =>
+            {
+                if (success)
+                {
+
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+            saveEventsInDB(AllEvents);
         }
     }
+    
 }

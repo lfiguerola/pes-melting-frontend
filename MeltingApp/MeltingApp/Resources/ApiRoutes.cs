@@ -24,6 +24,7 @@ namespace MeltingApp.Resources
             public const string ConfirmAssistance = "ConfirmAssitance";
             public const string UnconfirmAssistance = "UnconfirmAssistance";
             public const string GetMyAssistance = "GetUserAssistance";
+            public const string AttendeesList = "AttendeesList";
             public const string ShowFacultyInfo = "ShowFacultyInfo";
             public const string ShowUniversityInfo = "ShowUniversityInfo";
             public const string GetAllEvents = "GetAllEvents";
@@ -80,6 +81,7 @@ namespace MeltingApp.Resources
             public const string ConfirmAssitance = "/votes";
             public const string UnconfirmAssistance = "/votes/self";
             public const string GetMyAssistance = "/votes/self";
+            public const string AttendeesList = "/attendees";
             public const string ShowFacultyInfo = "/profile/faculty";
             public const string ShowUniversityInfo = "/locations";
             public const string CreateComment = "/comments";

@@ -22,6 +22,7 @@ namespace MeltingApp.Models
         private string _faculty;
         private int _facultyId;
         private string _avatarURL;
+        private bool _isButtonVisible;
        
         /// <summary>
         /// the user name
@@ -185,6 +186,16 @@ namespace MeltingApp.Models
             {
                 _avatarURL = value;
                 OnPropertyChanged(nameof(avatarURL));
+            }
+        }
+
+        public bool IsButtonVisible
+        {
+            get { return _isButtonVisible; }
+            set
+            {
+                _isButtonVisible = value;
+                OnPropertyChanged(nameof(IsButtonVisible));
             }
         }
         

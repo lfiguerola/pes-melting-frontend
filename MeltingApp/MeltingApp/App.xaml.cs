@@ -76,7 +76,12 @@ namespace MeltingApp
             navigationService.RegisterPage<ModifyEvent>();
             navigationService.RegisterPage<ResetPassPage>();
             navigationService.RegisterPage<MyEventList>();
+<<<<<<< HEAD
             navigationService.RegisterPage<AttendeesListPage>();
+=======
+            navigationService.RegisterPage<FacultyPage>();
+            navigationService.RegisterPage<UniversityPage>();
+>>>>>>> 1bcc2923b12878371e7a17863439ac7d84f1451b
         }
 
         

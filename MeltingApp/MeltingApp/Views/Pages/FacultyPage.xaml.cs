@@ -4,12 +4,12 @@ using Xamarin.Forms.Xaml;
 namespace MeltingApp.Views.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StaticInfoPage : ContentPage
+	public partial class FacultyPage : ContentPage
 	{
-		public StaticInfoPage()
+		public FacultyPage()
 		{
-			InitializeComponent ();
+            InitializeComponent();
             NavigationPage.SetHasBackButton(this, true);
         }
-    }
+	}
 }

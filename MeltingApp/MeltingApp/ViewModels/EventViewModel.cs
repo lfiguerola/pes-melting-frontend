@@ -55,6 +55,7 @@ namespace MeltingApp.ViewModels
         public Command NavigateToMyEventListPageCommand { get; set; }
         public Command NavigateToAttendeesListCommand { get; set; }
 	    public Command ViewUserCommand { get; set; } 
+	    public Command DeleteEventCommand{ get; set; }
 
 
 
@@ -246,6 +247,7 @@ namespace MeltingApp.ViewModels
             _dataBaseService = DependencyService.Get<IDataBaseService>();
 
             CreateEventCommand = new Command(HandleCreateEventCommand);
+            DeleteEventCommand = new Command(HandleDeleteEventCommand);
             ModifyEventCommand = new Command(HandleModifyEventCommand);
             NavigateToModifyEventCommand = new Command(HandleNavigateToModifyEventCommand);
             ConfirmAssistanceCommand = new Command(HandleConfirmAssistanceCommand);
@@ -512,6 +514,28 @@ namespace MeltingApp.ViewModels
                 
             }
             var events_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+        }
+
+	    async void HandleDeleteEventCommand()
+	    {
+	        var meltingUriParser = new MeltingUriParser();
+	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+	        await _apiClientService.DeleteAsync<Event, Event>(ApiRoutes.Methods.DeleteEvent,
+	            (isSuccess, responseMessage) =>
+	            {
+	                if (isSuccess)
+	                {
+	                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Event deleted successfully");
+	                    
+	                    _navigationService.PopAsync();
+                        GetAllEvents();
+	                }
+	                else
+	                {
+	                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+	                }
+	            }, meltingUriParser);
         }
 
         private async void HandleOpenMapEventCommand()

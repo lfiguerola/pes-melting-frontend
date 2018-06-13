@@ -70,6 +70,7 @@ namespace MeltingApp.Services
         {
             { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.UnconfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.UnconfirmAssistance}"  },
             { new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.DeleteAccount), $"{ApiRoutes.Prefix.Users}" },
+            { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.DeleteEvent), $"{ApiRoutes.Prefix.Event_id}" },
             { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.DeleteComment), $"{ApiRoutes.Prefix.Comment_id}"}
         };
              

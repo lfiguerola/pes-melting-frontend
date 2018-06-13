@@ -446,6 +446,7 @@ namespace MeltingApp.ViewModels
             }, meltingUriParser);
             if (b)
             {
+                User.IsButtonVisible = true;
                 await _navigationService.PushAsync<ProfilePage>(this);
                 SaveProfileInDB(User);
             }

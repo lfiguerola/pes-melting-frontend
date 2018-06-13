@@ -25,6 +25,12 @@
     <Compile Update="Views\Pages\FinderPage.xaml.cs">
       <DependentUpon>FinderPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Pages\FacultyPage.xaml.cs">
+      <DependentUpon>FacultyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\UniversityPage.xaml.cs">
+      <DependentUpon>UniversityPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Pages\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
@@ -64,6 +70,12 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\MyEventList.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\FacultyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\UniversityPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\ProfilePage.xaml">

@@ -15,6 +15,7 @@ namespace MeltingApp.Views.Pages
 		public AttendeesListPage ()
 		{
 			InitializeComponent ();
-		}
+		    NavigationPage.SetHasBackButton(this, true);
+        }
 	}
 }

@@ -23,12 +23,17 @@ namespace MeltingApp.ViewModels
         private string SelectedCountry;
         private University _mySelectedUniversity;
         private Faculty _mySelectedFaculty;
+        private ChangePass _changePass;
+        private string _oldPass;
+        private string _newPass;
         public Command NavigateToEditProfilePageCommand { get; set; }
         public Command SaveEditProfileCommand { get; set; }
         public Command CreateProfileCommand { get; set; }
         public Command ViewProfileCommand { get; set; }
         public Command ViewUniversitiesCommand { get; set; }
         public Command DeleteAccountCommand { get; set; }
+        public Command NavigateToChangePassCommand { get; set; }
+        public Command ChangePassCommand { get; set; }
         public University MySelectedUniversity
         {
             get => _mySelectedUniversity;
@@ -390,6 +395,36 @@ namespace MeltingApp.ViewModels
                 }
             }
         }
+
+        public ChangePass ChangePass
+        {
+            get { return _changePass; }
+            set
+            {
+                _changePass = value;
+                OnPropertyChanged(nameof(ChangePass));
+            }
+        }
+
+        public string OldPass
+        {
+            get { return _oldPass; }
+            set
+            {
+                _oldPass = value;
+                OnPropertyChanged(nameof(OldPass));
+            }
+        }
+
+        public string NewPass
+        {
+            get { return _newPass; }
+            set
+            {
+                _newPass = value;
+                OnPropertyChanged(nameof(NewPass));
+            }
+        }
        
         public ProfileViewModel()
         {
@@ -401,7 +436,12 @@ namespace MeltingApp.ViewModels
             ViewProfileCommand = new Command(HandleViewProfileCommand);
             CreateProfileCommand = new Command(HandleCreateProfileCommand);
             DeleteAccountCommand = new Command(HandleDeleteAccountCommand);
+            NavigateToChangePassCommand = new Command(HandleNavigateToChangePassCommand);
+            ChangePassCommand = new Command(HandleChangePassCommand);
             User = new User();
+            ChangePass = new ChangePass();
+            _oldPass = "";
+            _newPass = "";
             //Omplim desplegable de universities
             HandleViewUniversitiesCommand();
             HandleViewProfileCommand();
@@ -576,6 +616,43 @@ namespace MeltingApp.ViewModels
             }
         }
 
+        void HandleNavigateToChangePassCommand()
+        {
+            _navigationService.PushAsync<ChangePassPage>(this);
+        }
+
+        async void HandleChangePassCommand()
+        {
+            ChangePass.old_password = _oldPass;
+            ChangePass.password = _newPass;
+            bool b = false;
+            var alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+            var userConsultatDB = _dataBaseService.GetWithChildren<User>(u => u.id == User.user_id);
+            var tokenbuscat = _dataBaseService.Get<Token>(t => t.dbId.Equals(userConsultatDB.Token.dbId));
+
+            await _apiClientService.PutAsync<ChangePass, ChangePass>(ChangePass, ApiRoutes.Methods.ChangePass, (success, responseMessage) =>
+            {
+                if (success)
+                {
+                    b = true;
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Password changed");
+                    _navigationService.SetRootPage<LoginPage>();
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+
+            if (b)
+            {
+                if (tokenbuscat != null)
+                {
+                    _dataBaseService.Delete<Token>(tokenbuscat, true);
+                }
+                alltokens = _dataBaseService.GetCollectionWithChildren<Token>(t => true);
+            }
+        }
 
     }
 }

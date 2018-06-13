@@ -44,6 +44,9 @@
     <EmbeddedResource Update="Views\Pages\AttendeesListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\ChangePassPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\CreateProfilePage.xaml"> </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\AboutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

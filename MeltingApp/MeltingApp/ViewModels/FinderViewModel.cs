@@ -25,7 +25,6 @@ namespace MeltingApp.ViewModels
         private IEnumerable<University> _allUniversities;
         private IEnumerable<Faculty> _allFaculties;
         private IEnumerable<User> _allUsernames;
-        //private IEnumerable<Event> _allEvents;
         private List<FinderStructure> _allFinderStructures;
         private FinderStructure _finderStructure;
         private FinderStructure _structureSelected;
@@ -35,8 +34,6 @@ namespace MeltingApp.ViewModels
         private User _user;
         private Faculty _facultyAux;
         private Faculty _faculty;
-        //private Event _eventAux;
-        //private Event _event;
         private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
@@ -46,7 +43,6 @@ namespace MeltingApp.ViewModels
         {
             "Faculties",
             "Username",
-            //"Events",
             "Universities"
         };
 
@@ -95,7 +91,6 @@ namespace MeltingApp.ViewModels
             _staticInfo = new StaticInfo();
             _nameToFilter = "";
             SearchQuery = new SearchQuery();
-            //Event = new Event();
         }
 
 
@@ -207,55 +202,13 @@ namespace MeltingApp.ViewModels
                 }
                 AllResults = _allFinderStructures;
             }
-
-           /* else if (FilterToApply.Equals("Events"))
-            {
-                //obtenim tots els events
-                SearchQuery.query = _nameToFilter;
-                AllEvents = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (isSuccess, responseMessage) => {
-                    if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                });
-
-                //obtenim iterador i declarem les variables
-                IEnumerator i = AllEvents.GetEnumerator();
-                _allFinderStructures = new List<FinderStructure>();
-
-
-                //recorrem el IEnumerable i l'igualem al resultat
-                while (i.MoveNext())
-                {
-                    _eventAux = (Event)i.Current;
-                    _finderStructure = new FinderStructure();
-                    _finderStructure.absoluteId = absoluteCounter;
-                    _finderStructure.resultId1 = _eventAux.id;
-                    _finderStructure.resultId2 = _eventAux.user_id;
-                    _finderStructure.resultName1 = _eventAux.title;
-                    _finderStructure.resultName2 = _eventAux.description;
-                    _finderStructure.resultName3 = _eventAux.address;
-                    _finderStructure.resultName4 = _eventAux.date;
-                    _finderStructure.resultName5 = _eventAux.name;
-                    _allFinderStructures.Add(_finderStructure);
-                    ++absoluteCounter;
-                }
-                AllResults = _allFinderStructures;
-            }*/
         }
 
         void HandleInfoFinderStructureCommand()
         {
             int comptador = -1;
             IEnumerator i;
-            /*if (FilterToApply.Equals("Events"))
-            {
-                i = AllEvents.GetEnumerator();
-                while (i.MoveNext() && comptador != StructureSelected.absoluteId)
-                {
-                    ++comptador;
-                    if (comptador == StructureSelected.absoluteId) Event = (Event)i.Current;
-                }
-                _navigationService.PushAsync<ViewEvent>(this);
-            }*/
-            /*else*/ if (FilterToApply.Equals("Faculties")){
+            if (FilterToApply.Equals("Faculties")){
                 i = AllFaculties.GetEnumerator();
                 while (i.MoveNext() && comptador != StructureSelected.absoluteId)
                 {
@@ -293,15 +246,6 @@ namespace MeltingApp.ViewModels
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
             }
         }
-        /*public Event Event
-        {
-            get { return _event; }
-            set
-            {
-                _event = value;
-                OnPropertyChanged(nameof(Event));
-            }
-        }*/
         public User User
         {
             get { return _user; }
@@ -357,15 +301,6 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllFaculties));
             }
         }
-       /* public IEnumerable<Event> AllEvents
-        {
-            get { return _allEvents; }
-            set
-            {
-                _allEvents = value;
-                OnPropertyChanged(nameof(AllEvents));
-            }
-        }*/
         public FinderStructure Structure
         {
             get { return _finderStructure; }

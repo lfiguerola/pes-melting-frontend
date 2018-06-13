@@ -10,11 +10,6 @@
         <StackLayout Spacing="0" Padding="0">
             <Label Text="Faculty information" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
 
-            <StackLayout Orientation="Horizontal">
-                <Label FontSize="14" Text="Alias:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Label x:Name="FacultyAliasLabel" Text="{Binding FacultyStaticInfo.alias}" FontSize="14"></Label>
-            </StackLayout>
-
             <StackLayout Orientation="Horizontal" BackgroundColor ="Beige">
                 <Label FontSize="14" Text="Name:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
                 <Label x:Name="FacultyNameLabel" Text="{Binding FacultyStaticInfo.name}"></Label>

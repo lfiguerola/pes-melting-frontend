@@ -23,26 +23,26 @@
                 <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
             </StackLayout>
             <ScrollView>
-                <StackLayout VerticalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                     <ListView ItemsSource="{Binding Path=AllResults}"
-                              SelectedItem="{Binding StructureSelected, Mode=TwoWay}"  x:Name="listView">
+                               SelectedItem="{Binding StructureSelected, Mode=TwoWay}"  x:Name="listView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
                                     <ViewCell.View>
                                         <StackLayout>
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=resultId1}">
+                                                <Label WidthRequest="20" Text="{Binding Path=resultId1}">
                                                     <Label.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
                                                     </Label.GestureRecognizers>
                                                 </Label>
-                                                <Label Text="{Binding Path=resultName2}"></Label>
-                                                <Label Text="{Binding Path=resultName1}"></Label>
-                                                <Label Text="{Binding Path=resultName3}"></Label>
-                                                <Label Text="{Binding Path=resultName4}"></Label>
-                                                <Label Text="{Binding Path=latitude}"></Label>
-                                                <Label Text="{Binding Path=longitude}"></Label>
+                                                <Label WidthRequest="100"  HeightRequest="40" Text="{Binding Path=resultName2}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName1}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName3}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName4}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=latitude}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=longitude}"></Label>
                                                 <Label Text="{Binding Path=resultId2}"></Label>
                                             </StackLayout>
                                         </StackLayout>

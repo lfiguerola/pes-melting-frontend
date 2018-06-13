@@ -8,6 +8,7 @@ using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Validators;
 using MeltingApp.Views.Pages;
+using Plugin.ExternalMaps;
 using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
@@ -40,6 +41,7 @@ namespace MeltingApp.ViewModels
 
         public Command ApplyFinderButtonCommand { get; set; }
         public Command infoFinderStructureCommand { get; set; }
+        public Command OpenMapStaticFacultyCommand { get; set; }
         private List<string> filters = new List<string>
         {
             "Faculties",
@@ -87,6 +89,7 @@ namespace MeltingApp.ViewModels
         {
             ApplyFinderButtonCommand = new Command(HandleApplyFinder);
             infoFinderStructureCommand = new Command(HandleInfoFinderStructureCommand);
+            OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
             _navigationService = DependencyService.Get<INavigationService>();
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
@@ -240,7 +243,6 @@ namespace MeltingApp.ViewModels
 
         void HandleInfoFinderStructureCommand()
         {
-            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Ha escollit l'opció " + StructureSelected.absoluteId + " i es un " + FilterToApply);
             int comptador = -1;
             IEnumerator i;
             if (FilterToApply.Equals("Events"))
@@ -280,7 +282,14 @@ namespace MeltingApp.ViewModels
                 }
                 _navigationService.PushAsync<ProfilePage>(this);
             }
-            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Comptador " + comptador + " Numero: " + SelectedFilterIndex);
+        }
+        private async void HandleOpenMapStaticFacultyCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(Faculty.latitude.ToString()), Double.Parse(Faculty.longitude.ToString()));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
         }
         public Event Event
         {

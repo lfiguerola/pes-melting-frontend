@@ -13,19 +13,22 @@
             <Label Text="{Binding Event.name}"></Label>
             <Label Text="{Binding Event.date}"></Label>
             <Button Text="I'll asssit" Command="{Binding ConfirmAssistanceCommand}"></Button>
+            <Button Text="Modify Event" Command="{Binding NavigateToModifyEventCommand}" IsVisible="{Binding UserOwnsEvent}"></Button>
             <Button Text="View in Maps" Command="{Binding OpenMapEventCommand}"></Button>
             <Entry Text="{Binding Comment.content}"></Entry>
             <Button Text="Create comment" Command="{Binding CreateCommentCommand}"></Button>
             <ScrollView>
                 <StackLayout HeightRequest="200">
-                    <ListView ItemsSource="{Binding AllComments}" x:Name="listView">
+                    <ListView ItemsSource="{Binding AllComments}" SelectedItem="{Binding CommentSelected, Mode=TwoWay}" x:Name="listView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
                                     <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="{Binding user_id}"></Label>
+                                            <Label Text="{Binding username}"></Label>
                                             <Label Text="{Binding content}"/>
+                                            <Button x:Name="DeleteButton" Text="Delete" Command="{Binding Path=BindingContext.InfoCommentCommand, Source = {x:Reference listView}}"
+                                                    CommandParameter="{Binding comment_id}" IsVisible="{Binding IsButtonVisible}"></Button>
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell>

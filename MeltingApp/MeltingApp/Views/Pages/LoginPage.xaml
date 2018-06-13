@@ -64,8 +64,6 @@
                     Opacity="0.8"
                     Margin="20,0"/>
         </Grid>
-
-       
     </ContentPage.Content>
     
 </ContentPage>

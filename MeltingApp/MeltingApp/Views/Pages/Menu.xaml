@@ -14,7 +14,6 @@
                         <viewModels:MenuBarViewModel Title="My profile"/>
                         <viewModels:MenuBarViewModel Title="My university"/>
                         <viewModels:MenuBarViewModel Title="Events"/>
-                        <viewModels:MenuBarViewModel Title="View Event"/>
                         <viewModels:MenuBarViewModel Title="Search"/>
                         <viewModels:MenuBarViewModel Title="Help" />
                         <viewModels:MenuBarViewModel Title="About"/>

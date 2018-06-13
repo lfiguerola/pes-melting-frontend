@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using MeltingApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MeltingApp.Views.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class FinderPage : ContentPage
+	public partial class MyEventList : ContentPage
 	{
-		public FinderPage ()
-        {
-            InitializeComponent ();
-            NavigationPage.SetHasNavigationBar(this, true);
-            BindingContext = new FinderViewModel();
+		public MyEventList ()
+		{
+			InitializeComponent ();
+		    NavigationPage.SetHasBackButton(this, true);
         }
 	}
 }

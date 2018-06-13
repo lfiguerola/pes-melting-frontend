@@ -10,14 +10,12 @@
             <Entry x:Name="EventTitleEntry" Text="{Binding Event.title}"></Entry> <!-- have to create the binding -->
             <Label x:Name="DescriptionLabel" Text="Add a description to the event"></Label>
             <Editor x:Name="DescriptionEntry" Text="{Binding Event.description}"></Editor> <!-- have to create the binding -->
-            <Label x:Name="PhotoLabel" Text="Add a photo for the event"></Label>
-            <Entry x:Name="PhotoEntry" Text="Binding with EventPhoto"></Entry> <!-- have to create the binding and find how to upload a photo -->
             <Label x:Name="DateLabel" Text="Which day will the event be?"></Label>
             <DatePicker x:Name="EventDatePicker" Date="{Binding Date}" MinimumDate="{Binding MinDate}"></DatePicker> <!-- have to create the binding  -->
             <Label x:Name="TimeLabel" Text="When will the event be?"></Label>
             <TimePicker x:Name="EventTimePicker" Time="{Binding Time}"></TimePicker> <!-- have to create the binding -->
             <Label x:Name="LocationLabel" Text="Where will the event be?"></Label>
-            <Entry x:Name="LocationEntry" Text="Binding with EventLocation"></Entry> <!-- have to create the binding and find how to express a location -->
+            <Entry x:Name="LocationEntry" Text="{Binding Event.name}"></Entry> <!-- have to create the binding and find how to express a location -->
 
             <Button Text="Create Event" Command="{Binding CreateEventCommand}"></Button>
             <Label Text="{Binding ResponseMessage}"></Label>

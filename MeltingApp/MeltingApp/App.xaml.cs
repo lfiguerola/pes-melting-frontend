@@ -73,6 +73,9 @@ namespace MeltingApp
             navigationService.RegisterPage<CreateProfilePage>();
             navigationService.RegisterPage<HelpPage>();
             navigationService.RegisterPage<AboutPage>();
+            navigationService.RegisterPage<ModifyEvent>();
+            navigationService.RegisterPage<ResetPassPage>();
+            navigationService.RegisterPage<MyEventList>();
         }
 
         

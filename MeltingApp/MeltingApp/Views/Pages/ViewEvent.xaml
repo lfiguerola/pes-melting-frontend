@@ -12,6 +12,7 @@
             <Label Text="{Binding Event.address}"></Label>
             <Label Text="{Binding Event.name}"></Label>
             <Label Text="{Binding Event.date}"></Label>
+            <Button Text="See who is going" Command="{Binding NavigateToAttendeesListCommand}"></Button>
             <Button Text="I'll asssit" Command="{Binding ConfirmAssistanceCommand}"></Button>
             <Button Text="Modify Event" Command="{Binding NavigateToModifyEventCommand}" IsVisible="{Binding UserOwnsEvent}"></Button>
             <Button Text="Delete Event" Command="{Binding DeleteEventCommand}" IsVisible="{Binding UserOwnsEvent}"></Button>

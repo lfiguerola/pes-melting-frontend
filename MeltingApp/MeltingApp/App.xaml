@@ -51,6 +51,13 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
 
+            <Style x:Key="RegisterTitleLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource LoginButtonBackgroundColor}" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource TitleFontSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+
             <Style x:Key="ProfileTagLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource BodyTextColor}" />
                 <Setter Property="FontFamily" Value="{StaticResource RegularFontFamily}" />

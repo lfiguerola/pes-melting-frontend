@@ -6,29 +6,38 @@
              BackgroundImage="background.png"
              Title= "Register">
     <ContentPage.Content>
-        <Grid>
+        <Grid RowSpacing="0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1" Margin="20,0,20,0">
+            <Grid Grid.Row="1" Margin="0,10,0,0" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>                   
+                </Grid.RowDefinitions>
+                <Image Grid.Row="1" Source="logoLogin.png" HeightRequest="210" VerticalOptions="CenterAndExpand"/>
+                <Label Grid.Row="2" Text="Register" Style="{StaticResource RegisterTitleLabel}" FontSize="Large"/>
+              
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="20,0">
 
                 <Grid.RowDefinitions>
-
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="*"/>
-
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Image Source="logoLogin.png" HeightRequest="100" VerticalOptions="EndAndExpand"/>
-                <Label Grid.Row="1" Text="Register Page" VerticalOptions="Center" TextColor="#C8B7B7FF"></Label>
+                <Entry Grid.Row="1" Placeholder="Username" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.username}">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
                 <Entry Grid.Row="2" Placeholder="Email" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.email}">
                     <Entry.Behaviors>
                         <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
@@ -39,15 +48,30 @@
                         <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
                     </Entry.Behaviors>
                 </Entry>
-                <Entry Grid.Row="4" Placeholder="Username" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.username}" IsPassword="True">
-                    <Entry.Behaviors>
-                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
-                    </Entry.Behaviors>
-                </Entry>
-                <Button Text="Register" BackgroundColor="#CCCCCC" TextColor="Black" HeightRequest="50" VerticalOptions="Start" Grid.Row="5" Command="{Binding RegisterUserCommand}"/>
-                <Label Text="{Binding ResponseMessage}"></Label>
-
             </Grid>
-        </Grid>
+
+            <Grid Grid.Row="3" Margin="20,10,20,10" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="1">
+                    <Button Text="Sign up" 
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource SignUpButton}"
+                         Command="{Binding RegisterUserCommand}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2">
+                    <Button  Text="Go back to LogIn" 
+                                 HorizontalOptions="CenterAndExpand"                              
+                        Style="{StaticResource LoginButton}"
+                        Command="{Binding NavigateToLoginPageCommand}"/>
+                </StackLayout>
+                
+            </Grid>
+
+         </Grid>
+       
     </ContentPage.Content>    
 </ContentPage>

@@ -4,7 +4,7 @@
              x:Class="MeltingApp.Views.Pages.MyEventList">
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{Binding AllMyEvents}" Header="All My Events" Footer="No more events" 
+            <ListView ItemsSource="{Binding AllMyEvents}" Header="All My Events" 
                       SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
                 <ListView.ItemTemplate>
                     <DataTemplate>

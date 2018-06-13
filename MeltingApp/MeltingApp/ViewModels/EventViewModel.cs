@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using Geocoding;
 using Geocoding.Google;
@@ -39,6 +40,8 @@ namespace MeltingApp.ViewModels
 	    private bool _userOwnsEvent;
 	    private int _assitance;
 	    private IEnumerable<Event> _allMyEvents;
+	    private SearchQuery _searchquery;
+	    private string _nameToFilter;
 	    private IEnumerable<User> _attendeesList;
 	    private User _user;
 	    private User _userSelected;
@@ -53,10 +56,10 @@ namespace MeltingApp.ViewModels
         public Command OpenMapEventCommand { get; set; }
         public Command InfoCommentCommand { get; set; }
         public Command NavigateToMyEventListPageCommand { get; set; }
+        public Command SearchEventCommand { get; set; }
         public Command NavigateToAttendeesListCommand { get; set; }
 	    public Command ViewUserCommand { get; set; } 
 	    public Command DeleteEventCommand{ get; set; }
-
 
 
         public Event Event
@@ -240,6 +243,25 @@ namespace MeltingApp.ViewModels
 	        }
 	    }
 
+	    public SearchQuery SearchQuery
+	    {
+	        get { return _searchquery; }
+	        set
+	        {
+	            _searchquery = value;
+	            OnPropertyChanged(nameof(SearchQuery));
+	        }
+	    }
+	    public String NameWritedToSearch
+	    {
+	        get { return _nameToFilter; }
+	        set
+	        {
+	            _nameToFilter = value;
+	            OnPropertyChanged(nameof(NameWritedToSearch));
+	        }
+	    }
+
         public EventViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
@@ -257,6 +279,7 @@ namespace MeltingApp.ViewModels
             OpenMapEventCommand = new Command(HandleOpenMapEventCommand);
             InfoCommentCommand = new Command(HandleInfoCommentCommand);
             NavigateToMyEventListPageCommand = new Command(HandleNavigateToMyEventListPageCommand);
+            SearchEventCommand = new Command(HandleSearchEventCommand);
             NavigateToAttendeesListCommand = new Command(HandleNavigateToAttendeesListCommand);
             ViewUserCommand = new Command(HandleViewUserCommand);
 
@@ -269,6 +292,8 @@ namespace MeltingApp.ViewModels
             Event.address = "C/ Jordi Girona, 1";
             Event.name = "Infern";
             MinDate = DateTime.Today;
+            _nameToFilter = "";
+            SearchQuery = new SearchQuery();
 
             GetAllEvents();
         }
@@ -647,11 +672,13 @@ namespace MeltingApp.ViewModels
 	            {
 	                _navigationService.PushAsync<AttendeesListPage>(this);
 
+
 	            }
 	            else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-	            }
+
+                }
 	        }, meltingUriParser);
         }
 
@@ -661,6 +688,23 @@ namespace MeltingApp.ViewModels
 	        User.IsButtonVisible = false;
 	        _navigationService.PushAsync<ProfilePage>(this);
 	    }
+
+        async void HandleSearchEventCommand()
+        {
+            SearchQuery.query = _nameToFilter;
+            AllEvents = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (success, responseMessage) =>
+            {
+                if (success)
+                {
+
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }
+            });
+            saveEventsInDB(AllEvents);
+        }
     }
     
 }

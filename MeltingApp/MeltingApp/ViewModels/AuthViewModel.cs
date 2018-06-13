@@ -176,7 +176,7 @@ namespace MeltingApp.ViewModels
                 ResponseMessage = responseMessage;
                 if (isSuccess)
                 {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Password reseted successfully");
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Password reseted successfully, check your email and follow the instructions!");
                     _navigationService.SetRootPage<LoginPage>();
                 }
                 else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);

@@ -658,6 +658,7 @@ namespace MeltingApp.ViewModels
 	    void HandleViewUserCommand()
 	    {
 	        User = UserSelected;
+	        User.IsButtonVisible = false;
 	        _navigationService.PushAsync<ProfilePage>(this);
 	    }
     }

@@ -19,8 +19,8 @@
             <Label x:Name="UniversityLabel" Text="{Binding User.university}"></Label>
             <Label x:Name="BiographyTitleLabel" Text="BIOGRAPHY" VerticalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
             <Label x:Name="BiographyLabel" Text="{Binding User.biography}"></Label>
-            <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}"></Button>
-            <Button x:Name="DeleteButton" Text="Delete Account" Command="{Binding DeleteAccountCommand}"></Button>
+            <Button x:Name="EditButton" Text="Edit" Command="{Binding NavigateToEditProfilePageCommand}" IsVisible="{Binding User.IsButtonVisible}"></Button>
+            <Button x:Name="DeleteButton" Text="Delete Account" Command="{Binding DeleteAccountCommand}" IsVisible="{Binding User.IsButtonVisible}"></Button>
             <Label Text="{Binding ResponseMessage}"></Label>
         </StackLayout>
     </ContentPage.Content>

@@ -280,6 +280,8 @@ namespace MeltingApp.ViewModels
                     ++comptador;
                     if (comptador == StructureSelected.absoluteId) User = (User)i.Current;
                 }
+
+                User.IsButtonVisible = false;
                 _navigationService.PushAsync<ProfilePage>(this);
             }
         }

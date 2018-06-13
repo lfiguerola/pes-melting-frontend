@@ -31,13 +31,13 @@
                                 <ViewCell>
                                     <ViewCell.View>
                                         <StackLayout>
-                                            <StackLayout HeightRequest="60" Orientation="Horizontal">
+                                            <StackLayout Orientation="Horizontal">
                                                 <!--<Label WidthRequest="20" Text="{Binding Path=resultId1}">
                                                     <Label.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
                                                     </Label.GestureRecognizers>
                                                 </Label>-->
-                                                <Label WidthRequest="60" Text="{Binding Path=resultName2}">
+                                                <Label WidthRequest="70" Text="{Binding Path=resultName2}">
                                                     <Label.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
                                                     </Label.GestureRecognizers>

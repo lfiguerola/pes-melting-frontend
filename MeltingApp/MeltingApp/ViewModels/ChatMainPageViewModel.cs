@@ -79,7 +79,7 @@ namespace MeltingApp.ViewModels
 
             Messages = new ObservableRangeCollection<Message>();
 
-            SendChatQuery = new
+            SendChatQuery = new SendChatQuery();
 
         }
 

@@ -2,37 +2,71 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeltingApp.Views.Pages.EventList"
-             Title= "Events">
+             Title= "Events"
+             BackgroundColor="LightGray">
+    <!--BackgroundColor="#FF5C5CA1"-->
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
-                <Label FontSize="14" Text="Text to find:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Entry x:Name="FilterEntry" Text="{Binding NameWritedToSearch }" WidthRequest="300" ></Entry>
-            </StackLayout>
-            <Button x:Name="FinderButton" Text="Find" Command="{Binding SearchEventCommand}"></Button>
-            <ListView ItemsSource="{Binding AllEvents}" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
+            <Grid ColumnSpacing="0" Margin="20,0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Entry Grid.Column="1" x:Name="FilterEntry" Placeholder="Find your event" Text="{Binding NameWritedToSearch }" ></Entry>
+                <Button Grid.Column="2" x:Name="FinderButton" Style="{StaticResource AppButton}" Text="Search" Command="{Binding SearchEventCommand}"></Button>
+            </Grid>
+            
+            <ListView ItemsSource="{Binding AllEvents}" RowHeight="120" SeparatorVisibility="None" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Vertical">
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding title}">
-                                    <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
+                            <!--<StackLayout Padding="10,10,10,10">-->
+                            <Frame OutlineColor="Black" Margin="20,5" HasShadow="True" BackgroundColor="#B2B2E5" Opacity="0,6">
+                                    <Grid RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <!--<RowDefinition Height="*" />-->
+                                        </Grid.RowDefinitions>
+
+                                        <Label Grid.Row="1" 
+                                               Text="{Binding title}"
+                                               HorizontalOptions="CenterAndExpand"
+                                               Style="{StaticResource EventTitleLabel}">
+                                                
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
                                                               CommandParameter="{Binding event_id}" />
-                                        </Label.GestureRecognizers>
-                                    </Label>
-                                    <Label Text="{Binding description}"/>
-                                    <Label Text="{Binding name}"/>
-                                    <Label Text="{Binding date}"/>
-                                </StackLayout>
-                            </StackLayout>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <!--<Label Grid.Row="2" Text="{Binding description}"/>-->
+                                    <Label Grid.Row="2" Margin="0,10,0,0" Text="{Binding date}" 
+                                           HorizontalOptions="Center" Style="{StaticResource DataEvent}"/>
+                                    
+
+                                    <Grid Grid.Row="3" ColumnSpacing="0" HorizontalOptions="Center" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout>
+                                            <Image Grid.Column="1" Source="location.png" WidthRequest="15" HeightRequest="15" Margin="0,5,0,0"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="2">
+                                            <Label Text="{Binding name}" Style="{StaticResource LocationEventLabel}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </Grid>
+                                </Frame>
+                            <!--</StackLayout>-->
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="ViewButton" Text="Add Event" Command="{Binding NavigateToCreateEventPageCommand}"></Button>
-            <Button x:Name="ViewMyEventsButton" Text="My Events" Command="{Binding NavigateToMyEventListPageCommand}"></Button>
+            <Button x:Name="ViewButton" Margin="20,0" Text="Add Event" Command="{Binding NavigateToCreateEventPageCommand}" Style="{StaticResource AppButton}"></Button>
+            <Button x:Name="ViewMyEventsButton" Margin="20,0" Text="My Events" Command="{Binding NavigateToMyEventListPageCommand}" Style="{StaticResource AppButton}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

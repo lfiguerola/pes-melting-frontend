@@ -10,6 +10,7 @@
     <PackageReference Include="FluentValidation" Version="7.5.2" />
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Google" Version="4.0.1" />
+    <PackageReference Include="LiveXAML" Version="2.1.34" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
     <PackageReference Include="SQLiteNetExtensions" Version="2.0.0" />

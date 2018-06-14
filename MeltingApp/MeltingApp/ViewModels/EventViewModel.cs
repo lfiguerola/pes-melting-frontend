@@ -45,6 +45,7 @@ namespace MeltingApp.ViewModels
 	    private IEnumerable<User> _attendeesList;
 	    private User _user;
 	    private User _userSelected;
+	    private int _attendeesNumber;
 
         public Command CreateEventCommand { get; set; }
 	    public Command ModifyEventCommand { get; set; }
@@ -165,7 +166,7 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(MinDate));
 	        }
 	    }
-    public string ResponseMessage
+        public string ResponseMessage
 	    {
 	        get { return _responseMessage; }
 	        set
@@ -174,7 +175,16 @@ namespace MeltingApp.ViewModels
 	            OnPropertyChanged(nameof(ResponseMessage));
 	        }
 	    }
-	    public Boolean UserAssists
+	    public int AttendeesNumber
+	    {
+	        get { return _attendeesNumber; }
+	        set
+	        {
+	            _attendeesNumber = value;
+	            OnPropertyChanged(nameof(AttendeesNumber));
+	        }
+	    }
+        public Boolean UserAssists
         {
 	        get { return _userAssists; }
 	        set
@@ -354,6 +364,8 @@ namespace MeltingApp.ViewModels
             {
                 //consultem tots els comentaris de l'event
                 GetAllComments();
+                GetAttendees();
+                AttendeesNumber = AttendeesList.Count();
                 if (Event.user_id == App.LoginRequest.LoggedUserIdBackend)
                 {
                     UserOwnsEvent = true;
@@ -661,28 +673,12 @@ namespace MeltingApp.ViewModels
 	        saveEventsInDB(AllMyEvents); //guardem tots els events a la base de dades
         }
 
-	    async void HandleNavigateToAttendeesListCommand()
+	    void HandleNavigateToAttendeesListCommand()
 	    {
-	        var meltingUriParser = new MeltingUriParser();
-	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
-
-	        AttendeesList = await _apiClientService.GetAsync<IEnumerable<User>, IEnumerable<User>>(ApiRoutes.Methods.AttendeesList, (success, responseMessage) =>
-	        {
-	            if (success)
-	            {
-	                _navigationService.PushAsync<AttendeesListPage>(this);
-
-
-	            }
-	            else
-	            {
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-
-                }
-	        }, meltingUriParser);
+	        _navigationService.PushAsync<AttendeesListPage>(this);
         }
 
-	    void HandleViewUserCommand()
+        void HandleViewUserCommand()
 	    {
 	        User = UserSelected;
 	        User.IsButtonVisible = false;
@@ -704,6 +700,26 @@ namespace MeltingApp.ViewModels
                 }
             });
             saveEventsInDB(AllEvents);
+        }
+
+	    async void GetAttendees()
+	    {
+	        var meltingUriParser = new MeltingUriParser();
+	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
+
+	        AttendeesList = await _apiClientService.GetAsync<IEnumerable<User>, IEnumerable<User>>(ApiRoutes.Methods.AttendeesList, (success, responseMessage) =>
+	        {
+	            if (success)
+	            {
+
+
+	            }
+	            else
+	            {
+	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+
+	            }
+	        }, meltingUriParser);
         }
     }
     

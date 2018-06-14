@@ -3,61 +3,90 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
              x:Class="MeltingApp.Views.Pages.FinderPage"
-             Title= "Search">
+             Title= "Search"
+             BackgroundColor="#d4d9d5">
     <ContentPage.Content>
         <StackLayout>
-        
-            <StackLayout Spacing="0" Padding="0">
-                <Label Text="Finder" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackLayout>
+            <Grid Grid.Row="1" Margin="0,0,0,0" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="1" Source="logoLogin.png" HeightRequest="60" VerticalOptions="CenterAndExpand"/>
+                <Label Grid.Row="2" Text="Finder" Style="{StaticResource FinderTitleLabel}" FontSize="Large"/>
+            </Grid>
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
-                <Label FontSize="14" Text="Text to find:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Entry x:Name="FilterEntry" Text="{Binding NameWritedToSearch }" WidthRequest="300" ></Entry>
-            </StackLayout>
+            <Grid Grid.Row="2" Margin="20,0">
 
-            <StackLayout Orientation="Horizontal" Spacing="0" Padding="0">
-                <Label FontSize="14" Text="Filter:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                <Picker x:Name="FilterPicker" SelectedIndex="{Binding SelectedFilterIndex }" ItemsSource="{Binding Filters}" WidthRequest="300" ></Picker>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
-            </StackLayout>
-            <ScrollView>
-                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                    <ListView ItemsSource="{Binding Path=AllResults}"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Entry Grid.Row="1" Placeholder="What would you search?" PlaceholderColor="Black" TextColor="Black" Text="{Binding NameWritedToSearch}">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                    <Picker Grid.Row="2" Title="Select one category!" TextColor="Black" SelectedIndex="{Binding SelectedFilterIndex }" ItemsSource="{Binding Filters}" ></Picker>
+            </Grid>
+
+             <Button Grid.Row="4" Text="Search"
+                    Style="{StaticResource AppButton}"
+                    Command="{Binding ApplyFinderButtonCommand}"
+                    Margin="20,0"/>
+        </Grid>
+        <ListView ItemsSource="{Binding Path=AllResults}" RowHeight="120"
                                SelectedItem="{Binding StructureSelected, Mode=TwoWay}"  x:Name="listView">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.View>
-                                        <StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <!--<Label WidthRequest="20" Text="{Binding Path=resultId1}">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
-                                                    </Label.GestureRecognizers>
-                                                </Label>-->
-                                                <Label WidthRequest="70" Text="{Binding Path=resultName2}">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
-                                                    </Label.GestureRecognizers>
-                                                </Label>
-                                                <Label WidthRequest="100" Text="{Binding Path=resultName1}"></Label>
-                                                <Label WidthRequest="100" Text="{Binding Path=resultName3}"></Label>
-                                                <Label WidthRequest="100" Text="{Binding Path=resultName4}"></Label>
-                                                <!--<Label WidthRequest="100" Text="{Binding Path=latitude}"></Label>
-                                                <Label WidthRequest="100" Text="{Binding Path=longitude}"></Label>
-                                                <Label Text="{Binding Path=resultId2}"></Label>-->
-                                            </StackLayout>
-                                        </StackLayout>
-                                    </ViewCell.View>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackLayout>
-            </ScrollView>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <!--<StackLayout Padding="10,10,10,10">-->
+                        <Frame OutlineColor="Black" Margin="20,5" HasShadow="True" BackgroundColor="#B2B2E5" Opacity="0,6">
+                            <Grid RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <!--<RowDefinition Height="*" />-->
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="1" 
+                                               Text="{Binding Path=resultName2}"
+                                               HorizontalOptions="CenterAndExpand"
+                                               Style="{StaticResource EventTitleLabel}">
+
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <!--<Label Grid.Row="2" Text="{Binding description}"/>-->
+                                <Label Grid.Row="2" Margin="0,10,0,0" Text="{Binding Path=resultName1}" 
+                                           HorizontalOptions="Center" Style="{StaticResource EventTitleLabel2}"/>
+
+                                <Label Grid.Row="3" Margin="0,10,0,0" Text="{Binding Path=resultName3}" 
+                                           HorizontalOptions="Center" Style="{StaticResource DataEvent}"/>
+
+                                <Label Grid.Row="4" Margin="0,10,0,0" Text="{Binding Path=resultName4}" 
+                                           HorizontalOptions="Center" Style="{StaticResource LocationEventLabel}"/>
+                             </Grid>
+                        </Frame>
+                        <!--</StackLayout>-->
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

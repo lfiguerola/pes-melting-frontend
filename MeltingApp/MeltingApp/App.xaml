@@ -59,6 +59,13 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
 
+            <Style x:Key="FinderTitleLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource TitleFontSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+            
             <Style x:Key="ProfileTagLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource BodyTextColor}" />
                 <Setter Property="FontFamily" Value="{StaticResource RegularFontFamily}" />
@@ -110,7 +117,14 @@
                 <Setter Property="FontSize" Value="{StaticResource TagTextFontSize}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
-            
+
+            <Style x:Key="EventTitleLabel2" TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource StatsCaptionFontSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+
             <Style x:Key="AppButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
                 <Setter Property="TextColor" Value="White" />

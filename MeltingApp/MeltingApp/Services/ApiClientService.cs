@@ -37,7 +37,8 @@ namespace MeltingApp.Services
             { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.ConfirmAssitance}"},
             { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.CreateComment}" },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.CreateProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.CreateProfileUser}"},
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ResetPass), ApiRoutes.Endpoints.ResetPass  }
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ResetPass), ApiRoutes.Endpoints.ResetPass  },
+            {new Tuple<Type, string>(typeof(SendChatQuery),ApiRoutes.Methods.SendMessageChat), ApiRoutes.Endpoints.SendMessageChat}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()

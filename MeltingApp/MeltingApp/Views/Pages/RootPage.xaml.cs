@@ -63,6 +63,13 @@ namespace MeltingApp.Views.Pages
                         vm.NavigateToEventViewModelCommand.Execute(null);
                     }
                 }
+                else if (itemTitle == "Chat") {
+                    if (vm.NavigateToChatMainPageViewModelCommand.CanExecute(null))
+                    {
+                        vm.NavigateToChatMainPageViewModelCommand.Execute(null);
+                    }
+
+                }
                 else if (itemTitle == "Search")
                 {
                     if (vm.NavigateToFinderPage.CanExecute(null))
@@ -70,14 +77,14 @@ namespace MeltingApp.Views.Pages
                         vm.NavigateToFinderPage.Execute(null);
                     }
                 }
-                else if(itemTitle == "Help")
+                else if (itemTitle == "Help")
                 {
                     if (vm.NavigateToHelpPageCommand.CanExecute(null))
                     {
                         vm.NavigateToHelpPageCommand.Execute(null);
                     }
                 }
-                else if(itemTitle == "About")
+                else if (itemTitle == "About")
                 {
                     if (vm.NavigateToAboutPageCommand.CanExecute(null))
                     {

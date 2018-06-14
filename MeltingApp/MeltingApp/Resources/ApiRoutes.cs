@@ -40,6 +40,8 @@ namespace MeltingApp.Resources
             public const string ModifyEvent = "ModifyEvent";
             public const string ResetPass = "ResetPass";
             public const string GetAllMyEvents = "GetAllMyEvents";
+            public const string SendMessageChat = "/chat/messages";
+            //public const string GetAllMessagesChat = "/chat/messages";
         }
 
         public struct Prefix
@@ -93,6 +95,9 @@ namespace MeltingApp.Resources
             public const string SearchEvents = "/search/events";
             public const string ResetPass = "/auth/reset";
             public const string GetAllMyEvents = "/events";
+            public const string SendMessageChat = "/chat/messages";
+            //public const string GetAllMessagesChat = "/chat/messages";
+
         }
 
     }

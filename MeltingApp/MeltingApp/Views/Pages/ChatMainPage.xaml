@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.ChatMainPage"
+             xmlns:local="clr-namespace:MeltingApp; assembly=MeltingApp"
+             xmlns:models ="clr-namespace:MeltingApp.Models; assembly=MeltingApp">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <models:MyDataTemplateSelector x:Key="MessageTemplateSelector"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <Grid RowSpacing="0" ColumnSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListView 
+			x:Name="MessagesListView" 
+			ItemTemplate="{StaticResource MessageTemplateSelector}" 
+			ItemsSource="{Binding Messages}" 
+			HasUnevenRows="True" 
+			ItemSelected="MyListView_OnItemSelected" 
+			ItemTapped="MyListView_OnItemTapped" 
+			SeparatorVisibility="None" />
+
+        <StackLayout Orientation="Horizontal" Grid.Row="1" Padding="10" BackgroundColor="#EFEFEF">
+            <Entry 
+			    HorizontalOptions="FillAndExpand" 
+				HeightRequest="25" 
+				Placeholder="Message" 
+				Text="{Binding OutGoingText}"/>
+            <Button 
+				Text="Send" 
+				Command="{Binding SendCommand}"/>
+        </StackLayout>
+        
+    </Grid>
+</ContentPage>

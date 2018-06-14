@@ -22,6 +22,7 @@ namespace MeltingApp.ViewModels
         public Command NavigateToFinderPage { get; set; }
         public Command NavigateToHelpPageCommand { get; set; }
         public Command NavigateToAboutPageCommand { get; set; }
+        public Command NavigateToChatMainPageViewModelCommand { get; set;}
 
         public string ResponseMessage
         {
@@ -44,6 +45,7 @@ namespace MeltingApp.ViewModels
             NavigateToHelpPageCommand = new Command(HandleNavigateToHelpCommand);
             NavigateToAboutPageCommand = new Command(HandleNavigateToAboutCommand);
             NavigateToFinderPage = new Command(HandleFinderCommand);
+            NavigateToChatMainPageViewModelCommand = new Command(HandleNavigateToChatMainPageCommand);
         }
 
         void HandleNavigateToHelpCommand()
@@ -81,5 +83,10 @@ namespace MeltingApp.ViewModels
             /*rellenar*/
             _navigationService.PushAsync<FinderPage>();
         }
+
+        void HandleNavigateToChatMainPageCommand(){
+            _navigationService.PushAsync<ChatMainPage>();
+       }
+        
     }
 }

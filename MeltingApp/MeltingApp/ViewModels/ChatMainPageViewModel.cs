@@ -95,7 +95,7 @@ namespace MeltingApp.ViewModels
         async void HandGetAllMessages() {
             DateTime dateTime = DateTime.Now;
             TimeChatQuery.since = (int)dateTime.TimeOfDay.TotalMilliseconds;
-           var listMessages = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<SendChatQuery>>(TimeChatQuery,ApiRoutes.Methods.GetAllMessagesChat, (isSuccess, responseMessage) => {
+           GetAllMessages = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<SendChatQuery>>(TimeChatQuery,ApiRoutes.Methods.GetAllMessagesChat, (isSuccess, responseMessage) => {
 
                 if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 

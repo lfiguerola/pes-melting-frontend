@@ -5,10 +5,7 @@
              Title="Melting App">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Main Page!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-
+            <Button x:Name="ViewMyFacultyButton" Text="See information about my faculty" Command="{Binding NavigateMyFacultyInformationCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

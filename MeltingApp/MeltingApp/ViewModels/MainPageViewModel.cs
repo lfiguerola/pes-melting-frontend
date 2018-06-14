@@ -14,6 +14,9 @@ namespace MeltingApp.ViewModels
         private string _responseMessage;
         private User _user;
         private Event _event;
+        private Faculty _faculty;
+
+        public Command NavigateMyFacultyInformationCommand { get; set; }
 
          public User User
         {
@@ -33,6 +36,15 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(Event));
             }
         }
+        public Faculty Faculty
+        {
+            get { return _faculty; }
+            set
+            {
+                _faculty = value;
+                OnPropertyChanged(nameof(Faculty));
+            }
+        }
 
         public string ResponseMessage
         {
@@ -49,6 +61,8 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             _dataBaseService = DependencyService.Get<IDataBaseService>();
+            NavigateMyFacultyInformationCommand = new Command(HandleNavigateMyFacultyInformationCommand);
+
             Event = new Event();
             User = new User();
 
@@ -106,5 +120,19 @@ namespace MeltingApp.ViewModels
             _navigationService.SetRootPage<CreateProfilePage>();
         }
 
+        async void HandleNavigateMyFacultyInformationCommand()
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            Faculty = await _apiClientService.GetAsync<Faculty, Faculty>(ApiRoutes.Methods.ShowFacultyInfo, (isSuccess, responseMessage) => {
+                ResponseMessage = responseMessage;
+                if (isSuccess)
+                {
+                    _navigationService.PushAsync<FacultyPage>(this);
+                }
+                else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            }, meltingUriParser);
+        }
     }
 }

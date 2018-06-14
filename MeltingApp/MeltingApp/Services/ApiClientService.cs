@@ -51,8 +51,8 @@ namespace MeltingApp.Services
         {
             {new Tuple<Type, string>(typeof(VoteStructure), ApiRoutes.Methods.GetMyAssistance),  $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.GetMyAssistance}"},
             {new Tuple<Type, string>(typeof(IEnumerable<User>), ApiRoutes.Methods.AttendeesList),  $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.AttendeesList}"},
-            {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowFacultyInfo), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.ShowFacultyInfo}"},
-            {new Tuple<Type, string>(typeof(StaticInfo), ApiRoutes.Methods.ShowUniversityInfo), $"{ApiRoutes.Endpoints.ShowUniversityInfo}{ApiRoutes.Prefix.University_id}"},
+            {new Tuple<Type, string>(typeof(Faculty), ApiRoutes.Methods.ShowFacultyInfo), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.ShowFacultyInfo}"},
+            {new Tuple<Type, string>(typeof(University), ApiRoutes.Methods.ShowUniversityInfo), $"{ApiRoutes.Endpoints.ShowUniversityInfo}{ApiRoutes.Prefix.University_id}"},
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.GetProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetProfileUser}"},
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllEvents), $"{ApiRoutes.Endpoints.GetAllEvents}"},
             {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetEventComments), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.GetEventComments}"},

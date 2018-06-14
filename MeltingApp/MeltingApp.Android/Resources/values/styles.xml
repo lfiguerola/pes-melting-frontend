@@ -20,6 +20,9 @@
     <!-- You can also set colorControlNormal, colorControlActivated
          colorControlHighlight and colorSwitchThumbNormal. -->
     <item name="windowActionModeOverlay">true</item>
+    <!-- Color item listview selected--><!--
+    <item name="android:colorActivatedHighlight">#515169</item>-->
+    
 
     <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
   </style>

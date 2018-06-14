@@ -16,7 +16,15 @@ namespace MeltingApp.Views.Pages
 		{
 			InitializeComponent ();
             NavigationPage.SetHasBackButton(this, true);
+         }         
 
+        protected override void OnAppearing()
+        {
+            InvalidateMeasure();
+            base.OnAppearing();
         }
-	}
+
+    }
+
+    
 }

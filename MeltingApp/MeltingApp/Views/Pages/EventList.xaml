@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeltingApp.Views.Pages.EventList"
+             xmlns:controls="clr-namespace:SuaveControls.Views;assembly=SuaveControls.FloatingActionButton"
              Title= "Events"
-             BackgroundColor="LightGray">
+             BackgroundColor="#d4d9d5">
     <!--BackgroundColor="#FF5C5CA1"-->
     <ContentPage.Content>
         <StackLayout>
@@ -14,6 +15,8 @@
                 </Grid.ColumnDefinitions>
                 <Entry Grid.Column="1" x:Name="FilterEntry" Placeholder="Find your event" Text="{Binding NameWritedToSearch }" ></Entry>
                 <Button Grid.Column="2" x:Name="FinderButton" Style="{StaticResource AppButton}" Text="Search" Command="{Binding SearchEventCommand}"></Button>
+                <!--<controls:FloatingActionButton Grid.Column="2" Image="search_64.png" HeightRequest="40" ButtonColor="#FF5C5CA1" Command="{Binding SearchEventCommand}" />-->
+                
             </Grid>
             
             <ListView ItemsSource="{Binding AllEvents}" RowHeight="120" SeparatorVisibility="None" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
@@ -58,15 +61,26 @@
                                             <Label Text="{Binding name}" Style="{StaticResource LocationEventLabel}"/>
                                         </StackLayout>
                                     </Grid>
+                         
                                 </Grid>
                                 </Frame>
                             <!--</StackLayout>-->
                         </ViewCell>
-                    </DataTemplate>
+                         </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="ViewButton" Margin="20,0" Text="Add Event" Command="{Binding NavigateToCreateEventPageCommand}" Style="{StaticResource AppButton}"></Button>
-            <Button x:Name="ViewMyEventsButton" Margin="20,0" Text="My Events" Command="{Binding NavigateToMyEventListPageCommand}" Style="{StaticResource AppButton}"></Button>
+            <!--<Button x:Name="ViewButton" Margin="20,0" Text="Add Event" Command="{Binding NavigateToCreateEventPageCommand}" Style="{StaticResource AppButton}"></Button>-->
+
+            <Grid ColumnSpacing="0" Margin="20,0,20,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" x:Name="ViewMyEventsButton" Text="My Events" Command="{Binding NavigateToMyEventListPageCommand}" Style="{StaticResource AppButton}"></Button>
+                <controls:FloatingActionButton Grid.Column="2" Image="plus_64.png" WidthRequest="64" HeightRequest="64" 
+                                        HorizontalOptions="End" VerticalOptions="CenterAndExpand"
+                                        Command="{Binding NavigateToCreateEventPageCommand}" />
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

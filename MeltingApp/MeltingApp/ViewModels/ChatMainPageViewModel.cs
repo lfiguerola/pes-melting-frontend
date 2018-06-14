@@ -3,6 +3,7 @@ using System.Windows.Input;
 using MeltingApp.Helpers;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
+using MeltingApp.Resources;
 using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
@@ -15,12 +16,7 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private IDataBaseService _dataBaseService;
-        private string _body;
-        private int _user_Id;
-        private int _utc_Timestamp;
         private SendChatQuery _sendChatQuery;
-
-
 
 
         public SendChatQuery SendChatQuery {
@@ -44,30 +40,7 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public string Body {
-            get { return _body; }
-            set {
-                _body = value;
-                OnPropertyChanged(nameof(Body));
-            }
-        }
-
-        public int User_id {
-            get { return _user_Id; }
-            set {
-                _user_Id = value;
-                OnPropertyChanged(nameof(User_id));
-            }
-        }
-
-        public int Utc_Timestamp {
-            get { return _utc_Timestamp; }
-            set {
-                _utc_Timestamp = value;
-                OnPropertyChanged(nameof(Utc_Timestamp));
-            }
-
-        }
+    
 
         public ChatMainPageViewModel()
         {
@@ -84,7 +57,7 @@ namespace MeltingApp.ViewModels
         }
 
 
-        void HandleSendCommand()
+       async void  HandleSendCommand()
         {
 
             //llamadas api
@@ -94,16 +67,17 @@ namespace MeltingApp.ViewModels
                 IsIncoming = false
             };
 
-
-
             Messages.Add(message);
             //send message
             //empty outgoing message
+            SendChatQuery.Body = "Bamboleooo";
+           // OutgoingText = string.Empty;
 
-           // var sendChatQuery= new SendChatQuery
-            //{
-                 // await _apiClientService.PostAsync<SendChatQuery,SendChatQuery>
-            //}
+            SendChatQuery = await _apiClientService.PostAsync<SendChatQuery,SendChatQuery>(SendChatQuery, ApiRoutes.Methods.SendMessageChat, (isSuccess, responseMessage) =>{
+
+                if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+            });
+            
 
         }
 
@@ -113,11 +87,12 @@ namespace MeltingApp.ViewModels
         {
             Messages.ReplaceRange(new List<Message>
             {
-                    new Message { Text = "Hi Squirrel! \uD83D\uDE0A", IsIncoming = true},
-                    new Message { Text = "Hi Baboon, How are you? \uD83D\uDE0A", IsIncoming = false},
-                    new Message { Text = "We've a party at Mandrill's. Would you like to join? We would love to have you there! \uD83D\uDE01", IsIncoming = true, },
-                    new Message { Text = "You will love it. Don't miss.", IsIncoming = true},
-                    new Message { Text = "Sounds like a plan. \uD83D\uDE0E", IsIncoming = false},
+                    new Message { Text = "Holi! \uD83D\uDE0A", IsIncoming = true},
+                    new Message { Text = "pepsicoli \uD83D\uDE0A", IsIncoming = false},
+                    new Message { Text = "caracoli\uD83D\uDE01", IsIncoming = true, },
+                    new Message { Text = "frijoli \uD83D\uDE48", IsIncoming = true},
+                    new Message { Text = "macarroni \uD83D\uDE0E", IsIncoming = false},
+                    new Message { Text = "caramboli \uD83D\uDE0E", IsIncoming = true},
 
                     new Message { Text = "\uD83D\uDE48 \uD83D\uDE49 \uD83D\uDE49", IsIncoming = false},
 

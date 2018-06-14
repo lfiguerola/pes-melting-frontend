@@ -58,12 +58,12 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(IEnumerable<Comment>), ApiRoutes.Methods.GetEventComments), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.GetEventComments}"},
             {new Tuple<Type, string>(typeof(IEnumerable<University>), ApiRoutes.Methods.GetUniversities), ApiRoutes.Endpoints.GetUniversities},
             {new Tuple<Type, string>(typeof(IEnumerable<Faculty>), ApiRoutes.Methods.GetFaculties), $"{ApiRoutes.Endpoints.GetFacultiesfirstpath}{ApiRoutes.Prefix.Universities}{ApiRoutes.Endpoints.GetFacultiessecondpath}"},
-            {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchUniversities), ApiRoutes.Endpoints.SearchUniversities},
-            {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchFaculties), ApiRoutes.Endpoints.SearchFaculties},
-            {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchUsers), ApiRoutes.Endpoints.SearchUsers},
-            {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchEvents), ApiRoutes.Endpoints.SearchEvents},
-            {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllMyEvents),$"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetAllMyEvents}" }
-            
+            {new Tuple<Type, string>(typeof(TimeChatQuery), ApiRoutes.Methods.SearchUniversities), ApiRoutes.Endpoints.SearchUniversities},
+            {new Tuple<Type, string>(typeof(TimeChatQuery), ApiRoutes.Methods.SearchFaculties), ApiRoutes.Endpoints.SearchFaculties},
+            {new Tuple<Type, string>(typeof(TimeChatQuery), ApiRoutes.Methods.SearchUsers), ApiRoutes.Endpoints.SearchUsers},
+            {new Tuple<Type, string>(typeof(TimeChatQuery), ApiRoutes.Methods.SearchEvents), ApiRoutes.Endpoints.SearchEvents},
+            {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllMyEvents),$"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetAllMyEvents}" },
+            {new Tuple<Type,string>(typeof(IEnumerable<SendChatQuery>), ApiRoutes.Methods.GetAllMessagesChat), ApiRoutes.Endpoints.GetAllMessagesChat}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
@@ -122,7 +122,7 @@ namespace MeltingApp.Services
             }
         }
 
-        public async Task<TResult> GetSearchAsync<TRequest, TResult>(SearchQuery entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)
+        public async Task<TResult> GetSearchAsync<TRequest, TResult>(TimeChatQuery entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)
         {
             var jsonSerializerSettings = new JsonSerializerSettings()
             {
@@ -143,7 +143,7 @@ namespace MeltingApp.Services
                 {
                     methodUri = meltingUriParser.ParseUri(methodUri);
                 }
-                var result = await HttpClient.GetAsync(new Uri(methodUri).AbsolutePath + "?query="+ entity.query);
+                var result = await HttpClient.GetAsync(new Uri(methodUri).AbsolutePath + "?since="+ entity.since);
                 getResult = await result.Content.ReadAsStringAsync();
                 TResult deserializedObject = default(TResult);
 

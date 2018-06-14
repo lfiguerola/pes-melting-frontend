@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MeltingApp.Models
 {
-    public class SearchQuery
+    public class TimeChatQuery
     {
         public string query {get; set;}
         

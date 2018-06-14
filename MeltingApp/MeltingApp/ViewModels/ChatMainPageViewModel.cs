@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using MeltingApp.Helpers;
 using MeltingApp.Interfaces;
@@ -11,14 +12,28 @@ namespace MeltingApp.ViewModels
     class ChatMainPageViewModel : ViewModelBase
     {
         public ObservableRangeCollection<Message> Messages { get; }
-        public Command SendCommand { get; set; } 
+        public Command SendCommand { get; set; }
+        public Command GetMessagesCommand { get; set; }
         string _outgoingText = string.Empty;
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private IDataBaseService _dataBaseService;
         private SendChatQuery _sendChatQuery;
+        private IEnumerable<SendChatQuery> _getAllMessages;
+        private TimeChatQuery _timeChatQuery;
+        
 
 
+
+        public TimeChatQuery TimeChatQuery
+        {
+            get { return _timeChatQuery; }
+            set {
+                _timeChatQuery = value;
+                OnPropertyChanged(nameof(TimeChatQuery));
+            }
+
+        }
         public SendChatQuery SendChatQuery {
             get { return _sendChatQuery; }
             set {
@@ -29,13 +44,23 @@ namespace MeltingApp.ViewModels
 
         }
 
-        public string OutgoingText {
+        public IEnumerable<SendChatQuery> GetAllMessages {
+            get { return _getAllMessages; }
+            set {
+                _getAllMessages = value;
+                OnPropertyChanged(nameof(GetAllMessages));
+            }
+
+        }
+
+        public string OutGoingText
+        {
 
             get { return _outgoingText; }
             set {
 
                 _outgoingText = value;
-                OnPropertyChanged(nameof(OutgoingText));
+                OnPropertyChanged(nameof(OutGoingText));
 
             }
         }
@@ -49,35 +74,59 @@ namespace MeltingApp.ViewModels
             _dataBaseService = DependencyService.Get<IDataBaseService>();
 
             SendCommand = new Command(HandleSendCommand);
+            GetMessagesCommand = new Command(HandGetAllMessages);
+
 
             Messages = new ObservableRangeCollection<Message>();
 
             SendChatQuery = new SendChatQuery();
+            TimeChatQuery = new TimeChatQuery();
+            // GetAllMessages = new IEnumerable<SendChatQuery>(); 
+            // if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+
+        }
+
+        async void Refresh()
+        {
+            //llamada a HandGetAllMessages
+
+        }
+
+        async void HandGetAllMessages() {
+            DateTime dateTime = DateTime.Now;
+            TimeChatQuery.since = (int)dateTime.TimeOfDay.TotalMilliseconds;
+           var listMessages = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<SendChatQuery>>(TimeChatQuery,ApiRoutes.Methods.GetAllMessagesChat, (isSuccess, responseMessage) => {
+
+                if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+
+            });
 
         }
 
 
-       async void  HandleSendCommand()
-        {
 
-            //llamadas api
+
+
+
+
+
+        async void  HandleSendCommand()
+        {
             var message = new Message
             {
-                Text = OutgoingText,
+                Text = OutGoingText,
                 IsIncoming = false
             };
 
             Messages.Add(message);
-            //send message
-            //empty outgoing message
-            SendChatQuery.Body = "Bamboleooo";
-           // OutgoingText = string.Empty;
-
+            
+            SendChatQuery.body = OutGoingText;
+    
             SendChatQuery = await _apiClientService.PostAsync<SendChatQuery,SendChatQuery>(SendChatQuery, ApiRoutes.Methods.SendMessageChat, (isSuccess, responseMessage) =>{
 
                 if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
             });
-            
+            OutGoingText = string.Empty;
 
         }
 

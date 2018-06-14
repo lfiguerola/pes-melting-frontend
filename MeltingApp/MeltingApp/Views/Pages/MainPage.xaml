@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Button x:Name="ViewMyFacultyButton" Text="See information about my faculty" Command="{Binding NavigateMyFacultyInformationCommand}"></Button>
-            <ListView ItemsSource="{Binding AllMyEvents}" Header="All My Events" 
+            <ListView ItemsSource="{Binding AllEvents}" Header="Most Popular Events" 
                       SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
                 <ListView.ItemTemplate>
                     <DataTemplate>

@@ -8,7 +8,7 @@
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" >
             <Label Text="Frequently Asked" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
 
-            <BoxView  Color="Blue" WidthRequest="10" HeightRequest="10"></BoxView>
+                <BoxView  Color="#FF5C5CA1" HeightRequest="5"></BoxView>
 
 
              <Label FontAttributes="Bold"   Text=" 1.What is Karma?" ></Label>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Input;
 using MeltingApp.Helpers;
@@ -18,9 +19,21 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private IDataBaseService _dataBaseService;
+        private IAuthService _authService;
         private SendChatQuery _sendChatQuery;
         private IEnumerable<SendChatQuery> _getAllMessages;
         private TimeChat _timeChat;
+        private User _user;
+
+
+        public User user {
+
+            get { return _user; }
+            set {
+                _user = value;
+                OnPropertyChanged(nameof(user));
+            }
+        }
        
 
         public TimeChat TimeChat {
@@ -73,6 +86,7 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             _dataBaseService = DependencyService.Get<IDataBaseService>();
+            _authService = DependencyService.Get<IAuthService>();
 
             SendCommand = new Command(HandleSendCommand);
             GetMessagesCommand = new Command(HandGetAllMessages);
@@ -82,6 +96,7 @@ namespace MeltingApp.ViewModels
 
             SendChatQuery = new SendChatQuery();
             TimeChat = new TimeChat();
+            user = new User();
             
             // GetAllMessages = new IEnumerable<SendChatQuery>(); 
             // if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
@@ -95,13 +110,54 @@ namespace MeltingApp.ViewModels
         }
 
         async void HandGetAllMessages() {
+            bool b = false;
             DateTime dateTime = DateTime.Now;
             TimeChat.since = (int)dateTime.TimeOfDay.TotalMilliseconds;
             GetAllMessages = await _apiClientService.GetSearchAsyncMessages<TimeChat, IEnumerable<SendChatQuery>>(TimeChat,ApiRoutes.Methods.GetAllMessagesChat, (isSuccess, responseMessage) => {
 
-                if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                if (isSuccess) {
+                    b = true;
+
+                }
+                else
+                {
+                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+
+
+                }
+
 
               });
+
+            if (b) {
+                //  aqui  he de volver hacer GetAllMessages = 
+                // prueba();
+               IEnumerator i = GetAllMessages.GetEnumerator();
+                user = _authService.GetCurrentLoggedUser();
+
+                while (i.MoveNext())
+                {
+
+                   
+                    var messageaux = (SendChatQuery)i.Current;
+                    Message m = new Message();
+                    m.Text = messageaux.body;
+                    m.Username = messageaux.username;
+                    if (messageaux.user_id.Equals( user.user_id))
+                    {
+                        m.IsIncoming = true;
+                    }
+                    else {
+
+                        m.IsIncoming = false; }
+                
+                    Messages.Add(m);
+
+
+
+                }
+
+            }
 
         }
 
@@ -134,23 +190,29 @@ namespace MeltingApp.ViewModels
 
 
 
+
+
+        public void prueba() {
+
+            Messages.ReplaceRange(new List<Message>
+              {
+                      new Message { Text = "Holi! \uD83D\uDE0A", IsIncoming = true},
+                      new Message { Text = "pepsicoli \uD83D\uDE0A", IsIncoming = false},
+                      new Message { Text = "caracoli\uD83D\uDE01", IsIncoming = true, },
+                      new Message { Text = "frijoli \uD83D\uDE48", IsIncoming = true},
+                      new Message { Text = "macarroni \uD83D\uDE0E", IsIncoming = false},
+                      new Message { Text = "caramboli \uD83D\uDE0E", IsIncoming = true},
+
+                      new Message { Text = "\uD83D\uDE48 \uD83D\uDE49 \uD83D\uDE49", IsIncoming = false},
+
+              });
+
+
+        }
         public void InitializeMock()
         {
-             Messages.ReplaceRange(new List<Message>
-             {
-                     new Message { Text = "Holi! \uD83D\uDE0A", IsIncoming = true},
-                     new Message { Text = "pepsicoli \uD83D\uDE0A", IsIncoming = false},
-                     new Message { Text = "caracoli\uD83D\uDE01", IsIncoming = true, },
-                     new Message { Text = "frijoli \uD83D\uDE48", IsIncoming = true},
-                     new Message { Text = "macarroni \uD83D\uDE0E", IsIncoming = false},
-                     new Message { Text = "caramboli \uD83D\uDE0E", IsIncoming = true},
-
-                     new Message { Text = "\uD83D\uDE48 \uD83D\uDE49 \uD83D\uDE49", IsIncoming = false},
-
-             });
-
-
             HandGetAllMessages();
+           
 
         }
     }

@@ -3,8 +3,8 @@
     class SendChatQuery: EntityBase
     {
         private string _body;
-        private string _username;
         private int _user_Id;
+        private string _username;
         private int _utc_Timestamp;
         
 

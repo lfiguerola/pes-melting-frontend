@@ -14,10 +14,12 @@
 
         </Grid.RowDefinitions>
 
-
+        <Label FontSize="Micro" Grid.Row="1" Grid.Column="1" TextColor="Gray"  Text="{Binding Username}" ></Label>
 
         <Frame Grid.Row="0" OutlineColor="Transparent" HasShadow="False" Grid.Column="1" BackgroundColor="#03A9F4">
-            <Label TextColor="White" Text="{Binding Text}" />
+           
+            <Label  TextColor="White" Text="{Binding Text}" />
+            
         </Frame>
       
     </Grid>

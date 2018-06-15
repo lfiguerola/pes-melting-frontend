@@ -14,10 +14,13 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <Label FontSize="Micro" Grid.Row="1" Grid.Column="1" TextColor="Gray"  Text="{Binding Username}" ></Label>
         <Frame Grid.Row="0" OutlineColor="Transparent" HasShadow="False" Grid.Column="1" BackgroundColor="#F5F5F5">
+          
             <Label TextColor="Black" HorizontalTextAlignment="End" Text="{Binding Text}" />
+           
         </Frame>
-
+       
     </Grid>
 
 

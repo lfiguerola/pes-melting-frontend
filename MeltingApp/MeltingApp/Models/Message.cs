@@ -10,6 +10,7 @@ using MeltingApp.Models;
 
     private string _text;
     private bool _isIncoming;
+    private string _username;
 
     public string Text
     {
@@ -26,6 +27,15 @@ using MeltingApp.Models;
         set {
             _isIncoming = value;
             OnPropertyChanged(nameof(IsIncoming));
+        }
+
+    }
+
+    public string Username {
+        get { return _username; }
+        set {
+            _username = value;
+            OnPropertyChanged(nameof(Username));
         }
 
     }

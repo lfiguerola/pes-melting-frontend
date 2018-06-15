@@ -20,20 +20,21 @@ namespace MeltingApp.ViewModels
         private IDataBaseService _dataBaseService;
         private SendChatQuery _sendChatQuery;
         private IEnumerable<SendChatQuery> _getAllMessages;
-        private TimeChatQuery _timeChatQuery;
+        private TimeChat _timeChat;
+       
+
+        public TimeChat TimeChat {
+
+            get { return _timeChat; }
+            set {
+                _timeChat = value;
+                OnPropertyChanged(nameof(TimeChat));
+            }
+        }
         
 
 
 
-        public TimeChatQuery TimeChatQuery
-        {
-            get { return _timeChatQuery; }
-            set {
-                _timeChatQuery = value;
-                OnPropertyChanged(nameof(TimeChatQuery));
-            }
-
-        }
         public SendChatQuery SendChatQuery {
             get { return _sendChatQuery; }
             set {
@@ -80,7 +81,8 @@ namespace MeltingApp.ViewModels
             Messages = new ObservableRangeCollection<Message>();
 
             SendChatQuery = new SendChatQuery();
-            TimeChatQuery = new TimeChatQuery();
+            TimeChat = new TimeChat();
+            
             // GetAllMessages = new IEnumerable<SendChatQuery>(); 
             // if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 
@@ -94,12 +96,12 @@ namespace MeltingApp.ViewModels
 
         async void HandGetAllMessages() {
             DateTime dateTime = DateTime.Now;
-            TimeChatQuery.since = (int)dateTime.TimeOfDay.TotalMilliseconds;
-           GetAllMessages = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<SendChatQuery>>(TimeChatQuery,ApiRoutes.Methods.GetAllMessagesChat, (isSuccess, responseMessage) => {
+            TimeChat.since = (int)dateTime.TimeOfDay.TotalMilliseconds;
+            GetAllMessages = await _apiClientService.GetSearchAsyncMessages<TimeChat, IEnumerable<SendChatQuery>>(TimeChat,ApiRoutes.Methods.GetAllMessagesChat, (isSuccess, responseMessage) => {
 
                 if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 
-            });
+              });
 
         }
 
@@ -134,18 +136,22 @@ namespace MeltingApp.ViewModels
 
         public void InitializeMock()
         {
-            Messages.ReplaceRange(new List<Message>
-            {
-                    new Message { Text = "Holi! \uD83D\uDE0A", IsIncoming = true},
-                    new Message { Text = "pepsicoli \uD83D\uDE0A", IsIncoming = false},
-                    new Message { Text = "caracoli\uD83D\uDE01", IsIncoming = true, },
-                    new Message { Text = "frijoli \uD83D\uDE48", IsIncoming = true},
-                    new Message { Text = "macarroni \uD83D\uDE0E", IsIncoming = false},
-                    new Message { Text = "caramboli \uD83D\uDE0E", IsIncoming = true},
+             Messages.ReplaceRange(new List<Message>
+             {
+                     new Message { Text = "Holi! \uD83D\uDE0A", IsIncoming = true},
+                     new Message { Text = "pepsicoli \uD83D\uDE0A", IsIncoming = false},
+                     new Message { Text = "caracoli\uD83D\uDE01", IsIncoming = true, },
+                     new Message { Text = "frijoli \uD83D\uDE48", IsIncoming = true},
+                     new Message { Text = "macarroni \uD83D\uDE0E", IsIncoming = false},
+                     new Message { Text = "caramboli \uD83D\uDE0E", IsIncoming = true},
 
-                    new Message { Text = "\uD83D\uDE48 \uD83D\uDE49 \uD83D\uDE49", IsIncoming = false},
+                     new Message { Text = "\uD83D\uDE48 \uD83D\uDE49 \uD83D\uDE49", IsIncoming = false},
 
-            });
+             });
+
+
+            HandGetAllMessages();
+
         }
     }
 }

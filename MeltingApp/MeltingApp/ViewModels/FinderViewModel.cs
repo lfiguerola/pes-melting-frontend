@@ -33,7 +33,7 @@ namespace MeltingApp.ViewModels
         private Faculty _facultyAux;
         private Event _eventAux;
 
-        private TimeChatQuery _searchquery;
+        private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
 
@@ -86,7 +86,7 @@ namespace MeltingApp.ViewModels
             _staticInfo = new StaticInfo();
             _event = new Event();
             _nameToFilter = " ";
-            SearchQuery = new TimeChatQuery();
+            SearchQuery = new SearchQuery();
         }
 
 
@@ -100,7 +100,7 @@ namespace MeltingApp.ViewModels
             {
                 //obtenim totes les universitats
                 SearchQuery.query = _nameToFilter;
-                AllUniversities = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<University>>(SearchQuery, ApiRoutes.Methods.SearchUniversities, (isSuccess, responseMessage) => {
+                AllUniversities = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<University>>(SearchQuery, ApiRoutes.Methods.SearchUniversities, (isSuccess, responseMessage) => {
                     if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 });
                 //System.Threading.Thread.Sleep(2000);
@@ -131,7 +131,7 @@ namespace MeltingApp.ViewModels
             {
                 //obtenim tots els users
                 SearchQuery.query = _nameToFilter;
-                AllUsernames = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<User>>(SearchQuery, ApiRoutes.Methods.SearchUsers, (isSuccess, responseMessage) => {
+                AllUsernames = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<User>>(SearchQuery, ApiRoutes.Methods.SearchUsers, (isSuccess, responseMessage) => {
                     if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 });
 
@@ -165,7 +165,7 @@ namespace MeltingApp.ViewModels
             {
                 //obtenim totes les facultats
                 SearchQuery.query = _nameToFilter;
-                AllFaculties = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<Faculty>>(SearchQuery, ApiRoutes.Methods.SearchFaculties, (isSuccess, responseMessage) => {
+                AllFaculties = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Faculty>>(SearchQuery, ApiRoutes.Methods.SearchFaculties, (isSuccess, responseMessage) => {
                     if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 });
 
@@ -196,7 +196,7 @@ namespace MeltingApp.ViewModels
             {
                 //obtenim tots els events
                 SearchQuery.query = _nameToFilter;
-                AllEvents = await _apiClientService.GetSearchAsync<TimeChatQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (isSuccess, responseMessage) => {
+                AllEvents = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (isSuccess, responseMessage) => {
                     if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
                 });
 
@@ -278,7 +278,7 @@ namespace MeltingApp.ViewModels
             }
         }
 
-        public TimeChatQuery SearchQuery
+        public SearchQuery SearchQuery
         {
             get { return _searchquery; }
             set

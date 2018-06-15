@@ -4,18 +4,20 @@ using System.Text;
 
 namespace MeltingApp.Models
 {
-    class TimeChatQuery: EntityBase
+   public  class TimeChat:EntityBase
     {
-       private int _since;
+        int _since;
 
-        public int  since
-        {
+        public int since {
+
             get { return _since; }
-            set
-            {
+            set {
                 _since = value;
                 OnPropertyChanged(nameof(since));
+
             }
+
         }
+
     }
 }

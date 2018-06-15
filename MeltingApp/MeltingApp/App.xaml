@@ -52,6 +52,14 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
 
+            <Style x:Key="StaticInfoNameLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource LocationFontSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+
             <Style x:Key="RegisterTitleLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource LoginButtonBackgroundColor}" />
                 <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
@@ -80,8 +88,15 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="FontAttributes" Value="Italic"/>
             </Style>
-            
 
+            <Style x:Key="StaticInfoName2Label" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource LocationFontSize}" />
+            </Style>
+            
             <Style x:Key="StatsNumberLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />

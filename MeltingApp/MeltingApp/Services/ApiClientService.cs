@@ -63,7 +63,7 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchUsers), ApiRoutes.Endpoints.SearchUsers},
             {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchEvents), ApiRoutes.Endpoints.SearchEvents},
             {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllMyEvents),$"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetAllMyEvents}" },
-            {new Tuple<Type,string>(typeof(IEnumerable<SendChatQuery>), ApiRoutes.Methods.GetAllMessagesChat), ApiRoutes.Endpoints.GetAllMessagesChat}
+            {new Tuple<Type,string>(typeof(TimeChat), ApiRoutes.Methods.GetAllMessagesChat), ApiRoutes.Endpoints.GetAllMessagesChat}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()

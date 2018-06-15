@@ -6,6 +6,7 @@ using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
+using Plugin.ExternalMaps;
 
 
 namespace MeltingApp.ViewModels
@@ -24,6 +25,7 @@ namespace MeltingApp.ViewModels
         public Command NavigateMyFacultyInformationCommand { get; set; }
         public Command InfoEventCommand { get; set; }
         public Command NavigateToAllEventsCommand { get; set; }
+        public Command OpenMapStaticFacultyCommand { get; set; }
 
         public User User
         {
@@ -93,6 +95,7 @@ namespace MeltingApp.ViewModels
             NavigateMyFacultyInformationCommand = new Command(HandleNavigateMyFacultyInformationCommand);
             InfoEventCommand = new Command(HandleInfoEventCommand);
             NavigateToAllEventsCommand = new Command(HandleNavigateToAllEventsCommand);
+            OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
 
             Event = new Event();
             User = new User();
@@ -228,6 +231,15 @@ namespace MeltingApp.ViewModels
         void HandleNavigateToAllEventsCommand()
         {
             EventViewModel evm = new EventViewModel();
+        }
+
+        private async void HandleOpenMapStaticFacultyCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(Faculty.latitude.ToString()), Double.Parse(Faculty.longitude.ToString()));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
         }
     }
 }

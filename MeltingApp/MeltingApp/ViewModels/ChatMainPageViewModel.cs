@@ -134,16 +134,18 @@ namespace MeltingApp.ViewModels
                 // prueba();
                IEnumerator i = GetAllMessages.GetEnumerator();
                 user = _authService.GetCurrentLoggedUser();
+                Console.Write("Mi usuario: "+user.id);
 
                 while (i.MoveNext())
                 {
 
                    
                     var messageaux = (SendChatQuery)i.Current;
+                    Console.Write("Mensaje usuarios: "+ messageaux.user_id);
                     Message m = new Message();
                     m.Text = messageaux.body;
                     m.Username = messageaux.username;
-                    if (messageaux.user_id.Equals( user.user_id))
+                    if (messageaux.user_id.Equals( user.id))
                     {
                         m.IsIncoming = true;
                     }

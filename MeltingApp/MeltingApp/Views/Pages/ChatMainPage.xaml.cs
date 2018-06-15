@@ -13,22 +13,46 @@ namespace MeltingApp.Views.Pages
     public partial class ChatMainPage : ContentPage
     {
         ChatMainPageViewModel vm;
+        int intervalInSeconds = 2;
         public ChatMainPage()
         {
             InitializeComponent();
             BindingContext = vm = new ChatMainPageViewModel();
-            vm.InitializeMock();
+            //  vm.InitializeMock();
 
+            
 
-            vm.Messages.CollectionChanged += (sender, e) =>
+            Device.StartTimer(TimeSpan.FromSeconds(this.intervalInSeconds), () =>
             {
-                var target = vm.Messages[vm.Messages.Count - 1];
-                MessagesListView.ScrollTo(target, ScrollToPosition.End, true);
-            };
+                Device.BeginInvokeOnMainThread(() => vm.InitializeMock());
+                vm.Messages.CollectionChanged += (sender, e) =>
+                {
+                    var target = vm.Messages[vm.Messages.Count - 1];
+                    MessagesListView.ScrollTo(target, ScrollToPosition.End, true);
+                };
+
+                return true;
+            });
+
 
         }
 
-        void MyListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+
+     /*   void Refresh() {
+            vm.InitializeMock();
+            Scroll();
+
+        }
+        void Scroll()
+        {
+            vm.Messages.CollectionChanged += (sender, e) =>
+                {
+                    var target = vm.Messages[vm.Messages.Count - 1];
+                    MessagesListView.ScrollTo(target, ScrollToPosition.End, true);
+                };
+        }
+        */
+    void MyListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             MessagesListView.SelectedItem = null;
         }

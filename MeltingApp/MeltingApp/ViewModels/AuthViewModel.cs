@@ -70,9 +70,7 @@ namespace MeltingApp.ViewModels
             NavigateToResetPassPageCommand = new Command(HandleNavigateToResetPassPage);
             ResetPassCommand = new Command(HandleResetPassCommand);
             User = new User();
-
-            User.email = "laufipe@gmail.com";
-            User.password = "12345678";
+                       
 
         }
 

@@ -568,6 +568,9 @@ namespace MeltingApp.ViewModels
                 {
                     b = true;
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast("User created correctly");
+
+                    //_navigationService.PopAsync();
+
                     _navigationService.SetRootPage<MainPage>();
                     
                 }

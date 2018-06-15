@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.OutgoingMessageCell">
+
+    <Grid ColumnSpacing="2" Padding="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="40"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label FontSize="Micro" Grid.Row="1" Grid.Column="1" TextColor="Gray"  Text="{Binding Username}" ></Label>
+        <Frame Grid.Row="0" OutlineColor="Transparent" HasShadow="False" Grid.Column="1" BackgroundColor="#F5F5F5">
+          
+            <Label TextColor="Black" HorizontalTextAlignment="End" Text="{Binding Text}" />
+           
+        </Frame>
+       
+    </Grid>
+
+
+</ViewCell>

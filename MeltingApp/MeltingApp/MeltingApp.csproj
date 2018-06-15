@@ -41,11 +41,16 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <EmbeddedResource Update="Views\Pages\ChatMainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\AttendeesListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\ChangePassPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\CreateProfilePage.xaml"> </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\AboutPage.xaml">
@@ -59,6 +64,9 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\HelpPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\IncomingMessageCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -78,11 +86,16 @@
     <EmbeddedResource Update="Views\Pages\MyEventList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+
+    <EmbeddedResource Update="Views\Pages\OutgoingMessageCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\FacultyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\UniversityPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\ProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

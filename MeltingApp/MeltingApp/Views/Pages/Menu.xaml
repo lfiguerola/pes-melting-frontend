@@ -17,6 +17,7 @@
                         <viewModels:MenuBarViewModel Title="Search"/>
                         <viewModels:MenuBarViewModel Title="Help" />
                         <viewModels:MenuBarViewModel Title="About"/>
+                        <viewModels:MenuBarViewModel Title="Chat"/>
                     </x:Array>
                 </ListView.ItemsSource>
                 <ListView.ItemTemplate>

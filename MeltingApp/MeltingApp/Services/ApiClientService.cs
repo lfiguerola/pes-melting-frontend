@@ -37,7 +37,8 @@ namespace MeltingApp.Services
             { new Tuple<Type, string>(typeof(Event), ApiRoutes.Methods.ConfirmAssistance), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.ConfirmAssitance}"},
             { new Tuple<Type, string>(typeof(Comment), ApiRoutes.Methods.CreateComment), $"{ApiRoutes.Prefix.Event_id}{ApiRoutes.Endpoints.CreateComment}" },
             {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.CreateProfileUser), $"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.CreateProfileUser}"},
-            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ResetPass), ApiRoutes.Endpoints.ResetPass  }
+            {new Tuple<Type, string>(typeof(User), ApiRoutes.Methods.ResetPass), ApiRoutes.Endpoints.ResetPass  },
+            {new Tuple<Type, string>(typeof(SendChatQuery),ApiRoutes.Methods.SendMessageChat), ApiRoutes.Endpoints.SendMessageChat}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlPutDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
@@ -63,8 +64,8 @@ namespace MeltingApp.Services
             {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchFaculties), ApiRoutes.Endpoints.SearchFaculties},
             {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchUsers), ApiRoutes.Endpoints.SearchUsers},
             {new Tuple<Type, string>(typeof(SearchQuery), ApiRoutes.Methods.SearchEvents), ApiRoutes.Endpoints.SearchEvents},
-            {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllMyEvents),$"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetAllMyEvents}" }
-            
+            {new Tuple<Type, string>(typeof(IEnumerable<Event>), ApiRoutes.Methods.GetAllMyEvents),$"{ApiRoutes.Prefix.Users}{ApiRoutes.Endpoints.GetAllMyEvents}" },
+            {new Tuple<Type,string>(typeof(TimeChat), ApiRoutes.Methods.GetAllMessagesChat), ApiRoutes.Endpoints.GetAllMessagesChat}
         };
 
         public Dictionary<Tuple<Type, string>, string> UrlDeleteDictionary { get; set; } = new Dictionary<Tuple<Type, string>, string>()
@@ -121,54 +122,6 @@ namespace MeltingApp.Services
             catch (Exception)
             {
                 throw new ApiClientException(postResult);
-            }
-        }
-
-        public async Task<TResult> GetSearchAsync<TRequest, TResult>(SearchQuery entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)
-        {
-            var jsonSerializerSettings = new JsonSerializerSettings()
-            {
-                MissingMemberHandling = MissingMemberHandling.Error
-            };
-
-            if (App.LoginRequest.IsLogged)
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", _authService.GetCurrentLoggedUser()?.Token?.jwt);
-            }
-
-            ApiResponseMessage responseMessage = null;
-            string getResult = null;
-            try
-            {
-                var methodUri = GetGetUri<TRequest>(methodName);
-                if (meltingUriParser != null)
-                {
-                    methodUri = meltingUriParser.ParseUri(methodUri);
-                }
-                var result = await HttpClient.GetAsync(new Uri(methodUri).AbsolutePath + "?query="+ entity.query);
-                getResult = await result.Content.ReadAsStringAsync();
-                TResult deserializedObject = default(TResult);
-
-                try
-                {
-                    deserializedObject = JsonConvert.DeserializeObject<TResult>(getResult, jsonSerializerSettings);
-                }
-                catch (JsonSerializationException)
-                {
-                    responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(getResult);
-                }
-
-                if (result.IsSuccessStatusCode)
-                {
-                    successResultCallback?.Invoke(true, responseMessage?.message);
-                }
-                else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
-
-                return deserializedObject;
-            }
-            catch (Exception)
-            {
-                throw new ApiClientException(getResult);
             }
         }
 
@@ -364,5 +317,106 @@ namespace MeltingApp.Services
             return null;
         }
 
+       /* public Task<TResult> GetSearchAsyncChat<TRequest, TResult>(TimeChatQuery entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)
+        {
+            throw new NotImplementedException();
+        }*/
+
+        public async Task<TResult> GetSearchAsync<TRequest, TResult>(SearchQuery entity, string methodName, Action<bool, string> successResultCallback = null, MeltingUriParser meltingUriParser = null)
+        {
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+
+            if (App.LoginRequest.IsLogged)
+            {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", _authService.GetCurrentLoggedUser()?.Token?.jwt);
+            }
+
+            ApiResponseMessage responseMessage = null;
+            string getResult = null;
+            try
+            {
+                var methodUri = GetGetUri<TRequest>(methodName);
+                if (meltingUriParser != null)
+                {
+                    methodUri = meltingUriParser.ParseUri(methodUri);
+                }
+                var result = await HttpClient.GetAsync(new Uri(methodUri).AbsolutePath + "?query=" + entity.query);
+                getResult = await result.Content.ReadAsStringAsync();
+                TResult deserializedObject = default(TResult);
+
+                try
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(getResult, jsonSerializerSettings);
+                }
+                catch (JsonSerializationException)
+                {
+                    responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(getResult);
+                }
+
+                if (result.IsSuccessStatusCode)
+                {
+                    successResultCallback?.Invoke(true, responseMessage?.message);
+                }
+                else successResultCallback?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
+
+                return deserializedObject;
+            }
+            catch (Exception)
+            {
+                throw new ApiClientException(getResult);
+            }
+        }
+
+        public async Task<TResult> GetSearchAsyncMessages<TRequest, TResult>(TimeChat entity, string methodName, Action<bool, string> successResultCallBack = null, MeltingUriParser meltingUriParser = null)
+        {
+
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+
+            if (App.LoginRequest.IsLogged)
+            {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", _authService.GetCurrentLoggedUser()?.Token?.jwt);
+            }
+
+            ApiResponseMessage responseMessage = null;
+            string getResult = null;
+            try
+            {
+                var methodUri = GetGetUri<TRequest>(methodName);
+                if (meltingUriParser != null)
+                {
+                    methodUri = meltingUriParser.ParseUri(methodUri);
+                }
+                var result = await HttpClient.GetAsync(new Uri(methodUri).AbsolutePath + "?since=" + entity.since);
+                getResult = await result.Content.ReadAsStringAsync();
+                TResult deserializedObject = default(TResult);
+
+                try
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<TResult>(getResult, jsonSerializerSettings);
+                }
+                catch (JsonSerializationException)
+                {
+                    responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(getResult);
+                }
+
+                if (result.IsSuccessStatusCode)
+                {
+                    successResultCallBack?.Invoke(true, responseMessage?.message);
+                }
+                else successResultCallBack?.Invoke(false, responseMessage?.message.Equals(string.Empty) ?? true ? result.ReasonPhrase : responseMessage?.message);
+
+                return deserializedObject;
+            }
+            catch (Exception)
+            {
+                throw new ApiClientException(getResult);
+            }
+        }
     }    
 }

@@ -44,6 +44,7 @@
 
     <EmbeddedResource Update="Views\Pages\ChatMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\AttendeesListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -88,7 +89,7 @@
 
     <EmbeddedResource Update="Views\Pages\OutgoingMessageCell.xaml">
       <Generator>MSBuild:Compile</Generator>
-
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\FacultyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

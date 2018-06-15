@@ -42,14 +42,14 @@ namespace MeltingApp.Views.Pages
             {
                 string itemTitle = item.Title;
                 var vm = (MenuBarViewModel)BindingContext;
-                if (itemTitle == "My profile")
+                if (itemTitle == "My Profile")
                 {
                     if (vm.NavigateToProfileViewModelCommand.CanExecute(null))
                     {
                         vm.NavigateToProfileViewModelCommand.Execute(null);
                     }
                 }
-                else if (itemTitle == "My university")
+                else if (itemTitle == "My Faculty")
                 {
                     if (vm.NavigateToStaticInfoViewModelCommand.CanExecute(null))
                     {

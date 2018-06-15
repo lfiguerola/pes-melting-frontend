@@ -11,8 +11,8 @@
             <ListView x:Name="listView">
                 <ListView.ItemsSource>
                     <x:Array Type="{x:Type viewModels:MenuBarViewModel}">
-                        <viewModels:MenuBarViewModel Title="My profile"/>
-                        <viewModels:MenuBarViewModel Title="My university"/>
+                        <viewModels:MenuBarViewModel Title="My Profile"/>
+                        <viewModels:MenuBarViewModel Title="My Faculty"/>
                         <viewModels:MenuBarViewModel Title="Events"/>
                         <viewModels:MenuBarViewModel Title="Search"/>
                         <viewModels:MenuBarViewModel Title="Help" />

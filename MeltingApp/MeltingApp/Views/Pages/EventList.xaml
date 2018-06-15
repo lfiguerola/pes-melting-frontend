@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.EventList"
+             Title= "Events"
+             BackgroundColor="#D4D9D5">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding NavigateToMyEventListPageCommand}" Text="My Events" Icon="calendar.png" ></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <Grid ColumnSpacing="0" Margin="20,0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" x:Name="FilterEntry" Placeholder="Find your event" Text="{Binding NameWritedToSearch}" HorizontalOptions="FillAndExpand"/>
+                    <Button Grid.Column="1" x:Name="FinderButton" Style="{StaticResource AppButton}" WidthRequest="50" Text="Search" Command="{Binding SearchEventCommand}"/>
+                </Grid>
+
+                <ListView ItemsSource="{Binding AllEvents}" HasUnevenRows="True" SeparatorVisibility="None" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView" CachingStrategy="RecycleElement">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <!--<StackLayout Padding="10,10,10,10">-->
+                                <Frame OutlineColor="Black" Margin="20,5" HasShadow="True" BackgroundColor="#B2B2E5" Opacity="0,6">
+                                    <Grid RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <!--<RowDefinition Height="*" />-->
+                                        </Grid.RowDefinitions>
+
+                                        <Label Grid.Row="1" 
+                                                   Text="{Binding title}"
+                                                   HorizontalOptions="CenterAndExpand"
+                                                   Style="{StaticResource EventTitleLabel}">
+
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
+                                                                  CommandParameter="{Binding event_id}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <!--<Label Grid.Row="2" Text="{Binding description}"/>-->
+                                        <Label Grid.Row="2" Margin="0,10,0,0" Text="{Binding date}" 
+                                               HorizontalOptions="Center" Style="{StaticResource DataEvent}"/>
+
+
+                                        <Grid Grid.Row="3" ColumnSpacing="0" HorizontalOptions="Center" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout>
+                                                <Image Grid.Column="1" Source="location.png" WidthRequest="15" HeightRequest="15" Margin="0,5,0,0"/>
+                                            </StackLayout>
+                                            <StackLayout Grid.Column="2">
+                                                <Label Text="{Binding name}" Style="{StaticResource LocationEventLabel}"/>
+                                            </StackLayout>
+                                        </Grid>
+
+                                    </Grid>
+                                </Frame>
+                                <!--</StackLayout>-->
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <Button AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.9, 0.95, 64, 64" 
+                            Image="plus_64.png" BorderRadius="90"
+                            Command="{Binding NavigateToCreateEventPageCommand}"/>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

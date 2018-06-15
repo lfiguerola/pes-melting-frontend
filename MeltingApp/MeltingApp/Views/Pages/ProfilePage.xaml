@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.ProfilePage"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- header Background-->
+            <!--<BoxView BackgroundColor="Yellow" Grid.Row="0" />-->
+            <!--ens permet definir un rectangle -->
+            <Image Source="bcn.png" Aspect="AspectFill" HeightRequest="200" Opacity="0.5"/>
+            <Image Source="CurvedMask2.png" Aspect="Fill" VerticalOptions="End"/>
+
+            <!--profile name-->
+            <!--<BoxView BackgroundColor="Blue" Grid.Row="1" 
+                     HeightRequest="100"/>-->
+            <StackLayout Grid.Row="1" Padding="0,50,0,0" HorizontalOptions="Center" >
+                <Label Text="{Binding User.full_name}"
+                       HorizontalOptions="Center"
+                        Style="{StaticResource ProfileNameLabel}"/>
+                <Label Text="{Binding User.username, StringFormat='@{0}'}" 
+                        Style="{StaticResource ProfileTagLabel}" 
+                       HorizontalOptions="Center"
+                       FontAttributes="Italic" />
+            </StackLayout>
+
+            <Grid Grid.Row="2" ColumnSpacing="0" HorizontalOptions="Center" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackLayout>
+                    <Image Grid.Column="1" Source="location.png" WidthRequest="20" HeightRequest="20"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2" HorizontalOptions="Center">
+                    <Label Text="{Binding User.country_code}" HorizontalOptions="Center" Style="{StaticResource StatsNumberLabel}"/>
+                    <Label Text="Spain"  Style="{StaticResource StatsCaptionLabel}" />
+                </StackLayout>
+            </Grid>
+
+            <!-- social stats, grid ja que farem columnes-->
+            <!--<BoxView BackgroundColor="Red" Grid.Row="2" />-->
+            <Grid Grid.Row="3" Margin="15,20,15,30" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Column="0">
+                    <Image Source="karma.png" HeightRequest="50" Aspect="AspectFit" />
+                    <Label Text="{Binding User.karma}"  Style="{StaticResource StatsNumberLabel}" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="1">
+                    <Label Text="{Binding User.faculty}" Style="{StaticResource StatsNumberLabel}" FontAttributes="Italic"/>
+                    <Label Text="{Binding User.university}" Style="{StaticResource StatsCaptionLabel}" FontAttributes="Italic"/>
+                </StackLayout>
+            </Grid>
+
+            <!--profile description-->
+            <!--<BoxView BackgroundColor="Green" Grid.Row="3" />-->
+            <Label Text="{Binding User.biography}"
+                   Grid.Row="4" 
+                   Style="{StaticResource MainBodyLabel}"
+                   Margin="10,0,10,0"/>
+
+            <!--follow button-->
+            <!--<BoxView BackgroundColor="SkyBlue" Grid.Row="4" />-->
+            <Button Text="Edit Profile"
+                    Style="{StaticResource AppButton}"
+                    Command="{Binding NavigateToEditProfilePageCommand}"
+                    IsVisible="{Binding User.IsButtonVisible}"
+                    Grid.Row="5" 
+                    Margin="20,20,20,0"/>
+
+            <Button Text="Change Password"
+                    Style="{StaticResource AppButton}"
+                    Command="{Binding NavigateToChangePassCommand}" 
+                    IsVisible="{Binding User.IsButtonVisible}"
+                    Grid.Row="6" 
+                    Margin="20,0,20,0"/>
+
+            <Button Text="Delete Account"
+                    Style="{StaticResource AppDeleteButton}"
+                    Command="{Binding DeleteAccountCommand}"
+                    IsVisible="{Binding User.IsButtonVisible}"
+                    Grid.Row="7" 
+                    Margin="20,0,20,0"/>
+            
+            <!--profile image-->
+            <Image Source="profile.png"
+                   VerticalOptions="End" HorizontalOptions="Center" 
+                   HeightRequest="120" WidthRequest="120"
+                   TranslationY="50"/>
+            <!--<BoxView BackgroundColor="Azure" Grid.Row="0" 
+                     VerticalOptions="End" HorizontalOptions="Center"
+                     HeightRequest="100"
+                     WidthRequest="100"
+                     TranslationY="50"/>-->
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

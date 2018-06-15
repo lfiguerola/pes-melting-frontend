@@ -1,13 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MeltingApp.Views.Pages.LoginPage">
+             xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
+             x:Class="MeltingApp.Views.Pages.LoginPage"
+             BackgroundImage="background.png">
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to login!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Button Text="Login" Command="{Binding LoginCommand}"></Button>
-        </StackLayout>
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackLayout Grid.Row="1" Margin="20,10,20,0">
+                <Image x:Name="logoImage" Source="logoLogin.png" HeightRequest="210" VerticalOptions="CenterAndExpand"/>
+
+            </StackLayout>
+            <Grid Grid.Row="2" Margin="20,0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Entry Grid.Row="1" Placeholder="Email" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.email}">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Grid.Row="2" Placeholder="Password" PlaceholderColor="#bababa" FontSize="16" TextColor="#bababa" Text="{Binding User.password}" IsPassword="True">
+                    <Entry.Behaviors>
+                        <fields:FieldsLowerCaseBehavior></fields:FieldsLowerCaseBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+            </Grid>
+
+            <Grid Grid.Row="3" Margin="20,10,20,10" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Column="1">
+                    <Button  Text="LogIn" 
+                                 HorizontalOptions="CenterAndExpand"                              
+                        Style="{StaticResource LoginButton}"
+                        Command="{Binding LoginUserCommand}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2">
+                    <Button Text="Sign up" 
+                            HorizontalOptions="CenterAndExpand"
+                            Style="{StaticResource SignUpButton}"
+                         Command="{Binding NavigateToRegisterPageCommand}"/>
+                </StackLayout>
+            </Grid>
+
+            <Button Grid.Row="4" Text="Forgot your password?"
+                    Style="{StaticResource AppButton2}"
+                    Command="{Binding NavigateToResetPassPageCommand}"
+                    Opacity="0.8"
+                    Margin="20,0"/>
+        </Grid>
     </ContentPage.Content>
+
 </ContentPage>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.CodeConfirmation">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Account confirm!"
+                   HorizontalOptions="CenterAndExpand" />
+            <Label x:Name="EmailLabel" Text="Email"></Label>
+            <Label x:Name="Email" Text="{Binding User.email}" TextColor="Gray"></Label>
+            <Label x:Name="CodeLabel" Text="Introduce the code sent to your email"></Label>
+            <Entry x:Name="CodeEntry" Text="{Binding User.code}"></Entry>
+
+
+            <Button Text="Enter" Command="{Binding CodeConfirmationCommand}"></Button>
+            <Label Text="{Binding ResponseMessage}"></Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

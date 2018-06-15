@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.EditProfilePage"
+             Title= "Edit Profile">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="Edit your Profile" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize ="Large" FontAttributes="Bold"/>
+                <Frame OutlineColor="Gray" HasShadow="True" Margin="20,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="0" x:Name="UserNameLabelTitle" Text="Username" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Label Grid.Column="1" Grid.Row="0" x:Name="UserNameEntry" Text="{Binding User.username}" Style="{StaticResource StaticInfoName2Label}"/>
+                        <Label Grid.Column="0" Grid.Row="1" x:Name="CountryLabelTitle" Text="Country:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Label Grid.Column="1" Grid.Row="1" x:Name="CountryPicker" Text="{Binding User.country_code}" Style="{StaticResource StaticInfoName2Label}"/>
+                        <Label Grid.Column="0" Grid.Row="2" x:Name="KarmaLabelTitle" Text="Karma:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Label Grid.Column="1" Grid.Row="2" x:Name="KarmaLabel" Text="{Binding User.karma}" Style="{StaticResource StaticInfoName2Label}"/>
+                        <Label Grid.Column="0" Grid.Row="3" x:Name="FacultyLabelTitle" Text="Faculty:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Label Grid.Column="1" Grid.Row="3" x:Name="FacultyLabel" Text="{Binding User.faculty}" Style="{StaticResource StaticInfoName2Label}"/>
+                        <Label Grid.Column="0" Grid.Row="4" x:Name="UniversityLabelTitle" Text="University:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Label Grid.Column="1" Grid.Row="4" x:Name="UniversityLabel" Text="{Binding User.university}" Style="{StaticResource StaticInfoNameLabel}"/>
+                    </Grid>
+                </Frame>
+
+                <Frame OutlineColor="Gray" HasShadow="True" Margin="20,10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" x:Name="NameLabelTitle" Text="Name" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Editor Grid.Row="1" x:Name="NameEntry" Text="{Binding User.full_name}"/>
+                        <Label Grid.Row="2" x:Name="BiograohyLabelTitle" Text="Biography" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Editor Grid.Row="3" x:Name="BiographyEditor" Text="{Binding User.biography}"/>
+                    </Grid>
+                </Frame>
+
+                <Button x:Name="SaveButton" Text="Save" Command="{Binding SaveEditProfileCommand}" Style="{StaticResource AppButton}"/>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MeltingApp.Views.Pages.HelpPage"
+             Title= "Help">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" >
+            <Label Text="Frequently Asked" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+
+                <BoxView  Color="#FF5C5CA1" HeightRequest="5"></BoxView>
+
+
+             <Label FontAttributes="Bold"   Text=" 1.What is Karma?" ></Label>
+
+             <Label  FontAttributes="Italic" Text=" Karma is a funny way to interact with other users, the more  votes you get in your events, publications, the more Karma you will get. " ></Label>
+
+             <Label FontAttributes="Italic"   Text=" It helps us to know your interaction with the application too and see how we can improve it in the future."></Label>
+
+            <Label FontAttributes="Bold"  Text= " 2.How to find people from your university/faculty?"></Label>
+                <Label  FontAttributes="Italic" Text= " In our search engine you can type the name of your university  and choose the option either to find people/events or information"></Label>
+
+             <Label FontAttributes="Bold"   Text= " 3.How to find information  of your university/faculty?"></Label>
+                <Label  FontAttributes="Italic" Text=" You can have access to your faculty information going to the static Information section. There you have two option either to show just your university/facculty information or  to show all universities/faculties  information from Barcelona."></Label>
+
+             <Label FontAttributes="Bold"  Text= " 4.You can change the faculty once your profile is created?"></Label>
+             <Label   FontAttributes="Italic" Text=" For now this option is not available, so we recommend you to be careful when you are creating your profile. " ></Label>
+
+             <Label FontAttributes="Bold" Text= " 5.How many universities includes the application?" ></Label>
+             <Label   FontAttributes="Italic" Text=" MeltingApp includes all universities from Barcelona  for now, we hope in the future to include more cities. 
+                   "></Label>
+            
+             <Label FontAttributes="Bold"  Text=" 6.Privacy " ></Label>
+             <Label FontAttributes="Bold" Text="   6.1 What information can see other about you? " ></Label>
+
+             <Label  FontAttributes="Italic" Text=" All users  can  see the information that you put on your profile and you can see all information of other users too. For now we don't have a privacy settings in this section. "></Label>
+
+             <Label FontAttributes="Bold" Text="   6.2  Events " ></Label>
+
+             <Label  FontAttributes="Italic" Text=" All events that you create are public wich means that all users can see your event and information about it. " ></Label>
+
+             <Label  FontAttributes="Italic" Text=" You can also see all active events  and see the detailed  information about the event."></Label>
+             <Label FontAttributes="Bold"  Text=" 7. Contact " ></Label>
+             <Label  FontAttributes="Italic" Text=" You can send us an email with your questions and suggestions, we will be  glad to answer you." ></Label>
+
+                <Label HorizontalTextAlignment="Center"  VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="Micro" Text=" We hope you find this information useful!" ></Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

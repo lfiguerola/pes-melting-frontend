@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27428.2011
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeltingApp.Android", "MeltingApp\MeltingApp.Android\MeltingApp.Android.csproj", "{FCE4AD9B-999B-4D7D-945E-5005B942029A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeltingApp", "MeltingApp\MeltingApp\MeltingApp.csproj", "{9B41F4C4-8BBC-4113-A7AC-9D527818600C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeltingApp", "MeltingApp\MeltingApp\MeltingApp.csproj", "{9B41F4C4-8BBC-4113-A7AC-9D527818600C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

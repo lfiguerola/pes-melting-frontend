@@ -91,7 +91,7 @@
 
             <Style x:Key="DataEvent" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
-                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource StatsCaptionFontSize}" />
             </Style>

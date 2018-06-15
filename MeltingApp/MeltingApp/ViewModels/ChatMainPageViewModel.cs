@@ -180,5 +180,11 @@ namespace MeltingApp.ViewModels
             OutGoingText = string.Empty;
 
         }
+
+        public void InitializeMock() {
+
+            HandGetAllMessages();
+        }
     }
+
 }

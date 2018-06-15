@@ -97,7 +97,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <!--<RowDefinition Height="Auto" />-->
+                        <RowDefinition Height="Auto" />
                         <!--<RowDefinition Height="Auto" />-->
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
@@ -114,11 +114,18 @@
                     <StackLayout Grid.Row="0" Grid.Column="1" >
                         <Label HorizontalOptions="Start"  x:Name="UniNameLabel" Text="{Binding UniversityStaticInfo.name}" Style="{StaticResource StaticInfoName2Label}"></Label>
                     </StackLayout>
-
+                    
                     <StackLayout Grid.Row="1" Grid.Column="0" Margin="20,5">
+                            <Label Text="Alias:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}" />
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" Grid.Column="1" >
+                            <Label HorizontalOptions="Start"  x:Name="UniAliasLabel" Text="{Binding UniversityStaticInfo.alias}" Style="{StaticResource StaticInfoName2Label}"></Label>
+                    </StackLayout>
+
+                    <StackLayout Grid.Row="2" Grid.Column="0" Margin="20,5">
                             <Label Text="Telephone:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}" />
                     </StackLayout>
-                    <StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Start">
+                    <StackLayout Grid.Row="2" Grid.Column="1" HorizontalOptions="Start">
                         <Label x:Name="UniTelephoneLabel" HorizontalOptions="Start" Text="{Binding UniversityStaticInfo.telephone}" Style="{StaticResource StaticInfoName2Label}"></Label>
                     </StackLayout>
 
@@ -143,10 +150,10 @@
                         <Label x:Name="UniAdressLabel" HorizontalOptions="Start" Text="{Binding UniversityStaticInfo.address}" Style="{StaticResource StaticInfoName2Label}"></Label>
                     </StackLayout>-->
 
-                    <StackLayout Grid.Column="0" Grid.Row="2" Margin="20,5">
+                    <StackLayout Grid.Column="0" Grid.Row="3" Margin="20,5">
                         <Label Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}"/>
                     </StackLayout>
-                    <StackLayout Grid.Row="2" Grid.Column="1" HorizontalOptions="Start">
+                    <StackLayout Grid.Row="3" Grid.Column="1" HorizontalOptions="Start">
                         <Label x:Name="UniUrlLabel" HorizontalOptions="Start" Text="{Binding UniversityStaticInfo.url}" Style="{StaticResource StaticInfoName2Label}"></Label>
                     </StackLayout>
 

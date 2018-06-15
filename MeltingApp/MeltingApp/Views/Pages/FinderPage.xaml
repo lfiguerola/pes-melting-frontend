@@ -36,7 +36,7 @@
                         <ColumnDefinition Width="25"/>
                     </Grid.ColumnDefinitions>
                     <Picker Grid.Column="0" Title="Select one category!" TextColor="Black"  SelectedIndex="{Binding SelectedFilterIndex }" VerticalOptions="Start" ItemsSource="{Binding Filters}" ></Picker>
-                    <Button Grid.Column="1" Image="picker_24.png" WidthRequest="50" BackgroundColor="#d4d9d5" />
+                    <Image Grid.Column="1" Source="picker_24.png" WidthRequest="50" />
                 </Grid>
                 <!--</Frame>-->
 

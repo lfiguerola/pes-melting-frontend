@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-
-using Geocoding;
-using Geocoding.Google;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
@@ -16,7 +12,6 @@ namespace MeltingApp.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        private IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyDK_llWYsPBgwEEYTlvQh81lBWhCZc_LgA" };
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private IDataBaseService _dataBaseService;
@@ -26,26 +21,9 @@ namespace MeltingApp.ViewModels
         private Faculty _faculty;
         private IEnumerable<Event> _allEvents;
         private Event _eventSelected;
-        private int eventidaux;
-        private IEnumerable<Comment> _allComments;
-        private IEnumerable<User> _attendeesList;
-        private int _attendeesNumber;
-        private bool _userOwnsEvent;
-        private IEnumerable<Address> _addresses;
-        private TimeSpan _time;
-        private DateTime _date;
-
-
-
-
-
         public Command NavigateMyFacultyInformationCommand { get; set; }
         public Command InfoEventCommand { get; set; }
-        public Command NavigateToModifyEventCommand { get; set; }
-        public Command ModifyEventCommand { get; set; }
-        public Command NavigateToAttendeesListCommand { get; set; }
-
-
+        public Command NavigateToAllEventsCommand { get; set; }
 
         public User User
         {
@@ -66,34 +44,7 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(Event));
             }
         }
-        public TimeSpan Time
-        {
-            get { return _time; }
-            set
-            {
-                _time = value;
-                OnPropertyChanged(nameof(Time));
-            }
-        }
-
-        public DateTime Date
-        {
-            get { return _date; }
-            set
-            {
-                _date = value;
-                OnPropertyChanged(nameof(Date));
-            }
-        }
-        public IEnumerable<Address> Addresses
-        {
-            get { return _addresses; }
-            set
-            {
-                _addresses = value;
-                OnPropertyChanged(nameof(Addresses));
-            }
-        }
+ 
         public Faculty Faculty
         {
             get { return _faculty; }
@@ -123,42 +74,7 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllEvents));
             }
         }
-        public IEnumerable<Comment> AllComments
-        {
-            get { return _allComments; }
-            set
-            {
-                _allComments = value;
-                OnPropertyChanged(nameof(AllComments));
-            }
-        }
-        public IEnumerable<User> AttendeesList
-        {
-            get { return _attendeesList; }
-            set
-            {
-                _attendeesList = value;
-                OnPropertyChanged(nameof(AttendeesList));
-            }
-        }
-        public int AttendeesNumber
-        {
-            get { return _attendeesNumber; }
-            set
-            {
-                _attendeesNumber = value;
-                OnPropertyChanged(nameof(AttendeesNumber));
-            }
-        }
-        public bool UserOwnsEvent
-        {
-            get { return _userOwnsEvent; }
-            set
-            {
-                _userOwnsEvent = value;
-                OnPropertyChanged(nameof(UserOwnsEvent));
-            }
-        }
+       
         public string ResponseMessage
         {
             get { return _responseMessage; }
@@ -176,11 +92,7 @@ namespace MeltingApp.ViewModels
             _dataBaseService = DependencyService.Get<IDataBaseService>();
             NavigateMyFacultyInformationCommand = new Command(HandleNavigateMyFacultyInformationCommand);
             InfoEventCommand = new Command(HandleInfoEventCommand);
-            ModifyEventCommand = new Command(HandleModifyEventCommand);
-            NavigateToModifyEventCommand = new Command(HandleNavigateToModifyEventCommand);
-            NavigateToAttendeesListCommand = new Command(HandleNavigateToAttendeesListCommand);
-
-
+            NavigateToAllEventsCommand = new Command(HandleNavigateToAllEventsCommand);
 
             Event = new Event();
             User = new User();
@@ -310,115 +222,12 @@ namespace MeltingApp.ViewModels
         void HandleInfoEventCommand()
         {
             Event = EventSelected;
-            eventidaux = Event.id;
-            if (eventidaux != 0)
-            {
-                //consultem tots els comentaris de l'event
-                GetAllComments();
-                GetAttendees();
-                if (Event.user_id == App.LoginRequest.LoggedUserIdBackend)
-                {
-                    UserOwnsEvent = true;
-                }
-                else
-                {
-                    UserOwnsEvent = false;
-                }
-                _navigationService.PushAsync<ViewEvent>(this);
-            }
+            _navigationService.PushAsync<ViewEventMain>(this);
         }
-        async void GetAllComments()
+
+        void HandleNavigateToAllEventsCommand()
         {
-            int idde = Event.id;
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
-
-            AllComments = await _apiClientService.GetAsync<IEnumerable<Comment>, IEnumerable<Comment>>(ApiRoutes.Methods.GetEventComments, (success, responseMessage) =>
-            {
-                if (success)
-                {
-
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                }
-            }, meltingUriParser);
-
-            for (int i = 0; i < AllComments.Count(); ++i)
-            {
-                if (AllComments.ElementAt(i).user_id == App.LoginRequest.LoggedUserIdBackend)
-                {
-                    AllComments.ElementAt(i).IsButtonVisible = true;
-                }
-                else
-                {
-                    AllComments.ElementAt(i).IsButtonVisible = false;
-                }
-            }
-        }
-        async void GetAttendees()
-        {
-            bool b = false;
-            var meltingUriParser = new MeltingUriParser();
-            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
-
-            AttendeesList = await _apiClientService.GetAsync<IEnumerable<User>, IEnumerable<User>>(ApiRoutes.Methods.AttendeesList, (success, responseMessage) =>
-            {
-                if (success)
-                {
-                    b = true;
-                }
-                else
-                {
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-
-                }
-            }, meltingUriParser);
-            if (b) AttendeesNumber = AttendeesList.Count();
-
-        }
-        void HandleNavigateToModifyEventCommand()
-	    {
-	        _navigationService.PushAsync<ModifyEvent>(this);
-        }
-
-        async void HandleModifyEventCommand()
-	    {
-	        try
-	        {
-	            Addresses = await geocoder.GeocodeAsync(Event.name);
-	        }
-	        catch (Exception e)
-	        {
-	            DependencyService.Get<IOperatingSystemMethods>().ShowToast("Geocoder Error");
-            }
-	        Event.latitude = Addresses.First().Coordinates.Latitude.ToString();
-	        Event.latitude = Event.latitude.Replace(",", ".");
-	        Event.longitude = Addresses.First().Coordinates.Longitude.ToString();
-	        Event.longitude = Event.longitude.Replace(",", ".");
-	        Event.address = Addresses.First().FormattedAddress;
-	        Event.date = Time + " " + Date.ToLongDateString();
-            var meltingUriParser = new MeltingUriParser();
-	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
-
-	        await _apiClientService.PutAsync<Event, Event>(Event, ApiRoutes.Methods.ModifyEvent, (success, responseMessage) =>
-	        {
-	            if (success)
-	            {
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Event modified successfully");
-	                _navigationService.PopAsync();
-	            }
-	            else
-	            {
-	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-	            }
-	        }, meltingUriParser);
-        }
-        void HandleNavigateToAttendeesListCommand()
-        {
-            GetAttendees();
-            _navigationService.PushAsync<AttendeesListPage>(this);
+            EventViewModel evm = new EventViewModel();
         }
     }
 }

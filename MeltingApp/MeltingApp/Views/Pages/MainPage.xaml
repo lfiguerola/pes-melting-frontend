@@ -5,7 +5,12 @@
              Title="Melting App">
     <ContentPage.Content>
         <StackLayout>
-            <Button x:Name="ViewMyFacultyButton" Text="See information about my faculty" Command="{Binding NavigateMyFacultyInformationCommand}"></Button>
+            <StackLayout>
+                <Label x:Name="Welcome" Text="Hello! Welcome to MeltingApp (logo aqui)" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Label>
+                <Label x:Name="Info" Text="Here you can find some information about your faculty and the most popular events. Have fun and remembrer, integrate with karma" 
+                       VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Label>
+            </StackLayout>
+            <Button x:Name="ViewMyFacultyButton" Text="See my faculty" Command="{Binding NavigateMyFacultyInformationCommand}"></Button>
             <ListView ItemsSource="{Binding AllEvents}" Header="Most Popular Events" 
                       SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
                 <ListView.ItemTemplate>

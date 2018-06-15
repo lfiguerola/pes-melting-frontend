@@ -98,6 +98,9 @@
     <EmbeddedResource Update="Views\Pages\FacultyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\Page1.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\UniversityPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 

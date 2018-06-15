@@ -71,6 +71,9 @@ namespace MeltingApp.ViewModels
             ResetPassCommand = new Command(HandleResetPassCommand);
             User = new User();
 
+            User.email = "laufipe@gmail.com";
+            User.password = "12345678";
+
         }
 
         async void HandleRegisterUserCommand()

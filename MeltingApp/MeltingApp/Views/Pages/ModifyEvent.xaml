@@ -2,22 +2,47 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeltingApp.Views.Pages.ModifyEvent">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding ModifyEventCommand}" Text="Save"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout>
-            <Label Text="Modify an event" HorizontalOptions="CenterAndExpand" />
-            <Label x:Name="EventTitleLabel" Text="Event Title:"></Label>
-            <Entry x:Name="EventTitleEntry" Text="{Binding Event.title}"></Entry>
-            <Label x:Name="DescriptionLabel" Text="Add a description to the event"></Label>
-            <Editor x:Name="DescriptionEntry" Text="{Binding Event.description}"></Editor>
-            <Label x:Name="DateLabel" Text="Which day will the event be?"></Label>
-            <DatePicker x:Name="EventDatePicker" Date="{Binding Date}" MinimumDate="{Binding MinDate}"></DatePicker>
-            <Label x:Name="TimeLabel" Text="When will the event be?"></Label>
-            <TimePicker x:Name="EventTimePicker" Time="{Binding Time}"></TimePicker>
-            <Label x:Name="LocationLabel" Text="Where will the event be?"></Label>
-            <Entry x:Name="LocationEntry" Text="{Binding Event.name}"></Entry>
+            <Label Text="Modify your event" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" FontSize ="Large" FontAttributes="Bold" />
+            <Frame OutlineColor="Gray" HasShadow="True" Margin="20,10">
+                <StackLayout>
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                        <Label Grid.Row="0" x:Name="EventTitleLabel" Text="Title:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Entry Grid.Row="1" x:Name="EventTitleEntry" Placeholder="Event title..." Text="{Binding Event.title}"/>
+                        <Label Grid.Row="2" x:Name="DateLabel" Text="Day:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <DatePicker Grid.Row="3" x:Name="EventDatePicker" Date="{Binding Date}" MinimumDate="{Binding MinDate}" Margin="0,0,0,10"/>
+                        <Label Grid.Row="4" x:Name="TimeLabel" Text="Hour:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <TimePicker  Grid.Row="5" x:Name="EventTimePicker" Time="{Binding Time}"  Margin="0,0,0,10"/>
 
-            <Button Text="Modify Event" Command="{Binding ModifyEventCommand}"></Button>
-            <Label Text="{Binding ResponseMessage}"></Label>
+                        <Label Grid.Row="6" x:Name="DescriptionLabel" Text="Description:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Editor Grid.Row="7" x:Name="DescriptionEditor" Text="{Binding Event.description}" HeightRequest="120"/>
+                        <Label Grid.Row="8" x:Name="LocationLabel" Text="Location:" Style="{StaticResource StaticInfoNameLabel}"/>
+                        <Editor Grid.Row="9" x:Name="LocationEditor" Text="{Binding Event.name}" HeightRequest="120"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -36,6 +36,7 @@
 
 
             <!--  font sizes  -->
+            <x:Double x:Key="TitleEventSize">25</x:Double>
             <x:Double x:Key="TitleFontSize">20</x:Double>
             <x:Double x:Key="BodyFontSize">18</x:Double>
             <x:Double x:Key="TagTextFontSize">18</x:Double>
@@ -51,6 +52,21 @@
                 <Setter Property="FontSize" Value="{StaticResource TitleFontSize}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
+
+            <Style x:Key="EventNameLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource TagTextFontSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="EventDescriptionLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="LightGray" />
+                <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource BodyFontSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+      
 
             <Style x:Key="StaticInfoNameLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
@@ -81,6 +97,14 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
 
+            <Style x:Key="usernameCommentLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontFamily" Value="{StaticResource RegularFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource TagTextFontSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+            
+
             <Style x:Key="LocationEventLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
                 <Setter Property="FontFamily" Value="{StaticResource RegularFontFamily}" />
@@ -102,6 +126,21 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource StatsNumberFontSize}" />
+            </Style>
+
+            <Style x:Key="CommentsLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource LocationFontSize}" />
+            </Style>
+            
+
+            <Style x:Key="StatsEventLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource LocationFontSize}" />
             </Style>
 
             <Style x:Key="DataEvent" TargetType="Label">

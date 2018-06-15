@@ -365,7 +365,6 @@ namespace MeltingApp.ViewModels
                 //consultem tots els comentaris de l'event
                 GetAllComments();
                 GetAttendees();
-                AttendeesNumber = AttendeesList.Count();
                 if (Event.user_id == App.LoginRequest.LoggedUserIdBackend)
                 {
                     UserOwnsEvent = true;
@@ -675,6 +674,7 @@ namespace MeltingApp.ViewModels
 
 	    void HandleNavigateToAttendeesListCommand()
 	    {
+            GetAttendees();
 	        _navigationService.PushAsync<AttendeesListPage>(this);
         }
 
@@ -704,6 +704,7 @@ namespace MeltingApp.ViewModels
 
 	    async void GetAttendees()
 	    {
+	        bool b = false;
 	        var meltingUriParser = new MeltingUriParser();
 	        meltingUriParser.AddParseRule(ApiRoutes.UriParameters.EventId, $"{eventidaux}");
 
@@ -711,15 +712,15 @@ namespace MeltingApp.ViewModels
 	        {
 	            if (success)
 	            {
-
-
+	                b = true;
 	            }
-	            else
+                else
 	            {
 	                DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
 
 	            }
 	        }, meltingUriParser);
+            if (b) AttendeesNumber = AttendeesList.Count();
         }
     }
     

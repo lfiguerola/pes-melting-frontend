@@ -5,67 +5,61 @@
              xmlns:controls="clr-namespace:SuaveControls.Views;assembly=SuaveControls.FloatingActionButton"
              Title= "My Events">
     <ContentPage.Content>
-        <StackLayout>
-            <ListView ItemsSource="{Binding AllMyEvents}" RowHeight="120" SeparatorVisibility="None" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <!--<StackLayout Padding="10,10,10,10">-->
-                            <Frame OutlineColor="Black" Margin="20,5" HasShadow="True" BackgroundColor="#B2B2E5" Opacity="0,6">
-                                <Grid RowSpacing="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
+        <AbsoluteLayout>
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <ListView HasUnevenRows="True" ItemsSource="{Binding AllMyEvents}" RowHeight="120" SeparatorVisibility="None" SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                
+                                <Frame OutlineColor="Black" Margin="20,5" HasShadow="True" BackgroundColor="#B2B2E5" Opacity="0,6">
+                                    <Grid RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
 
-                                    <Label Grid.Row="1" 
+                                        <Label Grid.Row="1" 
                                                Text="{Binding title}"
                                                HorizontalOptions="CenterAndExpand"
                                                Style="{StaticResource EventTitleLabel}">
 
-                                        <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
                                                               CommandParameter="{Binding event_id}" />
-                                        </Label.GestureRecognizers>
-                                    </Label>
-                                    <!--<Label Grid.Row="2" Text="{Binding description}"/>-->
-                                    <Label Grid.Row="2" Margin="0,10,0,0" Text="{Binding date}" 
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <!--<Label Grid.Row="2" Text="{Binding description}"/>-->
+                                        <Label Grid.Row="2" Margin="0,10,0,0" Text="{Binding date}" 
                                            HorizontalOptions="Center" Style="{StaticResource DataEvent}"/>
 
 
-                                    <Grid Grid.Row="3" ColumnSpacing="0" HorizontalOptions="Center" >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackLayout>
-                                            <Image Grid.Column="1" Source="location.png" WidthRequest="15" HeightRequest="15" Margin="0,5,0,0"/>
-                                        </StackLayout>
-                                        <StackLayout Grid.Column="2">
-                                            <Label Text="{Binding name}" Style="{StaticResource LocationEventLabel}"/>
-                                        </StackLayout>
-                                    </Grid>
+                                        <Grid Grid.Row="3" ColumnSpacing="0" HorizontalOptions="Center" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout>
+                                                <Image Grid.Column="1" Source="location.png" WidthRequest="15" HeightRequest="15" Margin="0,5,0,0"/>
+                                            </StackLayout>
+                                            <StackLayout Grid.Column="2">
+                                                <Label Text="{Binding name}" Style="{StaticResource LocationEventLabel}"/>
+                                            </StackLayout>
+                                        </Grid>
 
-                                </Grid>
-                            </Frame>
-                            <!--</StackLayout>-->
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-                <!--<Grid ColumnSpacing="0" Margin="20,0,20,20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" x:Name="ViewMyEventsButton" Text="All Events" Command="{Binding GoBackToAllEventListPageCommand}" Style="{StaticResource AppButton}"></Button>
-                <controls:FloatingActionButton Grid.Column="2" Image="plus_64.png" WidthRequest="64" HeightRequest="64" 
-                                        HorizontalOptions="End" VerticalOptions="CenterAndExpand"
-                                        Command="{Binding NavigateToCreateEventPageCommand}" />
-                 </Grid>-->
-        </StackLayout>
+                                    </Grid>
+                                </Frame>
+                                  </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+              </StackLayout>
+            <Button AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.9, 0.95, 64, 64" 
+                            Image="plus_64.png" BorderRadius="90"
+                            Command="{Binding NavigateToCreateEventPageCommand}"/>           
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
 

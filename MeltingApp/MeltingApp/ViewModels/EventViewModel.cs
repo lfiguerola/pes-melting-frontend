@@ -537,9 +537,7 @@ namespace MeltingApp.ViewModels
                     DependencyService.Get<IOperatingSystemMethods>().ShowToast("Event created successfully");
                     _navigationService.PopAsync();
                     //_navigationService.PopAsync();
-                    GetAllEvents();
-                    
-                    
+                    GetAllEvents();              
 
                 }
                 else
@@ -568,7 +566,7 @@ namespace MeltingApp.ViewModels
 	                {
 	                    DependencyService.Get<IOperatingSystemMethods>().ShowToast("Event deleted successfully");
 	                    
-	                    _navigationService.PopAsync();
+	                    //_navigationService.PopAsync();
                         GetAllEvents();
 	                }
 	                else

@@ -8,6 +8,7 @@ using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Validators;
 using MeltingApp.Views.Pages;
+using Plugin.ExternalMaps;
 using Xamarin.Forms;
 
 namespace MeltingApp.ViewModels
@@ -17,7 +18,6 @@ namespace MeltingApp.ViewModels
         private INavigationService _navigationService;
         private IApiClientService _apiClientService;
         private StaticInfo _staticInfo;
-        private Event _event;
         private string _responseMessage;
         private string FilterToApply;
         private string _nameToFilter;
@@ -25,23 +25,24 @@ namespace MeltingApp.ViewModels
         private IEnumerable<University> _allUniversities;
         private IEnumerable<Faculty> _allFaculties;
         private IEnumerable<User> _allUsernames;
-        private IEnumerable<Event> _allEvents;
         private List<FinderStructure> _allFinderStructures;
         private FinderStructure _finderStructure;
+        private FinderStructure _structureSelected;
         private University _uniAux;
+        private University _university;
         private User _userAux;
+        private User _user;
         private Faculty _facultyAux;
-        private Event _eventAux;
-
+        private Faculty _faculty;
         private SearchQuery _searchquery;
 
         public Command ApplyFinderButtonCommand { get; set; }
-
+        public Command infoFinderStructureCommand { get; set; }
+        public Command OpenMapStaticFacultyCommand { get; set; }
         private List<string> filters = new List<string>
         {
             "Faculties",
             "Username",
-            "Events",
             "Universities"
         };
 
@@ -57,12 +58,14 @@ namespace MeltingApp.ViewModels
                     _selectedFilter = value;
                     OnPropertyChanged(nameof(SelectedFilterIndex));
                     FilterToApply = Filters[_selectedFilter];
+                    HandleApplyFinder();
                 }
             }
         }
 
         public struct FinderStructure
         {
+            public int absoluteId { get; set;}
             public int resultId1 { get; set; }
             public int resultId2 { get; set; }
             public int resultId3 { get; set; }
@@ -81,17 +84,19 @@ namespace MeltingApp.ViewModels
         public FinderViewModel()
         {
             ApplyFinderButtonCommand = new Command(HandleApplyFinder);
+            infoFinderStructureCommand = new Command(HandleInfoFinderStructureCommand);
+            OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
             _navigationService = DependencyService.Get<INavigationService>();
             _apiClientService = DependencyService.Get<IApiClientService>();
             _staticInfo = new StaticInfo();
-            _event = new Event();
-            _nameToFilter = " ";
+            _nameToFilter = "";
             SearchQuery = new SearchQuery();
         }
 
 
         async void HandleApplyFinder()
         {
+            int absoluteCounter = 0;
             if (FilterToApply is null)
             {
                 DependencyService.Get<IOperatingSystemMethods>().ShowToast("Select a Filter first!");
@@ -115,8 +120,9 @@ namespace MeltingApp.ViewModels
                 {
                     _uniAux = (University)i.Current;
                     _finderStructure = new FinderStructure();
-                    _finderStructure.resultId1 = _uniAux.id;
-                    _finderStructure.resultId2 = _uniAux.location_id;
+                    _finderStructure.absoluteId = absoluteCounter;
+                    _finderStructure.resultId1 = _uniAux.location_id;
+                    _finderStructure.resultId2 = _uniAux.id;
                     _finderStructure.resultName1 = _uniAux.name;
                     _finderStructure.resultName2 = _uniAux.alias;
                     _finderStructure.resultName3 = _uniAux.address;
@@ -124,6 +130,7 @@ namespace MeltingApp.ViewModels
                     _finderStructure.latitude = _uniAux.latitude;
                     _finderStructure.longitude = _uniAux.longitude;
                     _allFinderStructures.Add(_finderStructure);
+                    ++absoluteCounter;
                 }
                 AllResults = _allFinderStructures;
             }
@@ -145,6 +152,7 @@ namespace MeltingApp.ViewModels
                 {
                     _userAux = (User)i.Current;
                     _finderStructure = new FinderStructure();
+                    _finderStructure.absoluteId = absoluteCounter;
                     _finderStructure.resultId1 = _userAux.user_id;
                     _finderStructure.resultId2 = _userAux.faculty_id;
                     _finderStructure.resultId3 = _userAux.university_id;
@@ -156,6 +164,7 @@ namespace MeltingApp.ViewModels
                     _finderStructure.resultName6 = _userAux.country_code;
                     _finderStructure.resultName7 = _userAux.avatarURL;
                     _finderStructure.karma = _userAux.karma;
+                    ++absoluteCounter;
 
                     _allFinderStructures.Add(_finderStructure);
                 }
@@ -179,49 +188,92 @@ namespace MeltingApp.ViewModels
                 {
                     _facultyAux = (Faculty)i.Current;
                     _finderStructure = new FinderStructure();
+                    _finderStructure.absoluteId = absoluteCounter;
                     _finderStructure.resultId1 = _facultyAux.location_id;
                     _finderStructure.resultId2 = _facultyAux.id;
-                    _finderStructure.resultName1 = _facultyAux.alias;
+                    _finderStructure.resultName1 = _facultyAux.address;
                     _finderStructure.resultName2 = _facultyAux.name;
-                    _finderStructure.resultName3 = _facultyAux.address;
+                    _finderStructure.resultName3 = _facultyAux.telephone;
                     _finderStructure.resultName4 = _facultyAux.url;
                     _finderStructure.latitude = _facultyAux.latitude;
                     _finderStructure.longitude = _facultyAux.longitude;
                     _allFinderStructures.Add(_finderStructure);
-                }
-                AllResults = _allFinderStructures;
-            }
-
-            else if (FilterToApply.Equals("Events"))
-            {
-                //obtenim tots els events
-                SearchQuery.query = _nameToFilter;
-                AllEvents = await _apiClientService.GetSearchAsync<SearchQuery, IEnumerable<Event>>(SearchQuery, ApiRoutes.Methods.SearchEvents, (isSuccess, responseMessage) => {
-                    if (!isSuccess) DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                });
-
-                //obtenim iterador i declarem les variables
-                IEnumerator i = AllEvents.GetEnumerator();
-                _allFinderStructures = new List<FinderStructure>();
-
-
-                //recorrem el IEnumerable i l'igualem al resultat
-                while (i.MoveNext())
-                {
-                    _eventAux = (Event)i.Current;
-                    _finderStructure = new FinderStructure();
-                    _finderStructure.resultId1 = _eventAux.id;
-                    _finderStructure.resultId2 = _eventAux.user_id;
-                    _finderStructure.resultName1 = _eventAux.title;
-                    _finderStructure.resultName2 = _eventAux.description;
-                    _finderStructure.resultName3 = _eventAux.address;
-                    _finderStructure.resultName4 = _eventAux.date;
-                    _finderStructure.resultName5 = _eventAux.name;
-                    _allFinderStructures.Add(_finderStructure);
+                    ++absoluteCounter;
                 }
                 AllResults = _allFinderStructures;
             }
         }
+
+        void HandleInfoFinderStructureCommand()
+        {
+            int comptador = -1;
+            IEnumerator i;
+            if (FilterToApply.Equals("Faculties")){
+                i = AllFaculties.GetEnumerator();
+                while (i.MoveNext() && comptador != StructureSelected.absoluteId)
+                {
+                    ++comptador;
+                    if (comptador == StructureSelected.absoluteId) Faculty = (Faculty)i.Current;
+                }
+                _navigationService.PushAsync<FacultyPage>(this);
+            }
+            else if (FilterToApply.Equals("Universities")){
+                i = AllUniversities.GetEnumerator();
+                while (i.MoveNext() && comptador != StructureSelected.absoluteId)
+                {
+                    ++comptador;
+                    if (comptador == StructureSelected.absoluteId) University = (University)i.Current;
+                }
+                _navigationService.PushAsync<UniversityPage>(this);
+            }
+            else if (FilterToApply.Equals("Username")){
+                i = AllUsernames.GetEnumerator();
+                while (i.MoveNext() && comptador != StructureSelected.absoluteId)
+                {
+                    ++comptador;
+                    if (comptador == StructureSelected.absoluteId) User = (User)i.Current;
+                }
+
+                User.IsButtonVisible = false;
+                _navigationService.PushAsync<ProfilePage>(this);
+            }
+        }
+        private async void HandleOpenMapStaticFacultyCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(Faculty.latitude.ToString()), Double.Parse(Faculty.longitude.ToString()));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
+        }
+        public User User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                OnPropertyChanged(nameof(User));
+            }
+        }
+        public University University
+        {
+            get { return _university; }
+            set
+            {
+                _university = value;
+                OnPropertyChanged(nameof(University));
+            }
+        }
+        public Faculty Faculty
+        {
+            get { return _faculty; }
+            set
+            {
+                _faculty = value;
+                OnPropertyChanged(nameof(Faculty));
+            }
+        }
+
         public IEnumerable<University> AllUniversities
         {
             get { return _allUniversities; }
@@ -231,7 +283,6 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllUniversities));
             }
         }
-
         public IEnumerable<User> AllUsernames
         {
             get { return _allUsernames; }
@@ -248,15 +299,6 @@ namespace MeltingApp.ViewModels
             {
                 _allFaculties = value;
                 OnPropertyChanged(nameof(AllFaculties));
-            }
-        }
-        public IEnumerable<Event> AllEvents
-        {
-            get { return _allEvents; }
-            set
-            {
-                _allEvents = value;
-                OnPropertyChanged(nameof(AllEvents));
             }
         }
         public FinderStructure Structure
@@ -277,7 +319,6 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(AllResults));
             }
         }
-
         public SearchQuery SearchQuery
         {
             get { return _searchquery; }
@@ -294,6 +335,15 @@ namespace MeltingApp.ViewModels
             {
                 _nameToFilter = value;
                 OnPropertyChanged(nameof(NameWritedToSearch));
+            }
+        }
+        public FinderStructure StructureSelected
+        {
+            get { return _structureSelected; }
+            set
+            {
+                _structureSelected = value;
+                OnPropertyChanged(nameof(StructureSelected));
             }
         }
     }

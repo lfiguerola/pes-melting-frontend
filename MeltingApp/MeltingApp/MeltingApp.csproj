@@ -25,6 +25,12 @@
     <Compile Update="Views\Pages\FinderPage.xaml.cs">
       <DependentUpon>FinderPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Pages\FacultyPage.xaml.cs">
+      <DependentUpon>FacultyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\UniversityPage.xaml.cs">
+      <DependentUpon>UniversityPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Pages\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
@@ -35,8 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <EmbeddedResource Update="Views\Pages\ChatMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    <EmbeddedResource Update="Views\Pages\AttendeesListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\ChangePassPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\CreateProfilePage.xaml"> </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\AboutPage.xaml">
@@ -72,8 +85,16 @@
     <EmbeddedResource Update="Views\Pages\MyEventList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+
     <EmbeddedResource Update="Views\Pages\OutgoingMessageCell.xaml">
       <Generator>MSBuild:Compile</Generator>
+
+    <EmbeddedResource Update="Views\Pages\FacultyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\UniversityPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\ProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -82,6 +103,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\ViewEvent.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\ViewEventMain.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

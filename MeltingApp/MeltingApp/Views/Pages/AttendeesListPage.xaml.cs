@@ -10,12 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace MeltingApp.Views.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ResetPassPage : ContentPage
+	public partial class AttendeesListPage : ContentPage
 	{
-		public ResetPassPage ()
+		public AttendeesListPage ()
 		{
 			InitializeComponent ();
-            NavigationPage.SetHasBackButton(this, true);
+		    NavigationPage.SetHasBackButton(this, true);
         }
 	}
 }

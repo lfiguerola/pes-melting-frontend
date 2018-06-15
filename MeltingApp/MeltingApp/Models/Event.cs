@@ -21,6 +21,7 @@ namespace MeltingApp.Models
         private int _user_id;
         //private ?attendee[]  _attendees;
         //private ?comment[] _comments;
+        private int _num_attendees;
 
 
         public int event_id
@@ -116,6 +117,15 @@ namespace MeltingApp.Models
             {
                 _date = value;
                 OnPropertyChanged(nameof(date));
+            }
+        }
+        public int num_attendees
+        {
+            get { return _num_attendees; }
+            set
+            {
+                _num_attendees = value;
+                OnPropertyChanged(nameof(num_attendees));
             }
         }
 

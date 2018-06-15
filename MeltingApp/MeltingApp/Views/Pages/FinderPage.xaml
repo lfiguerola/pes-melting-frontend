@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
-             x:Class="MeltingApp.Views.Pages.FinderPage">
+             x:Class="MeltingApp.Views.Pages.FinderPage"
+             Title= "Search">
     <ContentPage.Content>
         <StackLayout>
         
@@ -23,36 +24,31 @@
                 <Button x:Name="FinderButton" Text="Find" Command="{Binding ApplyFinderButtonCommand}"></Button>
             </StackLayout>
             <ScrollView>
-                <StackLayout >
-                    <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Path=AllResults}">
+                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <ListView ItemsSource="{Binding Path=AllResults}"
+                               SelectedItem="{Binding StructureSelected, Mode=TwoWay}"  x:Name="listView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
                                     <ViewCell.View>
                                         <StackLayout>
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=resultId1}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=resultName2}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=resultName1}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=resultName3}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=resultName4}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=latitude}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=longitude}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Path=resultId2}"></Label>
+                                                <!--<Label WidthRequest="20" Text="{Binding Path=resultId1}">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>-->
+                                                <Label WidthRequest="70" Text="{Binding Path=resultName2}">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.infoFinderStructureCommand, Source = {x:Reference listView}}"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName1}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName3}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=resultName4}"></Label>
+                                                <!--<Label WidthRequest="100" Text="{Binding Path=latitude}"></Label>
+                                                <Label WidthRequest="100" Text="{Binding Path=longitude}"></Label>
+                                                <Label Text="{Binding Path=resultId2}"></Label>-->
                                             </StackLayout>
                                         </StackLayout>
                                     </ViewCell.View>

@@ -4,44 +4,87 @@
              xmlns:fields="clr-namespace:MeltingApp.Behaviors;assembly=MeltingApp"
              x:Class="MeltingApp.Views.Pages.FacultyPage">
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="0">
+        <ScrollView>
 
-            <!--          FACULTY INFORMATION          -->
-            <StackLayout Spacing="0" Padding="0">
-                <Label Text="Faculty information" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" />
+            <StackLayout>
+                <Frame OutlineColor="Gray" HasShadow="True" Margin="20,10">
+                    <StackLayout>
+                        <!--          FACULTY INFORMATION          -->
+                        <!--<Frame HeightRequest="200" BackgroundColor="LightGray" OutlineColor="Gray" HasShadow="True" Margin="20,10">-->
 
-                <StackLayout Orientation="Horizontal" BackgroundColor ="Beige">
-                    <Label FontSize="14" Text="Name:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                    <Label x:Name="FacultyNameLabel" Text="{Binding Faculty.name}"></Label>
-                </StackLayout>
+                        <Label Text="Faculty information" FontAttributes="Bold" FontSize="23" HorizontalOptions="Center" Margin="0,20"/>
 
-                <StackLayout Orientation="Horizontal">
-                    <Label FontSize="14" Text="Telephone:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                    <Label x:Name="FacultyTelephoneLabel" Text="{Binding Faculty.telephone}"></Label>
-                </StackLayout>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
-                    <Label FontSize="14" Text="Latitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                    <Label x:Name="FacultyLatitudeLabel" Text="{Binding Faculty.latitude}"></Label>
-                </StackLayout>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                <StackLayout Orientation="Horizontal">
-                    <Label FontSize="14" Text="Longitude:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                    <Label x:Name="FacultyLongitudeLabel" Text="{Binding Faculty.longitude}"></Label>
-                </StackLayout>
 
-                <StackLayout Orientation="Horizontal" BackgroundColor ="Beige" >
-                    <Label FontSize="14" Text="Address:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                    <Label x:Name="FacultyAdressLabel" Text="{Binding Faculty.address}"></Label>
-                </StackLayout>
+                            <StackLayout Grid.Row="0" Grid.Column="0" Margin="20,5">
+                                <Label Text="Name:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="0" Grid.Column="1" >
+                                <Label x:Name="FacultyNameLabel" HorizontalOptions="Start" Text="{Binding Faculty.name}" Style="{StaticResource StaticInfoName2Label}"></Label>
+                            </StackLayout>
 
-                <StackLayout Orientation="Horizontal">
-                    <Label FontSize="14" Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="80" />
-                    <Label x:Name="FacultyUrlLabel" Text="{Binding Faculty.url}"></Label>
-                </StackLayout>
-                <Button Text="View in Maps" Command="{Binding OpenMapStaticFacultyCommand}"></Button>
+                            <StackLayout Grid.Row="1" Grid.Column="0" Margin="20,5">
+                                <Label Text="Telephone:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Start">
+                                <Label x:Name="FacultyTelephoneLabel" HorizontalOptions="Start" Text="{Binding Faculty.telephone}" Style="{StaticResource StaticInfoName2Label}"></Label>
+                            </StackLayout>
 
+                            <StackLayout Grid.Row="2" Grid.Column="0"  Margin="20,5">
+                                <Label Text="Latitude:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Row="2" Grid.Column="1" HorizontalOptions="Start">
+                                <Label x:Name="FacultyLatitudeLabel" HorizontalOptions="Start" Text="{Binding Faculty.latitude}" Style="{StaticResource StaticInfoName2Label}"></Label>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="0"  Grid.Row="3" Margin="20,5">
+                                <Label Text="Longitude:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="3" Grid.Column="1" HorizontalOptions="Start">
+                                <Label x:Name="FacultyLongitudeLabel" HorizontalOptions="Start" Text="{Binding Faculty.longitude}" Style="{StaticResource StaticInfoName2Label}"></Label>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="0" Grid.Row="4" Margin="20,5">
+                                <Label Text="Address:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Row="4" Grid.Column="1" HorizontalOptions="Start">
+                                <Label x:Name="FacultyAdressLabel" HorizontalOptions="Start" Text="{Binding Faculty.address}" Style="{StaticResource StaticInfoName2Label}"></Label>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="0" Grid.Row="5" Margin="20,5">
+                                <Label Text="Website:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Row="5" Grid.Column="1" HorizontalOptions="Start">
+                                <Label x:Name="FacultyUrlLabel" HorizontalOptions="Start" Text="{Binding Faculty.url}" Style="{StaticResource StaticInfoName2Label}"></Label>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="0" Grid.Row="6" Margin="20,5">
+                                <Label Text="View in Maps:" HorizontalOptions="Start" VerticalOptions="Center" Style="{StaticResource StaticInfoNameLabel}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Row="6" Grid.Column="1" HorizontalOptions="Start">
+                                <Button Image="location_24.png" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="24" HeightRequest="24" Command="{Binding OpenMapStaticFacultyCommand}"></Button>
+                            </StackLayout>
+
+                        </Grid>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
+ 
     </ContentPage.Content>
 </ContentPage>

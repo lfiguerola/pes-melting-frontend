@@ -70,6 +70,7 @@ namespace MeltingApp.ViewModels
             NavigateToResetPassPageCommand = new Command(HandleNavigateToResetPassPage);
             ResetPassCommand = new Command(HandleResetPassCommand);
             User = new User();
+                       
 
         }
 

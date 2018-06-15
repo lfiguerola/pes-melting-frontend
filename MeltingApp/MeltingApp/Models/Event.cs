@@ -19,11 +19,10 @@ namespace MeltingApp.Models
         private string _name;
         private string _date;
         private int _user_id;
+        private int _num_attendees;
         //private ?attendee[]  _attendees;
         //private ?comment[] _comments;
-        private int _num_attendees;
-
-
+       
         public int event_id
         {
             get { return _event_id; }

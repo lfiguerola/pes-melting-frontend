@@ -14,8 +14,7 @@
             <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="EndAndExpand">
                 <Label  Text="MeltingApp Team"
                  FontSize="Small" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                <Label Text="Sara Bourjila, Alexandre Calle Millan, Pau Carbonell Vives, Laura Figuerola Peña, Ismael Julià Reifs, Adolfo López Oyarzabal
-Carla Varea Parra" FontSize="Micro" HorizontalTextAlignment="Center">
+                <Label Text="Sara Bourjila, Alexandre Calle Millan, Pau Carbonell Vives, Laura Figuerola Peña, Ismael Julià Reifs, Adolfo López Oyarzabal and Carla Varea Parra" FontSize="Micro" HorizontalTextAlignment="Center">
                 </Label>
             </StackLayout>
         </StackLayout>

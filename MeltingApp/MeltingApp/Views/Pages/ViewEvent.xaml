@@ -1,44 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MeltingApp.Views.Pages.ViewEvent">
+             x:Class="MeltingApp.Views.Pages.ViewEvent"
+             Title="Event details">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding NavigateToAttendeesListCommand}" Icon="user.png" Text="Who's in?"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="View Event"></Label>
-            <Label Text="{Binding Event.title}"></Label>
-            <Label Text="{Binding Event.description}"></Label>
-            <Label Text="{Binding Event.latitude}"></Label>
-            <Label Text="{Binding Event.longitude}"></Label>
-            <Label Text="{Binding Event.address}"></Label>
-            <Label Text="{Binding Event.name}"></Label>
-            <Label Text="{Binding Event.date}"></Label>
-            <Button Text="See who is going" Command="{Binding NavigateToAttendeesListCommand}"></Button>
-            <Button Text="I'll asssit" Command="{Binding ConfirmAssistanceCommand}"></Button>
-            <Button Text="Modify Event" Command="{Binding NavigateToModifyEventCommand}" IsVisible="{Binding UserOwnsEvent}"></Button>
-            <Button Text="Delete Event" Command="{Binding DeleteEventCommand}" IsVisible="{Binding UserOwnsEvent}"></Button>
-            <Button Text="View in Maps" Command="{Binding OpenMapEventCommand}"></Button>
-            <Entry Text="{Binding Comment.content}"></Entry>
-            <Button Text="Create comment" Command="{Binding CreateCommentCommand}"></Button>
-            <ScrollView>
-                <StackLayout HeightRequest="200">
-                    <ListView ItemsSource="{Binding AllComments}" SelectedItem="{Binding CommentSelected, Mode=TwoWay}" x:Name="listView">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{Binding username}"></Label>
-                                            <Label Text="{Binding content}"/>
-                                            <Button x:Name="DeleteButton" Text="Delete" Command="{Binding Path=BindingContext.InfoCommentCommand, Source = {x:Reference listView}}"
-                                                    CommandParameter="{Binding comment_id}" IsVisible="{Binding IsButtonVisible}"></Button>
-                                        </StackLayout>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+        <StackLayout BackgroundColor="{StaticResource Primary}">
+            <AbsoluteLayout HorizontalOptions="FillAndExpand" HeightRequest="150">
+                <Image AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" Source="background.png" Aspect="Fill"/>
+                <Label AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.5,0.5" Text="{Binding Event.title}" HorizontalOptions="Center" TextColor="White" FontSize ="Large" FontAttributes="Bold"/>
+                <Button AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="1,0" Text="Modify Event" Command="{Binding NavigateToModifyEventCommand}" IsVisible="{Binding UserOwnsEvent}" Style="{StaticResource AppButton}"/>
+                <Button AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="1,1" Text="Delete Event" Command="{Binding DeleteEventCommand}" IsVisible="{Binding UserOwnsEvent}" Style="{StaticResource AppDeleteButton}"/>
+            </AbsoluteLayout>
+            <StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource ButtonBackgroundColor}">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="calendar_16.png"/>
+                        <Label Text="{Binding Event.date}" TextColor="White" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="blocation_16.png"/>
+                        <Label Text="{Binding Event.name}" TextColor="White" VerticalTextAlignment="Center"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding OpenMapEventCommand}"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
                 </StackLayout>
-            </ScrollView>
+                <BoxView HorizontalOptions="Center" WidthRequest="1" Color="{StaticResource LoginButtonBackgroundColor}"/>
+                <Button Text="Join" Command="{Binding ConfirmAssistanceCommand}" Style="{StaticResource AppButton}" BackgroundColor="#FFAFAFE1"/>
+            </StackLayout>
+
+            <Label Margin="10,0,0,0" Text="Description" HorizontalOptions="Start" FontSize ="Large" FontAttributes="Bold" TextColor="White" />
+            <Label Margin="10,0,0,0" Text="{Binding Event.description}" TextColor="White"/>
+
+            <Label Margin="10,0,0,0" Text="Comments" HorizontalOptions="Start" FontSize ="Large" FontAttributes="Bold" TextColor="White" />
+            <ListView HeightRequest="200" ItemsSource="{Binding AllComments}" SelectedItem="{Binding CommentSelected, Mode=TwoWay}" HasUnevenRows="True" x:Name="listView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame HasShadow="True" BackgroundColor="{StaticResource LoginButtonBackgroundColor}">
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout HorizontalOptions="FillAndExpand">
+                                        <Label Text="{Binding username}" TextColor="White"/>
+                                        <Label Text="{Binding content}" TextColor="White"/>
+                                    </StackLayout>
+                                    <Button x:Name="DeleteButton" Text="Delete" Command="{Binding Path=BindingContext.InfoCommentCommand, Source = {x:Reference listView}}"
+                                                    CommandParameter="{Binding comment_id}" IsVisible="{Binding IsButtonVisible}" HorizontalOptions="End" Style="{StaticResource AppDeleteButton}"/>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Entry Text="{Binding Comment.content}" Placeholder="Type a comment..." PlaceholderColor="WhiteSmoke" TextColor="White"/>
+            <Button Text="Create comment" Command="{Binding CreateCommentCommand}" Style="{StaticResource AppButton}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

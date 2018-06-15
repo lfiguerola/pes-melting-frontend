@@ -2,37 +2,29 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeltingApp.Views.Pages.MainPage"
-             Title="Melting App">
+             Title="Melting App"
+             BackgroundColor="#FF1C1C36">
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout>
-                <Label x:Name="Welcome" Text="Hello! Welcome to MeltingApp (logo aqui)" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Label>
-                <Label x:Name="Info" Text="Here you can find some information about your faculty and the most popular events. Have fun and remembrer, integrate with karma" 
-                       VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Label>
-            </StackLayout>
-            <Button x:Name="ViewMyFacultyButton" Text="See my faculty" Command="{Binding NavigateMyFacultyInformationCommand}"></Button>
-            <ListView ItemsSource="{Binding AllEvents}" Header="Most Popular Events" 
-                      SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Vertical">
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding title}">
-                                        <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
-                                                                  CommandParameter="{Binding event_id}" />
-                                        </Label.GestureRecognizers>
-                                    </Label>
-                                    <Label Text="{Binding description}"/>
-                                    <Label Text="{Binding name}"/>
-                                    <Label Text="{Binding date}"/>
-                                </StackLayout>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+        <ScrollView>
+
+            <Frame  Margin="20,20">
+            <Grid  >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" x:Name="logoImage" Source="logoLogin.png" VerticalOptions="CenterAndExpand"/>
+                <Label Grid.Row="1"  x:Name="Welcome" Text="Hello! Welcome to MeltingApp"  Style="{StaticResource ProfileNameLabel}" HorizontalOptions="CenterAndExpand"></Label>
+                <Label Grid.Row="2"  x:Name="Info" Text="Here you can find some information about your faculty, find other universities, faculties and users. Also you can assist and create events and chat with the others. Have fun and remember, integrate with karma!" 
+                      HorizontalOptions="CenterAndExpand" Style="{StaticResource StatsNumberLabel}"></Label>
+ 
+            </Grid>
+            </Frame>
+
+
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

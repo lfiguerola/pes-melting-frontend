@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using MeltingApp.Interfaces;
 using MeltingApp.Models;
 using MeltingApp.Resources;
 using MeltingApp.Views.Pages;
 using Xamarin.Forms;
+using Plugin.ExternalMaps;
+
 
 namespace MeltingApp.ViewModels
 {
@@ -14,8 +19,15 @@ namespace MeltingApp.ViewModels
         private string _responseMessage;
         private User _user;
         private Event _event;
+        private Faculty _faculty;
+        private IEnumerable<Event> _allEvents;
+        private Event _eventSelected;
+        public Command NavigateMyFacultyInformationCommand { get; set; }
+        public Command InfoEventCommand { get; set; }
+        public Command NavigateToAllEventsCommand { get; set; }
+        public Command OpenMapStaticFacultyCommand { get; set; }
 
-         public User User
+        public User User
         {
             get { return _user; }
             set
@@ -24,6 +36,7 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(User));
             }
         }
+
         public Event Event
         {
             get { return _event; }
@@ -33,7 +46,37 @@ namespace MeltingApp.ViewModels
                 OnPropertyChanged(nameof(Event));
             }
         }
+ 
+        public Faculty Faculty
+        {
+            get { return _faculty; }
+            set
+            {
+                _faculty = value;
+                OnPropertyChanged(nameof(Faculty));
+            }
+        }
 
+        public Event EventSelected
+        {
+            get { return _eventSelected; }
+            set
+            {
+                _eventSelected = value;
+                OnPropertyChanged(nameof(EventSelected));
+            }
+        }
+
+        public IEnumerable<Event> AllEvents
+        {
+            get { return _allEvents; }
+            set
+            {
+                _allEvents = value;
+                OnPropertyChanged(nameof(AllEvents));
+            }
+        }
+       
         public string ResponseMessage
         {
             get { return _responseMessage; }
@@ -49,10 +92,17 @@ namespace MeltingApp.ViewModels
             _navigationService = DependencyService.Get<INavigationService>(DependencyFetchTarget.GlobalInstance);
             _apiClientService = DependencyService.Get<IApiClientService>();
             _dataBaseService = DependencyService.Get<IDataBaseService>();
+            NavigateMyFacultyInformationCommand = new Command(HandleNavigateMyFacultyInformationCommand);
+            InfoEventCommand = new Command(HandleInfoEventCommand);
+            NavigateToAllEventsCommand = new Command(HandleNavigateToAllEventsCommand);
+            OpenMapStaticFacultyCommand = new Command(HandleOpenMapStaticFacultyCommand);
+
             Event = new Event();
             User = new User();
 
             SaveCurrentProfile();
+
+            GetAllEvents();
         }
 
         /// <summary>
@@ -65,20 +115,21 @@ namespace MeltingApp.ViewModels
             var meltingUriParser = new MeltingUriParser();
             meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
 
-            User = await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser, (success, responseMessage) =>
-            {
-                if (success)
+            User = await _apiClientService.GetAsync<User, User>(ApiRoutes.Methods.GetProfileUser,
+                (success, responseMessage) =>
                 {
-                    b = true;
-                }
-                else
-                {
-                    //si el perfil no s'ha creat faig crida a la creació d'aquest
-                    //TODO: Treure aquest toast
-                    DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
-                    HandleNavigateToCreateProfilePageCommand();
-                }
-            }, meltingUriParser);
+                    if (success)
+                    {
+                        b = true;
+                    }
+                    else
+                    {
+                        //si el perfil no s'ha creat faig crida a la creació d'aquest
+                        //TODO: Treure aquest toast
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                        HandleNavigateToCreateProfilePageCommand();
+                    }
+                }, meltingUriParser);
             if (b)
             {
                 SaveProfileInDB(User);
@@ -97,6 +148,7 @@ namespace MeltingApp.ViewModels
                 userConsultatDB.full_name = User.full_name;
                 userConsultatDB.username = User.username;
             }
+
             _dataBaseService.UpdateWithChildren<User>(userConsultatDB);
             var aallusers2 = _dataBaseService.GetCollectionWithChildren<User>(u => true);
         }
@@ -106,5 +158,88 @@ namespace MeltingApp.ViewModels
             _navigationService.SetRootPage<CreateProfilePage>();
         }
 
+        async void HandleNavigateMyFacultyInformationCommand()
+        {
+            var meltingUriParser = new MeltingUriParser();
+            meltingUriParser.AddParseRule(ApiRoutes.UriParameters.UserId, $"{App.LoginRequest.LoggedUserIdBackend}");
+
+            Faculty = await _apiClientService.GetAsync<Faculty, Faculty>(ApiRoutes.Methods.ShowFacultyInfo,
+                (isSuccess, responseMessage) =>
+                {
+                    ResponseMessage = responseMessage;
+                    if (isSuccess)
+                    {
+                        _navigationService.PushAsync<FacultyPage>(this);
+                    }
+                    else DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                }, meltingUriParser);
+        }
+
+
+        async void GetAllEvents()
+        {
+            AllEvents = await _apiClientService.GetAsync<IEnumerable<Event>, IEnumerable<Event>>(
+                ApiRoutes.Methods.GetAllEvents, (success, responseMessage) =>
+                {
+                    if (success)
+                    {
+
+                    }
+                    else
+                    {
+                        DependencyService.Get<IOperatingSystemMethods>().ShowToast(responseMessage);
+                    }
+                });
+
+            saveEventsInDB(AllEvents); //guardem tots els events a la base de dades
+            AllEvents = AllEvents.OrderBy(Event => Event.num_attendees);
+            AllEvents = AllEvents.Take(3);
+
+        }
+        void saveEventsInDB(IEnumerable<Event> AllEvents)
+        {
+            var allevents_before = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+            for (int i = 0; i < AllEvents.Count(); i++)
+            {
+                //comprovar si el event ja esta a la bd
+                var eventt = AllEvents.ElementAt(i);
+                bool b = false;
+                for (int j = 0; j < allevents_before.Count() && !b; j++)
+                {
+                    if (allevents_before.ElementAt(j).id == eventt.id)
+                    {
+                        b = true;
+                    }
+                }
+                if (!b)
+                {
+                    //si levent no esta a la bd
+                    var eventToSave = AllEvents.ElementAt(i);
+                    _dataBaseService.UpdateWithChildren<Event>(eventToSave);
+                }
+
+            }
+            var allevents_after = _dataBaseService.GetCollectionWithChildren<Event>(e => true);
+        }
+
+        void HandleInfoEventCommand()
+        {
+            Event = EventSelected;
+            _navigationService.PushAsync<ViewEventMain>(this);
+        }
+
+        void HandleNavigateToAllEventsCommand()
+        {
+            EventViewModel evm = new EventViewModel();
+        }
+
+        private async void HandleOpenMapStaticFacultyCommand()
+        {
+            var success = await CrossExternalMaps.Current.NavigateTo("Faculty", Double.Parse(Faculty.latitude.ToString()), Double.Parse(Faculty.longitude.ToString()));
+            if (!success)
+            {
+                DependencyService.Get<IOperatingSystemMethods>().ShowToast("Opening maps failed");
+            }
+        }
     }
 }

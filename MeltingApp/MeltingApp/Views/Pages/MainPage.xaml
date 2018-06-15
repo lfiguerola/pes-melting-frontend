@@ -5,10 +5,34 @@
              Title="Melting App">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Main Page!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-
+            <StackLayout>
+                <Label x:Name="Welcome" Text="Hello! Welcome to MeltingApp (logo aqui)" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Label>
+                <Label x:Name="Info" Text="Here you can find some information about your faculty and the most popular events. Have fun and remembrer, integrate with karma" 
+                       VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Label>
+            </StackLayout>
+            <Button x:Name="ViewMyFacultyButton" Text="See my faculty" Command="{Binding NavigateMyFacultyInformationCommand}"></Button>
+            <ListView ItemsSource="{Binding AllEvents}" Header="Most Popular Events" 
+                      SelectedItem="{Binding EventSelected, Mode=TwoWay}" x:Name="listView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding title}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.InfoEventCommand, Source = {x:Reference listView}}"
+                                                                  CommandParameter="{Binding event_id}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="{Binding description}"/>
+                                    <Label Text="{Binding name}"/>
+                                    <Label Text="{Binding date}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -80,6 +80,7 @@ namespace MeltingApp
             navigationService.RegisterPage<FacultyPage>();
             navigationService.RegisterPage<UniversityPage>();
             navigationService.RegisterPage<ChangePassPage>();
+            navigationService.RegisterPage<ViewEventMain>();
         }
 
         

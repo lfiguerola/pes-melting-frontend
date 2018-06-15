@@ -13,33 +13,25 @@ namespace MeltingApp.Views.Pages
     public partial class ChatMainPage : ContentPage
     {
         ChatMainPageViewModel vm;
-        int intervalInSeconds = 2;
+        int intervalInSeconds = 5;
         public ChatMainPage()
         {
             InitializeComponent();
             BindingContext = vm = new ChatMainPageViewModel();
-            //  vm.InitializeMock();
 
-            
-
-            Device.StartTimer(TimeSpan.FromSeconds(this.intervalInSeconds), () =>
-            {
-                Device.BeginInvokeOnMainThread(() => vm.InitializeMock());
-                vm.Messages.CollectionChanged += (sender, e) =>
-                {
-                    var target = vm.Messages[vm.Messages.Count - 1];
-                    MessagesListView.ScrollTo(target, ScrollToPosition.End, true);
-                };
-
-                return true;
-            });
-
+            Refresh();
 
         }
 
 
-     /*   void Refresh() {
-            vm.InitializeMock();
+     void Refresh() {
+
+            Device.StartTimer(TimeSpan.FromSeconds(this.intervalInSeconds), () =>
+            {
+                Device.BeginInvokeOnMainThread(() => vm.InitializeMock());
+                return true;
+            });
+
             Scroll();
 
         }
@@ -51,7 +43,7 @@ namespace MeltingApp.Views.Pages
                     MessagesListView.ScrollTo(target, ScrollToPosition.End, true);
                 };
         }
-        */
+        
     void MyListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             MessagesListView.SelectedItem = null;
@@ -62,6 +54,5 @@ namespace MeltingApp.Views.Pages
             MessagesListView.SelectedItem = null;
 
         }
-       
-    }
+     }
 }
